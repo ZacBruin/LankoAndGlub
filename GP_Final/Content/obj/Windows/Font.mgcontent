@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Zac/Git_Projects/Lanko&amp;Glub/GP_Final/Content/Font.spritefont</SourceFile>
+  <SourceTime>2015-01-19T18:24:04-06:00</SourceTime>
+  <DestFile>C:/Users/Zac/Git_Projects/Lanko&amp;Glub/GP_Final/Content/bin/Windows/Font.xnb</DestFile>
+  <DestTime>2016-01-18T12:34:21.4801674-06:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2015-04-29T12:14:44-05:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2015-04-29T12:14:44-05:00</ProcessorTime>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
