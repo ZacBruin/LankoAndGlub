@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zac/Git_Projects/Lanko&amp;Glub/GP_Final/Content/Crosshair.png</SourceFile>
+  <SourceFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Crosshair.png</SourceFile>
   <SourceTime>2015-05-08T22:10:51.4068799-05:00</SourceTime>
-  <DestFile>C:/Users/Zac/Git_Projects/Lanko&amp;Glub/GP_Final/Content/bin/Windows/Crosshair.xnb</DestFile>
-  <DestTime>2016-01-18T12:34:21.1208077-06:00</DestTime>
+  <DestFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/bin/Windows/Crosshair.xnb</DestFile>
+  <DestTime>2016-01-18T13:12:22.7957467-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2015-04-29T12:14:44-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

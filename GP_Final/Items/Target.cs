@@ -10,10 +10,7 @@ namespace GP_Final
         private int numDeathFlickers, currentFlicker, timeBetweenFlickers;
 
         private Color flickerLow, flickerNorm;
-        protected Texture2D spawningSpriteSheet, movementSpriteSheet, pointSpriteSheet;
-
-        protected float point_Scale;
-        protected SpriteSheetInfo point_info;
+        protected Texture2D spawningSpriteSheet, movementSpriteSheet;
 
         public Target(Game game) : base(game)
         {
@@ -26,8 +23,6 @@ namespace GP_Final
 
             this.color = Color.White;
 
-            this.point_Scale = .2f;
-
             flickerLow = new Color(50, 50, 50, 50);
             flickerNorm = new Color(230, 230, 230, 230);
         }
@@ -35,6 +30,11 @@ namespace GP_Final
         protected void UpdateTarget(GameTime gameTime)
         {
             base.Update(gameTime);
+        }
+
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
         }
 
         public bool DeathAnim()
@@ -165,26 +165,6 @@ namespace GP_Final
                     return false;
             }
         }
-
-        //protected void CyclepointAnim()
-        //{
-        //    if (point_info.currentFrame == point_info.totalFrames)
-        //        return;
-
-        //    if (point_Anim_Count >= this.updates_Between_Point)
-        //    {
-        //        point_info.currentFrame++;
-        //        point_Anim_Count = 0;
-
-        //        point_info.UpdateSourceFrame();
-        //    }
-
-        //    else
-        //    {
-        //        point_Anim_Count++;
-        //        return;
-        //    }
-        //}
 
     }
 }

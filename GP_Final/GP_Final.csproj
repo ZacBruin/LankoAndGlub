@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MonoGameSpecific\PointSprite.cs" />
     <Compile Include="Utilities\Coroutine.cs" />
     <Compile Include="Portable Code\GameRound.cs" />
     <Compile Include="MonoGameSpecific\MonogameRoundManager.cs" />

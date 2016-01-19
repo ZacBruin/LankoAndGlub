@@ -151,13 +151,7 @@ namespace GP_Final
                     new Vector2(0,0), burst_scale, SpriteEffects.None, 0f);
 
                 this.CycleBurstAnim();
-                if(this.burst_info.currentFrame == 5)
-                {
-                    isAnimatingBurst = false;
-                    burst_info.currentFrame = 0;
-                    burst_Anim_Count = 0;
-                    burst_info.UpdateSourceFrame();
-                }
+                this.CheckBurstAnimComplete();
             }
 
             spriteBatch.End();
@@ -544,6 +538,17 @@ namespace GP_Final
             {
                 burst_Anim_Count++;
                 return;
+            }
+        }
+
+        private void CheckBurstAnimComplete()
+        {
+            if (this.burst_info.currentFrame == 5)
+            {
+                isAnimatingBurst = false;
+                burst_info.currentFrame = 0;
+                burst_Anim_Count = 0;
+                burst_info.UpdateSourceFrame();
             }
         }
 

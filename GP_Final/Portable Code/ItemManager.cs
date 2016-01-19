@@ -7,25 +7,29 @@ namespace GP_Final
     public interface IItemManager
     {
         List<Target> Targets { get; set; }
-
         List<PowerUp> PowerUps {get; set;}
+        List<PointSprite> Points { get; set; }
 
         void AddTarget(Target t);
         void AddPowerUp(PowerUp p);
+        void AddPoint(PointSprite ps);
 
         void RemoveTarget(Target t);
         void RemovePowerUp(PowerUp p);
+        void RemovePoint(PointSprite ps);
     }
 
     public class ItemManager : Microsoft.Xna.Framework.GameComponent
     {
         List<Target> targets;
         List<PowerUp> powerUps;
+        List<PointSprite> pointSprites;
 
         public ItemManager(Game game) : base(game)
         {
             this.targets = new List<Target>();
             this.powerUps = new List<PowerUp>();
+            this.pointSprites = new List<PointSprite>();
         }
 
         public List<Target> Targets
@@ -40,37 +44,25 @@ namespace GP_Final
             set { powerUps = value; }
         }
 
-        public void AddTarget(Target t)
+        public List<PointSprite> Points
         {
-            this.targets.Add(t);
+            get { return pointSprites; }
+            set { pointSprites = value; }
         }
 
-        public void AddPowerUp(PowerUp p)
-        {
-            this.powerUps.Add(p);
-        }
+        public void AddTarget(Target t) {this.targets.Add(t);}
+        public void AddPowerUp(PowerUp p) {this.powerUps.Add(p);}
+        public void AddPointSprite(PointSprite ps) {this.pointSprites.Add(ps);}
 
-        public void RemoveTarget(Target t)
-        {
-            this.targets.Remove(t);
-        }
-
-        public void RemovePowerUp(PowerUp p)
-        {
-            this.powerUps.Remove(p);
-        }
+        public void RemoveTarget(Target t) {this.targets.Remove(t);}
+        public void RemovePowerUp(PowerUp p) {this.powerUps.Remove(p);}
+        public void RemovePointSprite(PointSprite ps) {this.pointSprites.Remove(ps);}
 
         public override void Update(GameTime gameTime)
         {
-            foreach (Target t in Targets)
-            {
-                t.Update(gameTime);
-            }
-
-            foreach (PowerUp p in PowerUps)
-            {
-                p.Update(gameTime);
-            }
+            foreach (Target t in Targets) {t.Update(gameTime);}
+            foreach (PowerUp p in PowerUps) {p.Update(gameTime);}
+            foreach (PointSprite ps in Points) {ps.Update(gameTime);}
 
             base.Update(gameTime);
         }
@@ -87,6 +79,12 @@ namespace GP_Final
             {
                 p.DrawMarkers(sb);
                 p.Draw(sb);
+            }
+
+            foreach (PointSprite ps in Points)
+            {
+                ps.DrawMarkers(sb);
+                ps.Draw(sb);
             }
 
         }

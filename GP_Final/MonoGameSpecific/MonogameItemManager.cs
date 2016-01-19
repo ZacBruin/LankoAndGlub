@@ -9,6 +9,7 @@ namespace GP_Final
     {
         List<Target> TargetsToDelete;
         List<PowerUp> PowerUpsToDelete;
+        List<PointSprite> PointSpritesToDelete;
 
         private Random rand;
 
@@ -26,6 +27,7 @@ namespace GP_Final
         {
             TargetsToDelete = new List<Target>();
             PowerUpsToDelete = new List<PowerUp>();
+            PointSpritesToDelete = new List<PointSprite>();
 
             maxTargets = 12;
             maxPowerUps = 2;
@@ -105,8 +107,12 @@ namespace GP_Final
             foreach (PowerUp p in PowerUpsToDelete)
                 this.PowerUps.Remove(p);
 
+            foreach (PointSprite ps in PointSpritesToDelete)
+                this.Points.Remove(ps);
+
             TargetsToDelete.Clear();
             PowerUpsToDelete.Clear();
+            PointSpritesToDelete.Clear();
         }
 
         private void updateTarget(GameTime gameTime)
@@ -145,15 +151,23 @@ namespace GP_Final
 
                 else
                 {
-                    if (this.glub.State == GlubState.Thrown &&  
-                        this.glub.Hitbox.Intersects(t.Hitbox))
+                    if (this.glub.State == GlubState.Thrown && this.glub.Hitbox.Intersects(t.Hitbox))
                     {
+                        PointSprite ps;
                         switch (t.state)
                         {
                             case Target.State.Moving:
                             case Target.State.SpeedDown:
                             case Target.State.SpeedUp:
                             case Target.State.DeSpawning:
+                                if(t is Basic_Target) { ps = new PointSprite(this.Game, true); }
+                                else { ps = new PointSprite(this.Game, false); }
+
+                                ps.Initialize();
+                                ps.Location = new Vector2(t.LocationRect.X + 25, t.LocationRect.Y - 10);
+                                ps.SetStartPos();
+
+                                this.AddPointSprite(ps);
 
                                 this.round.Points += t.pointValue;
 
@@ -176,6 +190,15 @@ namespace GP_Final
             }
         }
 
+        private void updatePointSprites(GameTime gameTime)
+        {
+            foreach(PointSprite ps in this.Points)
+            {
+                ps.Update(gameTime);
+                if (ps.color.A == 0) { this.PointSpritesToDelete.Add(ps); }
+            }
+        }
+
         private void updateItemManager(GameTime gameTime)
         {
             if (this.round.RoundIsOver == false)
@@ -189,6 +212,7 @@ namespace GP_Final
 
             updatePowerup(gameTime);
             updateTarget(gameTime);
+            updatePointSprites(gameTime);
         }
         #endregion
 
@@ -257,18 +281,13 @@ namespace GP_Final
         {
             Target targ;
 
-            if(IsBasicTarget)
-                targ = new Basic_Target(this.Game);      
-            else
-                targ = new Golden_Target(this.Game);
+            if(IsBasicTarget) targ = new Basic_Target(this.Game);    
+            else targ = new Golden_Target(this.Game);
 
             targ.Initialize();
             this.positionItem(targ);
 
-            while (checkForOverlap(targ))
-            {
-                this.positionItem(targ);
-            }
+            while (checkForOverlap(targ)) { this.positionItem(targ); }
 
             do
             {                
