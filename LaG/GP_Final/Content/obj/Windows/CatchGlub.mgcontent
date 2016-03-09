@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/CatchGlub.wav</SourceFile>
+  <SourceTime>2016-01-20T15:54:26.1348364-06:00</SourceTime>
+  <DestFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/bin/Windows/CatchGlub.xnb</DestFile>
+  <DestTime>2016-01-20T15:55:13.8245513-06:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2015-04-29T12:14:44-05:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2015-04-29T12:14:44-05:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

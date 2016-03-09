@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/ConsoleFont.spritefont</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/SpriteMarker.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Aim.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Crosshair.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Font.spritefont</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Jean_Luc.mp3</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Credits.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Exit.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/How_Play.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Options.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Start.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Title.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Title_Background.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Border_Bottom.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Border_Inside.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Border_Left.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Border_Right.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Border_Top.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Red_Bat_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Gold_Bat_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Cyan_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Green_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Green_Broken_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Background.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Instructions.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Lanko_Idle_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Lanko_Run_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Glub_Run_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Glub_BallAnim_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Gold_Bat_SpawnAnim_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Red_Bat_SpawnAnim_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Glub_Burst_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Gold_Bat_Point_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Red_Bat_Point_SpriteSheet.png</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/BlueGemGet.wav</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/CatchGlub.wav</File>
+    <File>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Land.wav</File>
+  </SourceFiles>
+</SourceFileCollection>

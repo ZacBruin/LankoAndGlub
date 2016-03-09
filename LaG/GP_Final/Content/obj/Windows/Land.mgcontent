@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Land.wav</SourceFile>
+  <SourceTime>2016-01-20T16:25:23.5396243-06:00</SourceTime>
+  <DestFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/bin/Windows/Land.xnb</DestFile>
+  <DestTime>2016-01-20T16:25:47.8450082-06:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2015-04-29T12:14:44-05:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2015-04-29T12:14:44-05:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>
