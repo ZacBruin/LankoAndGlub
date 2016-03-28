@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Font.spritefont</SourceFile>
+  <SourceFile>C:/Users/Zac/Documents/GitHub/Games/LaG/LaG/GP_Final/Content/Font.spritefont</SourceFile>
   <SourceTime>2015-01-19T18:24:04-06:00</SourceTime>
-  <DestFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/bin/Windows/Font.xnb</DestFile>
-  <DestTime>2016-01-20T15:55:06.5371373-06:00</DestTime>
+  <DestFile>C:/Users/Zac/Documents/GitHub/Games/LaG/LaG/GP_Final/Content/bin/Windows/Font.xnb</DestFile>
+  <DestTime>2016-03-10T14:05:41.7275331-06:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2015-04-29T12:14:44-05:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

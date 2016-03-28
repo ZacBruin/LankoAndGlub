@@ -390,3 +390,9 @@
 /processorParam:Quality=Best
 /build:Land.wav
 
+#begin BladeTrapAttack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:BladeTrapAttack.wav
+

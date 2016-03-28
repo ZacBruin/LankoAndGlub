@@ -84,6 +84,7 @@
   <ItemGroup>
     <Content Include="Content\Aim.png" />
     <Content Include="Content\Background.png" />
+    <Content Include="Content\BladeTrapAttack.wav" />
     <Content Include="Content\BlueGemGet.wav" />
     <Content Include="Content\Border_Bottom.png" />
     <Content Include="Content\Border_Inside.png" />

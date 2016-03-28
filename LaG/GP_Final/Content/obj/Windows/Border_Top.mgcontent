@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/Border_Top.png</SourceFile>
+  <SourceFile>C:/Users/Zac/Documents/GitHub/Games/LaG/LaG/GP_Final/Content/Border_Top.png</SourceFile>
   <SourceTime>2015-05-25T19:33:14.4826359-05:00</SourceTime>
-  <DestFile>C:/Users/Zac/Git_Projects/LaG/GP_Final/Content/bin/Windows/Border_Top.xnb</DestFile>
-  <DestTime>2016-01-20T15:55:12.2124648-06:00</DestTime>
+  <DestFile>C:/Users/Zac/Documents/GitHub/Games/LaG/LaG/GP_Final/Content/bin/Windows/Border_Top.xnb</DestFile>
+  <DestTime>2016-03-10T14:05:47.810907-06:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2015-04-29T12:14:44-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

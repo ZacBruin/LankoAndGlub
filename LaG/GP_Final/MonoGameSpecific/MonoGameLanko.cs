@@ -255,7 +255,7 @@ namespace GP_Final
                             {
                                 this.glub.GetCaughtByLanko();                                
                                 this.HasGlub = true;
-                                catchGlub.Play(.2f, 0f, 0f);
+                                catchGlub.Play(.1f, 0f, 0f);
                             }
                         }
                         break;
