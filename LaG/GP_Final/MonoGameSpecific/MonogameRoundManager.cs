@@ -10,10 +10,17 @@ namespace GP_Final
         public GameRound round;
         public LevelBorder border;
 
+        private float RoundTransitionCrement = .007f;
+
         Texture2D placeHolder;
-        Song music;
+        Song roundMusic, waitMusic;
         SpriteFont font;
         Color fontColor, instructionsColor, timerColor;
+
+        public enum MusicState { RoundTrack, RoundToWait, WaitToRound, WaitTrack}
+        public MusicState musicState = MusicState.RoundTrack;
+
+        bool HasTransitionedToWaitMusic;
 
         public int PlayerScore
         {
@@ -52,11 +59,12 @@ namespace GP_Final
 
             this.placeHolder = content.Load<Texture2D>("Instructions");
             this.spriteTexture = content.Load<Texture2D>("SpriteMarker");
-            this.music = content.Load<Song>("Jean_Luc");
+            this.roundMusic = content.Load<Song>("music_game");
+            this.waitMusic = content.Load<Song>("music_waiting_loop");
          
-            MediaPlayer.Play(music);
-            MediaPlayer.Volume = .1f;
-            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(roundMusic);
+            MediaPlayer.Volume = .3f;
+            MediaPlayer.IsRepeating = true;          
 
             this.FirstRoundStartHasStarted = this.firstRoundOver = false;
             this.HasStartedRound = false;
@@ -89,6 +97,48 @@ namespace GP_Final
             {
                 if (this.instructionsColor.A != 0)
                     this.instructionsColor = new Color(0, 0, 0, 0);
+            }
+
+            switch(musicState)
+            {
+                case MusicState.RoundTrack:
+                    if (MediaPlayer.Volume < .3f)
+                        MediaPlayer.Volume += RoundTransitionCrement;
+
+                    if (FirstRoundStartHasStarted)
+                    {
+                        if (round.RoundIsOver)
+                            musicState = MusicState.RoundToWait;
+                    }
+                    break;
+
+                case MusicState.WaitTrack:
+                    if(MediaPlayer.Volume < .3f)
+                        MediaPlayer.Volume += RoundTransitionCrement;
+
+                    if (!round.RoundIsOver)
+                        musicState = MusicState.WaitToRound;
+                    break;
+
+                case MusicState.RoundToWait:
+                    if (MediaPlayer.Volume > 0)
+                        MediaPlayer.Volume -= RoundTransitionCrement;
+                    else
+                    {
+                        musicState = MusicState.WaitTrack;
+                        MediaPlayer.Play(waitMusic);
+                    }
+                    break;
+
+                case MusicState.WaitToRound:
+                    if (MediaPlayer.Volume > 0)
+                        MediaPlayer.Volume -= RoundTransitionCrement;
+                    else
+                    {
+                        musicState = MusicState.RoundTrack;
+                        MediaPlayer.Play(roundMusic);
+                    }
+                    break;
             }
 
 

@@ -11,7 +11,7 @@ namespace GP_Final
 
         public GameRound(Game game) : base(game)
         {
-            this.MaxRoundLength = 30;
+            this.MaxRoundLength = 60;
             this.RoundIsOver = true;
             HasRoundJustStarted = true;
         }

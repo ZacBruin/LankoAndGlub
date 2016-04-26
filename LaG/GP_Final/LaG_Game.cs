@@ -142,10 +142,13 @@ namespace GP_Final
 
             if (input.MouseState.RightButton == ButtonState.Pressed)
             {
-                if (this.itemMan.round.RoundIsOver && this.gameRoundMan.FirstRoundStartHasStarted == true)
+                if (this.itemMan.round.RoundIsOver )
                 {
-                    this.itemMan.round.RoundIsOver = false;
-                    this.gameRoundMan.HasStartedRound = true;
+                    if (this.gameRoundMan.FirstRoundStartHasStarted == true)
+                    {
+                        this.itemMan.round.RoundIsOver = false;
+                        this.gameRoundMan.HasStartedRound = true;
+                    }
                 }
             }
 
