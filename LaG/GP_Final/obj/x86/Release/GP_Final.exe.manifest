@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>kRLrGc7ANEZ5gckui1ooUDMmVF82CGU0qOnypAtKvcM=</dsig:DigestValue>
+        <dsig:DigestValue>08xReQLrJVOnM+w32TLR+t77/4TvR6lRw72/WnJaJ8c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -552,15 +552,6 @@
       <dsig:DigestValue>WqccuOOjxfkjopz4kNhJIJgCk6xjwwUs9FsGyshx0sI=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\glub_throw.wav" size="41908">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>W6sPTy7wVUwK22hyr+NU8NPw932ouTPh2bqdbB42zkE=</dsig:DigestValue>
-    </hash>
-  </file>
   <file name="Content\glub_throw.xnb" size="33181">
     <hash>
       <dsig:Transforms>
@@ -568,6 +559,24 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>OWZuUlsmNMyOyySn2czdDKpF0n2EK0qi+vQF7izixKI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\glub_throw2.wav" size="25370">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>XtqtRf8R72YPVou9vp261RuPRIAEAtVb2zBaQXmauhI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Content\glub_throw2.xnb" size="16643">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uKh0kjzohJ6iKK6XVU/1vjU83U8IuOE49h9F1JBUm54=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Gold_Bat_Point_SpriteSheet.png" size="20260">

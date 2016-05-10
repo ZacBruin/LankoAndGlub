@@ -133,7 +133,7 @@ namespace GP_Final
 
             this.controller = new InputController(game);
 
-            ThrowSound = content.Load<SoundEffect>("glub_throw");
+            ThrowSound = content.Load<SoundEffect>("glub_throw2");
         }
 
         protected override void LoadContent()

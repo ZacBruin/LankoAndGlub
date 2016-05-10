@@ -451,12 +451,6 @@
 /processorParam:Quality=Best
 /build:game_end.wav
 
-#begin glub_throw.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:glub_throw.wav
-
 #begin new_highscore.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -474,4 +468,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:powerup_get.wav
+
+#begin glub_throw2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:glub_throw2.wav
 

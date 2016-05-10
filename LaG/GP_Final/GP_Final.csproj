@@ -133,7 +133,7 @@
     <Content Include="Content\Glub_BallAnim_SpriteSheet.png" />
     <Content Include="Content\Glub_Burst_SpriteSheet.png" />
     <Content Include="Content\Glub_Run_SpriteSheet.png" />
-    <Content Include="Content\glub_throw.wav" />
+    <Content Include="Content\glub_throw2.wav" />
     <Content Include="Content\Gold_Bat_Point_SpriteSheet.png" />
     <Content Include="Content\Gold_Bat_SpawnAnim_SpriteSheet.png" />
     <Content Include="Content\Gold_Bat_SpriteSheet.png" />

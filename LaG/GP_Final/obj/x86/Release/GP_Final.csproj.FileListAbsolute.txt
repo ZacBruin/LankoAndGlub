@@ -457,3 +457,4 @@ D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Release\Content\glub_throw.xnb
 D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Release\Content\new_highscore.xnb
 D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Release\Content\powerup_break.xnb
 D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Release\Content\powerup_get.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Release\Content\glub_throw2.xnb
