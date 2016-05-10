@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GP_Final
@@ -11,6 +13,8 @@ namespace GP_Final
 
         private Color flickerLow, flickerNorm;
         protected Texture2D spawningSpriteSheet, movementSpriteSheet;
+
+        SoundEffect GetDead;
 
         public Target(Game game) : base(game)
         {
@@ -25,6 +29,15 @@ namespace GP_Final
 
             flickerLow = new Color(50, 50, 50, 50);
             flickerNorm = new Color(230, 230, 230, 230);
+
+            
+        }
+
+        protected override void LoadContent()
+        {
+            GetDead = content.Load<SoundEffect>("bat_hit");
+
+            base.LoadContent();
         }
 
         protected void UpdateTarget(GameTime gameTime)
@@ -35,6 +48,11 @@ namespace GP_Final
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+        }
+
+        public void PlayHitSound()
+        {
+            GetDead.Play(.4f, 0, 0);
         }
 
         public bool DeathAnim()

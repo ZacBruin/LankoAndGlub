@@ -439,3 +439,39 @@
 /processorParam:Quality=Best
 /build:music_waiting_loop.wav
 
+#begin bat_hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bat_hit.wav
+
+#begin game_end.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:game_end.wav
+
+#begin glub_throw.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:glub_throw.wav
+
+#begin new_highscore.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:new_highscore.wav
+
+#begin powerup_break.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:powerup_break.wav
+
+#begin powerup_get.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:powerup_get.wav
+

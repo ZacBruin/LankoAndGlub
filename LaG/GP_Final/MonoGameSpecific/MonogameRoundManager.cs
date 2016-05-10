@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GP_Final
 {
@@ -10,12 +11,16 @@ namespace GP_Final
         public GameRound round;
         public LevelBorder border;
 
+        bool newHighScore;
+
         private float RoundTransitionCrement = .007f;
 
         Texture2D placeHolder;
         Song roundMusic, waitMusic;
         SpriteFont font;
         Color fontColor, instructionsColor, timerColor;
+
+        SoundEffect NewHigh, EndRound;
 
         public enum MusicState { RoundTrack, RoundToWait, WaitToRound, WaitTrack}
         public MusicState musicState = MusicState.RoundTrack;
@@ -36,7 +41,10 @@ namespace GP_Final
             get
             {
                 if (PlayerScore > highScore)
+                {
                     highScore = PlayerScore;
+                    newHighScore = true;
+                }
 
                 return highScore;
             }
@@ -61,6 +69,9 @@ namespace GP_Final
             this.spriteTexture = content.Load<Texture2D>("SpriteMarker");
             this.roundMusic = content.Load<Song>("music_game");
             this.waitMusic = content.Load<Song>("music_waiting_loop");
+
+            NewHigh = content.Load<SoundEffect>("new_highscore");
+            EndRound = content.Load<SoundEffect>("game_end");
          
             MediaPlayer.Play(roundMusic);
             MediaPlayer.Volume = .3f;
@@ -108,7 +119,15 @@ namespace GP_Final
                     if (FirstRoundStartHasStarted)
                     {
                         if (round.RoundIsOver)
+                        {
                             musicState = MusicState.RoundToWait;
+
+                            if(!newHighScore)
+                                EndRound.Play(.6f, 0, 0);
+
+                            if(newHighScore)
+                                NewHigh.Play(.4f, 0, 0);
+                        }
                     }
                     break;
 
@@ -137,6 +156,7 @@ namespace GP_Final
                     {
                         musicState = MusicState.RoundTrack;
                         MediaPlayer.Play(roundMusic);
+                        newHighScore = false;
                     }
                     break;
             }
@@ -184,7 +204,7 @@ namespace GP_Final
             if (this.PlayerScore != 0)
             {
                 spriteBatch.DrawString(font, this.PlayerScore.ToString(),
-                    new Vector2(midpointRight, this.Game.GraphicsDevice.Viewport.Bounds.Top + 200),
+                    new Vector2(midpointRight - 10, this.border.Walls[2].LocationRect.Top - 540),
                     fontColor, 0f, new Vector2(0, 0), fontScale, SpriteEffects.None, 0f);
             }
 
@@ -196,20 +216,45 @@ namespace GP_Final
             if (this.HighScore != 0 && this.firstRoundOver)
             {
                 spriteBatch.DrawString(font, "High: " + this.HighScore.ToString(),
-                    new Vector2(midpointRight, this.border.Walls[2].LocationRect.Top - 100),
-                    Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+                    new Vector2(midpointRight - 50, this.border.Walls[2].LocationRect.Top - 430),
+                    Color.White, 0f, new Vector2(0, 0), fontScale/1.5f, SpriteEffects.None, 0f);
             }
 
             if(this.round.RoundIsOver)
             {
                 spriteBatch.DrawString(font, "Start Round: \nRight Mouse",
-                    new Vector2(midpointRight - 75, this.border.Walls[2].LocationRect.Top),
+                    new Vector2(midpointRight - 75, this.border.Walls[2].LocationRect.Top - 50),
                     fontColor, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
             }
 
             spriteBatch.Draw(placeHolder, this.Location, null, this.instructionsColor, 0, new Vector2(0, 0), .76f,
                 SpriteEffects.None, 0);
-               
+
+            spriteBatch.DrawString(font, "Programming:",
+                new Vector2(midpointRight - 75, this.border.Walls[0].LocationRect.Top + 350),
+                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Zac Bruin",
+                new Vector2(midpointRight - 53, this.border.Walls[0].LocationRect.Top + 370),
+                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Art:",
+                new Vector2(midpointRight - 20, this.border.Walls[0].LocationRect.Top + 410),
+                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Becca Hallstedt",
+                new Vector2(midpointRight - 95, this.border.Walls[0].LocationRect.Top + 430),
+                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Sound:",
+                new Vector2(midpointRight - 35, this.border.Walls[0].LocationRect.Top + 470),
+                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Bret Merritt",
+                new Vector2(midpointRight - 75, this.border.Walls[0].LocationRect.Top + 490),
+                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+
             spriteBatch.End();
 
             base.Draw(gameTime);

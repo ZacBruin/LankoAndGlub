@@ -11,7 +11,7 @@ namespace GP_Final
 
         public GameRound(Game game) : base(game)
         {
-            this.MaxRoundLength = 60;
+            this.MaxRoundLength = 5;
             this.RoundIsOver = true;
             HasRoundJustStarted = true;
         }
@@ -32,7 +32,10 @@ namespace GP_Final
                         ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - TimeRoundStarted;
 
                     if (this.CurrentRoundTime >= this.MaxRoundLength)
+                    {
                         this.RoundIsOver = true;
+                    }
+                        
 
                 }
             }

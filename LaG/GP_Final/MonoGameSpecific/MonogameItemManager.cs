@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace GP_Final
 {
@@ -170,6 +171,8 @@ namespace GP_Final
 
                                 this.AddPointSprite(ps);
 
+                                t.PlayHitSound();
+
                                 this.round.Points += t.pointValue;
 
                                 if (this.glub.HasStrongBuff == false)
@@ -196,7 +199,7 @@ namespace GP_Final
             foreach(PointSprite ps in this.Points)
             {
                 ps.Update(gameTime);
-                if (ps.color.A == 0) { this.PointSpritesToDelete.Add(ps); }
+                if (ps.color.A < 10) { this.PointSpritesToDelete.Add(ps); }
             }
         }
 

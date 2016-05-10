@@ -32,6 +32,8 @@ namespace GP_Final
 
         private bool idleAnimCycled, spaceReleased, canJumpAgain;
 
+        SoundEffect ThrowSound;
+
         protected LankoState state;
         public LankoState State
         {
@@ -130,6 +132,8 @@ namespace GP_Final
             this.Attach(glub);
 
             this.controller = new InputController(game);
+
+            ThrowSound = content.Load<SoundEffect>("glub_throw");
         }
 
         protected override void LoadContent()
@@ -255,7 +259,7 @@ namespace GP_Final
                             {
                                 this.glub.GetCaughtByLanko();                                
                                 this.HasGlub = true;
-                                catchGlub.Play(.1f, 0f, 0f);
+                                catchGlub.Play(.4f, 0f, 0f);
                             }
                         }
                         break;
@@ -374,6 +378,7 @@ namespace GP_Final
             {
                 this.IsAiming = false;
                 this.HasGlub = false;
+                ThrowSound.Play(.3f, 0, 0);
             }
 
             #endregion
@@ -521,7 +526,7 @@ namespace GP_Final
                 {
                     if (rect.Top > this.center.Y)
                     {
-                        if (HasJumped) { landOnGround.Play(.1f, 0, 0); }
+                        if (HasJumped) { landOnGround.Play(.3f, 0, 0); }
 
                         this.Location.Y -= (float)rect.Height;
                         this.HasJumped = false;
