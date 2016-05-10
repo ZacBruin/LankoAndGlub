@@ -35,7 +35,7 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            GetDead = content.Load<SoundEffect>("bat_hit");
+            GetDead = content.Load<SoundEffect>("bat_hit2");
 
             base.LoadContent();
         }

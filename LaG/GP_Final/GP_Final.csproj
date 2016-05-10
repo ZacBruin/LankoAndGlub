@@ -116,7 +116,7 @@
   <ItemGroup>
     <Content Include="Content\Aim.png" />
     <Content Include="Content\Background.png" />
-    <Content Include="Content\bat_hit.wav" />
+    <Content Include="Content\bat_hit2.wav" />
     <Content Include="Content\BladeTrapAttack.wav" />
     <Content Include="Content\BlueGemGet.wav" />
     <Content Include="Content\Border_Bottom.png" />

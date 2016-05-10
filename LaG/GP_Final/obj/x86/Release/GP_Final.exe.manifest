@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>08xReQLrJVOnM+w32TLR+t77/4TvR6lRw72/WnJaJ8c=</dsig:DigestValue>
+        <dsig:DigestValue>tNFhEh1u5066Aj2Dtla7Orz7qBFn1G/YUOaIP6KL8GM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -219,22 +219,22 @@
       <dsig:DigestValue>G5cj2yy2uqfVWXQMnTZeHmip4K9PjdoLwU1qmizemLo=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\bat_hit.wav" size="19858">
+  <file name="Content\bat_hit2.wav" size="24164">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>nIZCaydLyyElEBvkxXbBjBcV3UWZmXbKQXegqo898OU=</dsig:DigestValue>
+      <dsig:DigestValue>tCJShRmcUzYUwLH0l86U3qkeCf7oSTC1j0EdkM6OSnc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\bat_hit.xnb" size="11131">
+  <file name="Content\bat_hit2.xnb" size="15437">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>fMW6cvqKwkwbiEfwrsxas6q4L02McZnkAE7AljUstT0=</dsig:DigestValue>
+      <dsig:DigestValue>isKOHzV66OQ4BSw/BeBn4bxFvbt+vbr1IsOCAEWi8Cc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\BladeTrapAttack.wav" size="8720">

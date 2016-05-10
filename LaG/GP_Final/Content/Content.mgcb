@@ -439,12 +439,6 @@
 /processorParam:Quality=Best
 /build:music_waiting_loop.wav
 
-#begin bat_hit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:bat_hit.wav
-
 #begin game_end.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -474,4 +468,10 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:glub_throw2.wav
+
+#begin bat_hit2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:bat_hit2.wav
 
