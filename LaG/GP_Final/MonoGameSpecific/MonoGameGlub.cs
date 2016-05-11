@@ -21,6 +21,8 @@ namespace GP_Final
         public Vector2 center;
         private Vector2 cached_Location;
 
+        private int updatesBetweenFlicker;
+
         public bool HasBounced;
         private bool isAnimatingBurst;
         public int numBounces, numBouncesAfterFalling, maxBounces, maxBouncesAfterFalling,
@@ -77,11 +79,14 @@ namespace GP_Final
                 {
                     //this.spriteTexture = this.buffedSprite;
                     this.airSpeed = this.buffSpeed;
+                    color = Color.Green;
                 }
 
                 else
                 {
                     //this.spriteTexture = this.normalSprite;
+                    color = Color.White;
+                    updatesBetweenFlicker = 3;
                     this.airSpeed = 750;
                 }
             }
@@ -97,6 +102,7 @@ namespace GP_Final
             updates_Between_Run = 6;
             updates_Between_Burst = 3;
             updates_Between_Ball = 4;
+            updatesBetweenFlicker = 3;
 
             run_sheet = content.Load<Texture2D>("Glub_Run_SpriteSheet");
             run_info = new SpriteSheetInfo(4, run_sheet.Width, run_sheet.Height, updates_Between_Run);
@@ -165,7 +171,10 @@ namespace GP_Final
                 this.UpdateGlub(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
 
                 if (this.HasStrongBuff)
+                {
                     CheckBuffTime(gameTime);
+                    MakeShimmer();
+                }
             }
 
             base.Update(gameTime);
@@ -424,6 +433,24 @@ namespace GP_Final
         #endregion
 
         #region Animation Methods
+
+        private void MakeShimmer()
+        {
+            if(updatesBetweenFlicker > 0)
+            {
+                updatesBetweenFlicker--;
+            }
+
+            else
+            {
+                updatesBetweenFlicker = 3;
+
+                if (color == Color.White)
+                    color = Color.Green;
+                else
+                    color = Color.White;
+            }
+        }
 
         private void SwapSpriteSheet(Texture2D spriteSheet, SpriteSheetInfo info)
         {
