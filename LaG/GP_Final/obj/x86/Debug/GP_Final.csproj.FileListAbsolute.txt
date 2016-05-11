@@ -251,3 +251,14 @@ D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\SharpDX.RawInput.xml
 D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\SharpDX.Direct3D9.xml
 D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\music_waiting_loop.xnb
 D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\music_waiting_loop.wma
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\bat_hit2.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\game_end.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\glub_throw.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\glub_throw2.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\new_highscore.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\powerup_break.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\Content\powerup_get.xnb
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\GP_Final.exe.manifest
+D:\Documents\GitHub\LaG\LaG\GP_Final\bin\Windows\Debug\GP_Final.application
+D:\Documents\GitHub\LaG\LaG\GP_Final\obj\x86\Debug\GP_Final.exe.manifest
+D:\Documents\GitHub\LaG\LaG\GP_Final\obj\x86\Debug\GP_Final.application
