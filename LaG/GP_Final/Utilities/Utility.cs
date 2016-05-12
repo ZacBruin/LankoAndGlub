@@ -18,7 +18,11 @@ namespace GP_Final
             private set;
         }
 
+        public float lengthGamePaused;
+
         public bool canTogglePause;
+
+        public MonogameRoundManager MRM;
 
         public Util(Game game) : base(game)
         {
@@ -34,26 +38,29 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            //if (Keyboard.GetState().IsKeyDown(Keys.P) && canTogglePause)
-            //{
-            //    canTogglePause = false;
+            if (GamePaused)
+                lengthGamePaused += ((float)gameTime.ElapsedGameTime.Milliseconds / 1000);
 
-            //    if (GamePaused)
-            //    {
-            //        GamePaused = false;
-            //        MediaPlayer.Resume();
-            //        MediaPlayer.Volume = .1f;
-            //    }
+            if (Keyboard.GetState().IsKeyDown(Keys.P) && canTogglePause && MRM.FirstRoundStartHasStarted)
+            {
+                canTogglePause = false;
 
-            //    else
-            //    {
-            //        GamePaused = true;
-            //        MediaPlayer.Pause();
-            //    }
-            //}
+                if (GamePaused)
+                {
+                    GamePaused = false;
+                    MediaPlayer.Resume();
+                    //MediaPlayer.Volume = .1f;
+                }
 
-            //if (Keyboard.GetState().IsKeyUp(Keys.P) && !canTogglePause)
-            //    canTogglePause = true;
+                else
+                {
+                    GamePaused = true;
+                    MediaPlayer.Pause();
+                }
+            }
+
+            if (Keyboard.GetState().IsKeyUp(Keys.P) && !canTogglePause)
+                canTogglePause = true;
 
             //if (Coroutines.Running)
             //    Coroutines.Update();

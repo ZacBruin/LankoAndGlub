@@ -86,7 +86,7 @@ namespace GP_Final
                 {
                     //this.spriteTexture = this.normalSprite;
                     color = Color.White;
-                    updatesBetweenFlicker = 3;
+                    updatesBetweenFlicker = 2;
                     this.airSpeed = 750;
                 }
             }
@@ -102,7 +102,7 @@ namespace GP_Final
             updates_Between_Run = 6;
             updates_Between_Burst = 3;
             updates_Between_Ball = 4;
-            updatesBetweenFlicker = 3;
+            updatesBetweenFlicker = 2;
 
             run_sheet = content.Load<Texture2D>("Glub_Run_SpriteSheet");
             run_info = new SpriteSheetInfo(4, run_sheet.Width, run_sheet.Height, updates_Between_Run);
@@ -443,10 +443,10 @@ namespace GP_Final
 
             else
             {
-                updatesBetweenFlicker = 3;
+                updatesBetweenFlicker = 2;
 
                 if (color == Color.White)
-                    color = Color.Green;
+                    color = Color.LightGreen;
                 else
                     color = Color.White;
             }

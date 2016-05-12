@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 namespace GP_Final
 {
     //Should have made this inherit from a generalized GameRoundManager
-    class MonogameRoundManager : DrawableSprite
+    public class MonogameRoundManager : DrawableSprite
     {
         public GameRound round;
         public LevelBorder border;
@@ -14,6 +14,7 @@ namespace GP_Final
         bool newHighScore;
 
         private float RoundTransitionCrement = .007f;
+        private float timeInstructionsStayAround;
 
         Texture2D placeHolder;
         Song roundMusic, waitMusic;
@@ -72,7 +73,9 @@ namespace GP_Final
 
             NewHigh = content.Load<SoundEffect>("new_highscore");
             EndRound = content.Load<SoundEffect>("game_end");
-         
+
+            timeInstructionsStayAround = 10;
+
             MediaPlayer.Play(roundMusic);
             MediaPlayer.Volume = .3f;
             MediaPlayer.IsRepeating = true;          
@@ -174,7 +177,7 @@ namespace GP_Final
             else
                 timerColor = Color.White;
 
-            if (gameTime.TotalGameTime.TotalSeconds > 6)
+            if (gameTime.TotalGameTime.TotalSeconds > timeInstructionsStayAround)
                 FadeOutInstructionsImage();
 
             if (FirstRoundStartHasStarted == false && instructionsColor.R == 0)

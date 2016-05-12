@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>D:/Documents/GitHub/LaG/LaG/GP_Final/Content/Instructions.png</SourceFile>
-  <SourceTime>2016-03-30T23:27:46.8242222-05:00</SourceTime>
+  <SourceTime>2016-05-11T22:27:59.2675311-05:00</SourceTime>
   <DestFile>D:/Documents/GitHub/LaG/LaG/GP_Final/Content/bin/Windows/Instructions.xnb</DestFile>
-  <DestTime>2016-04-25T19:58:15.8739038-05:00</DestTime>
+  <DestTime>2016-05-11T22:30:01.3385251-05:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-30T01:36:08-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

@@ -52,7 +52,7 @@ namespace GP_Final
 
         protected override void Initialize()
         {
-            this.graphics.IsFullScreen = true;
+            //this.graphics.IsFullScreen = true;
             this.graphics.ApplyChanges();
 
             this.sideColor = new Color(14, 13, 17);
@@ -68,6 +68,7 @@ namespace GP_Final
             itemMan.round = gameRoundMan.round;
 
             gameRoundMan.FirstTimeSetup();
+            utility.MRM = gameRoundMan;
 
             IsMouseVisible = false;
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -140,14 +141,16 @@ namespace GP_Final
             //}
             #endregion
 
-            if (input.MouseState.RightButton == ButtonState.Pressed)
+            if (input.MouseState.RightButton == ButtonState.Pressed && !utility.GamePaused)
             {
                 if (this.itemMan.round.RoundIsOver )
                 {
                     if (this.gameRoundMan.FirstRoundStartHasStarted == true)
                     {
+                        utility.lengthGamePaused = 0;
                         this.itemMan.round.RoundIsOver = false;
                         this.gameRoundMan.HasStartedRound = true;
+                        
                     }
                 }
             }

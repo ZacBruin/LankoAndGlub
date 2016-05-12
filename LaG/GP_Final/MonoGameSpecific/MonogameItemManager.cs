@@ -44,8 +44,26 @@ namespace GP_Final
         {
             if (!Lanko_And_Glub.utility.GamePaused)
             {
+                Color transparent = new Color(0, 0, 0, 0);
+
+                foreach (PowerUp p in PowerUps)
+                    if (p.color == transparent)
+                        p.color = Color.White;
+
+                foreach (Target t in Targets)
+                    if (t.color == transparent)
+                        t.color = Color.White;
+
                 updateItemManager(gameTime);
                 base.Update(gameTime);
+            }
+
+            else
+            {
+                foreach (PowerUp p in PowerUps)
+                    p.color = new Color(0, 0, 0, 0);
+                foreach (Target t in Targets)
+                    t.color = new Color(0, 0, 0, 0);
             }
         }
 

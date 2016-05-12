@@ -26,6 +26,7 @@ namespace GP_Final
         public void Update()
         {            
             mouse = Mouse.GetState();
+
             keys = Keyboard.GetState();          
 
             mouseDirection = new Vector2(mouse.Position.X, mouse.Position.Y);
