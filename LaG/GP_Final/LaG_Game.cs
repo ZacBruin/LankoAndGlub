@@ -52,7 +52,7 @@ namespace GP_Final
 
         protected override void Initialize()
         {
-            //this.graphics.IsFullScreen = true;
+            this.graphics.IsFullScreen = true;
             this.graphics.ApplyChanges();
 
             this.sideColor = new Color(14, 13, 17);

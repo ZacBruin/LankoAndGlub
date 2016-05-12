@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GP_Final.exe" size="211424">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GP_Final.exe" size="212960">
       <assemblyIdentity name="GP_Final" version="3.3.0.1985" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>H2iAheyBTFv3S6bjvPELAXaxgaPm2JeokGkHkjEEtUg=</dsig:DigestValue>
+        <dsig:DigestValue>bzH++pBfUMWqo1hXIZo1zNZGNCVOW0mq7lqoGGWfGD8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -687,22 +687,22 @@
       <dsig:DigestValue>5ODPEPUrW4D39Jq/FFIZ31MDPJPSI+xA+gonuqPbd20=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Instructions.png" size="619189">
+  <file name="Content\Instructions.png" size="50349">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>sK99xNlPHYEmoAPgOA37Yruvz8Rz7lRh0Ea23mK3Ne4=</dsig:DigestValue>
+      <dsig:DigestValue>3TGPGCNZvpLGb2D8zEsNBSjsVdMv0Ov12nQD/TRUXRA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Content\Instructions.xnb" size="3200085">
+  <file name="Content\Instructions.xnb" size="3372685">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>IkniKzmkPY6XJzFmN5bTaFWdJrfue8zlf2iloOxKyXE=</dsig:DigestValue>
+      <dsig:DigestValue>A+ShX3FPRxYQucdJ8om7kaA/fV5u+dQRFCcxLw7xnNg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Content\Jean_Luc.mp3" size="8443932">

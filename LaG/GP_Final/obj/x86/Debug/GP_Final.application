@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="GP_Final.exe.manifest" size="50038">
+    <dependentAssembly dependencyType="install" codebase="GP_Final.exe.manifest" size="50037">
       <assemblyIdentity name="GP_Final.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>iBxmsyI9GKddbH9XDSJEtV9GkV1JlvwPoSdiLtdyfJA=</dsig:DigestValue>
+        <dsig:DigestValue>uW92uzflKJ33MQuQjvA+PPcY9XxRztq6keIm2vMvfF8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
