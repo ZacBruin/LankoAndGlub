@@ -49,7 +49,6 @@ namespace GP_Final
                 {
                     GamePaused = false;
                     MediaPlayer.Resume();
-                    //MediaPlayer.Volume = .1f;
                 }
 
                 else
@@ -61,9 +60,6 @@ namespace GP_Final
 
             if (Keyboard.GetState().IsKeyUp(Keys.P) && !canTogglePause)
                 canTogglePause = true;
-
-            //if (Coroutines.Running)
-            //    Coroutines.Update();
         }
     }
 }

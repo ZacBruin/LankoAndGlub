@@ -35,7 +35,7 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            GetDead = content.Load<SoundEffect>("bat_hit2");
+            GetDead = content.Load<SoundEffect>("SFX/BatHit");
 
             base.LoadContent();
         }
@@ -78,9 +78,6 @@ namespace GP_Final
 
                         else if (this.color == this.flickerLow)
                             this.color = this.flickerNorm;
-
-                        //this.Location += new Vector2(.85f, .45f);
-                        //this.scale -= .008f;
 
                         currentFlicker++;
                         timeBetweenFlickers = 0;

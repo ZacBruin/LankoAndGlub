@@ -92,7 +92,7 @@ namespace GP_Final
                         p.state = Item.State.DeSpawning;
                 }
 
-                else if (p is Green_PowerUp)
+                else if (p is GreenGem)
                 {
                     if (this.glub.State == GlubState.Thrown && this.glub.Hitbox.Intersects(p.Hitbox))
                     {
@@ -109,7 +109,7 @@ namespace GP_Final
                     }
                 }
 
-                else if (p is Cyan_PowerUp)
+                else if (p is CyanGem)
                 {
                     if (this.lanko.Hitbox.Intersects(p.Hitbox))
                     {
@@ -180,7 +180,7 @@ namespace GP_Final
                             case Target.State.SpeedDown:
                             case Target.State.SpeedUp:
                             case Target.State.DeSpawning:
-                                if(t is Basic_Target) { ps = new PointSprite(this.Game, true); }
+                                if(t is RedBat) { ps = new PointSprite(this.Game, true); }
                                 else { ps = new PointSprite(this.Game, false); }
 
                                 ps.Initialize();
@@ -243,7 +243,7 @@ namespace GP_Final
         {
             int spawnEdgeBuffer = 5;
 
-            if (i is Basic_Target)
+            if (i is RedBat)
             {
                 i.Location = new Vector2(rand.Next((int)(this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
                     ((int)this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
@@ -251,7 +251,7 @@ namespace GP_Final
                     (int)(this.border.Walls[0].LocationRect.Bottom + 400)));
             }
 
-            else if (i is Golden_Target)
+            else if (i is GoldenBat)
             {
                 i.Location = new Vector2(rand.Next((this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
                     (this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
@@ -259,7 +259,7 @@ namespace GP_Final
                     this.border.Walls[0].LocationRect.Bottom + 150));
             }
 
-            else if (i is Cyan_PowerUp)
+            else if (i is CyanGem)
             {
                 i.Location = new Vector2(rand.Next((this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
                     (this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
@@ -267,7 +267,7 @@ namespace GP_Final
                      this.border.Walls[2].LocationRect.Top - 50));
             }
 
-            else if (i is Green_PowerUp)
+            else if (i is GreenGem)
             {
                 i.Location = new Vector2(rand.Next((this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
                     (this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
@@ -303,8 +303,8 @@ namespace GP_Final
         {
             Target targ;
 
-            if(IsBasicTarget) targ = new Basic_Target(this.Game);    
-            else targ = new Golden_Target(this.Game);
+            if(IsBasicTarget) targ = new RedBat(this.Game);    
+            else targ = new GoldenBat(this.Game);
 
             targ.Initialize();
             this.positionItem(targ);
@@ -328,7 +328,7 @@ namespace GP_Final
         {
             if (IsTriangle)
             {
-                Green_PowerUp tp = new Green_PowerUp(this.Game);
+                GreenGem tp = new GreenGem(this.Game);
                 tp.Initialize();
                 this.positionItem(tp);
 
@@ -343,7 +343,7 @@ namespace GP_Final
 
             else
             {
-                Cyan_PowerUp dp = new Cyan_PowerUp(this.Game);
+                CyanGem dp = new CyanGem(this.Game);
                 dp.Initialize();
                 this.positionItem(dp);
 

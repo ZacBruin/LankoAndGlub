@@ -11,7 +11,7 @@ namespace GP_Final
         public MonoGameLanko lanko;
         public LevelBorder border;
 
-        private Texture2D normalSprite, buffedSprite, run_sheet, ball_sheet, catch_burst_sheet;
+        private Texture2D run_sheet, ball_sheet, catch_burst_sheet;
 
         private SpriteSheetInfo run_info, ball_info, burst_info, current_info;
 
@@ -77,14 +77,12 @@ namespace GP_Final
 
                 if (value == true)
                 {
-                    //this.spriteTexture = this.buffedSprite;
                     this.airSpeed = this.buffSpeed;
                     color = Color.Green;
                 }
 
                 else
-                {
-                    //this.spriteTexture = this.normalSprite;
+                { 
                     color = Color.White;
                     updatesBetweenFlicker = 2;
                     this.airSpeed = 750;
@@ -104,13 +102,13 @@ namespace GP_Final
             updates_Between_Ball = 4;
             updatesBetweenFlicker = 2;
 
-            run_sheet = content.Load<Texture2D>("Glub_Run_SpriteSheet");
+            run_sheet = content.Load<Texture2D>("SpriteSheets/GlubRun");
             run_info = new SpriteSheetInfo(4, run_sheet.Width, run_sheet.Height, updates_Between_Run);
 
-            ball_sheet = content.Load<Texture2D>("Glub_BallAnim_SpriteSheet");
+            ball_sheet = content.Load<Texture2D>("SpriteSheets/GlubBall");
             ball_info = new SpriteSheetInfo(5, ball_sheet.Width, ball_sheet.Height, updates_Between_Ball);
 
-            catch_burst_sheet = content.Load<Texture2D>("Glub_Burst_SpriteSheet");
+            catch_burst_sheet = content.Load<Texture2D>("SpriteSheets/GlubBurst");
             burst_info = new SpriteSheetInfo(5, catch_burst_sheet.Width, catch_burst_sheet.Height, updates_Between_Burst);
 
             spriteTexture = run_sheet;
@@ -586,7 +584,7 @@ namespace GP_Final
         public void SetStartLocationAndGround()
         {
             this.ground = this.lanko.ground;
-            //this.Location = new Vector2(300, this.ground - this.spriteTexture.Height * this.scale);
+
             this.Location =
                   new Vector2(this.lanko.Location.X - 40, this.ground - (this.SpriteTexture.Height * this.Scale));
 

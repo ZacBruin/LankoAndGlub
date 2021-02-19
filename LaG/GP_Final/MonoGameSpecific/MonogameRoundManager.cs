@@ -26,8 +26,6 @@ namespace GP_Final
         public enum MusicState { RoundTrack, RoundToWait, WaitToRound, WaitTrack}
         public MusicState musicState = MusicState.RoundTrack;
 
-        bool HasTransitionedToWaitMusic;
-
         public int PlayerScore
         {
             get
@@ -66,13 +64,13 @@ namespace GP_Final
         {
             this.font = content.Load<SpriteFont>("ConsoleFont");
 
-            this.placeHolder = content.Load<Texture2D>("Instructions");
+            this.placeHolder = content.Load<Texture2D>("Sprites/Instructions");
             this.spriteTexture = content.Load<Texture2D>("SpriteMarker");
-            this.roundMusic = content.Load<Song>("music_game");
-            this.waitMusic = content.Load<Song>("music_waiting_loop");
+            this.roundMusic = content.Load<Song>("Music/Round");
+            this.waitMusic = content.Load<Song>("Music/BetweenRounds");
 
-            NewHigh = content.Load<SoundEffect>("new_highscore");
-            EndRound = content.Load<SoundEffect>("game_end");
+            NewHigh = content.Load<SoundEffect>("SFX/NewHighScore");
+            EndRound = content.Load<SoundEffect>("SFX/GameEnd");
 
             timeInstructionsStayAround = 10;
 
@@ -126,10 +124,10 @@ namespace GP_Final
                             musicState = MusicState.RoundToWait;
 
                             if(!newHighScore)
-                                EndRound.Play(.6f, 0, 0);
+                                EndRound.Play(.5f, 0, 0);
 
                             if(newHighScore)
-                                NewHigh.Play(.4f, 0, 0);
+                                NewHigh.Play(.3f, 0, 0);
                         }
                     }
                     break;
@@ -172,7 +170,7 @@ namespace GP_Final
         {
             this.round.Update(gameTime);
 
-            if (this.timeLeftInRound < 10 && this.timeLeftInRound > 0)
+            if (timeLeftInRound < 10 && timeLeftInRound > 0)
                 timerColor = Color.Red;
             else
                 timerColor = Color.White;
@@ -183,20 +181,15 @@ namespace GP_Final
             if (FirstRoundStartHasStarted == false && instructionsColor.R == 0)
                 StartFirstRound();
             
-            if (this.round.RoundIsOver == false)
-                this.timeLeftInRound = (this.round.MaxRoundLength - this.round.CurrentRoundTime);
+            if (round.RoundIsOver == false)
+                timeLeftInRound = (round.MaxRoundLength - round.CurrentRoundTime);
 
-            else if (this.round.RoundIsOver && this.HasStartedRound)
+            else if (round.RoundIsOver && HasStartedRound)
             {
-                //if (this.PlayerScore > this.HighScore)
-                //    this.HighScore = this.PlayerScore;
-                this.firstRoundOver = true;
-
-                this.timeLeftInRound = 0;
-
-                this.HasStartedRound = false;
-
-                this.round.ResetRound();
+                firstRoundOver = true;
+                timeLeftInRound = 0;
+                HasStartedRound = false;
+                round.ResetRound();
             }
         }
 
@@ -204,63 +197,94 @@ namespace GP_Final
         {
             spriteBatch.Begin();
 
-            if (this.PlayerScore != 0)
+            if (PlayerScore != 0)
             {
-                spriteBatch.DrawString(font, this.PlayerScore.ToString(),
-                    new Vector2(midpointRight - 10, this.border.Walls[2].LocationRect.Top - 540),
-                    fontColor, 0f, new Vector2(0, 0), fontScale, SpriteEffects.None, 0f);
+                int offset = 0;
+                int scoreLength = PlayerScore.ToString().Length;
+
+                offset = scoreLength == 1 ? 100 : 110;
+
+                spriteBatch.DrawString(font, "SCORE: " + PlayerScore.ToString(),
+                    new Vector2(midpointRight - offset, border.Walls[2].LocationRect.Top - 595),
+                    fontColor, 0f, new Vector2(0, 0), fontScale / 1.5f, SpriteEffects.None, 0f);
             }
 
             //Draws the amount of time left in a round
-            spriteBatch.DrawString(font, this.timeLeftInRound.ToString("0.00"),
-                new Vector2(midpointRight - 50, this.Game.GraphicsDevice.Viewport.Bounds.Top + 30),
+            float timerHorizOffset = 0;
+            timerHorizOffset = timeLeftInRound >= 10 ? 100 : 71;
+
+            spriteBatch.DrawString(font, timeLeftInRound.ToString("0.00"),
+                new Vector2(midpointRight - timerHorizOffset, Game.GraphicsDevice.Viewport.Bounds.Top + 15),
                 timerColor, 0f, new Vector2(0, 0), fontScale, SpriteEffects.None, 0f);
 
-            if (this.HighScore != 0 && this.firstRoundOver)
+            if (HighScore != 0 && firstRoundOver)
             {
-                spriteBatch.DrawString(font, "High: " + this.HighScore.ToString(),
-                    new Vector2(midpointRight - 50, this.border.Walls[2].LocationRect.Top - 430),
+                spriteBatch.DrawString(font, "High: " + HighScore.ToString(),
+                    new Vector2(midpointRight - 67, border.Walls[2].LocationRect.Top - 420),
                     Color.White, 0f, new Vector2(0, 0), fontScale/1.5f, SpriteEffects.None, 0f);
             }
 
-            if(this.round.RoundIsOver)
-            {
-                spriteBatch.DrawString(font, "Start Round: \nRight Mouse",
-                    new Vector2(midpointRight - 75, this.border.Walls[2].LocationRect.Top - 50),
-                    fontColor, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-            }
-
-            spriteBatch.Draw(placeHolder, this.Location, null, this.instructionsColor, 0, new Vector2(0, 0), .76f,
+            spriteBatch.Draw(placeHolder, Location, null, instructionsColor, 0, new Vector2(0, 0), .76f,
                 SpriteEffects.None, 0);
 
-            spriteBatch.DrawString(font, "Programming:",
-                new Vector2(midpointRight - 75, this.border.Walls[0].LocationRect.Top + 350),
-                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-
-            spriteBatch.DrawString(font, "Zac Bruin",
-                new Vector2(midpointRight - 53, this.border.Walls[0].LocationRect.Top + 370),
-                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-
-            spriteBatch.DrawString(font, "Art:",
-                new Vector2(midpointRight - 20, this.border.Walls[0].LocationRect.Top + 410),
-                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-
-            spriteBatch.DrawString(font, "Becca Hallstedt",
-                new Vector2(midpointRight - 95, this.border.Walls[0].LocationRect.Top + 430),
-                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-
-            spriteBatch.DrawString(font, "Sound:",
-                new Vector2(midpointRight - 35, this.border.Walls[0].LocationRect.Top + 470),
-                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-
-            spriteBatch.DrawString(font, "Bret Merritt",
-                new Vector2(midpointRight - 75, this.border.Walls[0].LocationRect.Top + 490),
-                Color.Purple, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
-
+            DrawCredits();
+            DrawInstructions();
 
             spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void DrawCredits()
+        {
+            float fontSize = fontScale / 2.6f;
+            float horizPosition = midpointRight - 90;
+
+            spriteBatch.DrawString(font, "Programming:",
+                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 405),
+                Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Zac Bruin",
+                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 420),
+                Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Art:",
+                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 445),
+                Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Becca Hallstedt",
+                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 460),
+                Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Sound:",
+                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 485),
+                Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "Bret Merritt",
+                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 500),
+                Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
+        }
+
+        private void DrawInstructions()
+        {
+            if (round.RoundIsOver && firstRoundOver)
+            {
+                spriteBatch.DrawString(font, "Start Round:",
+                    new Vector2(midpointRight - 100, this.border.Walls[2].LocationRect.Top - 95),
+                    fontColor, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+                spriteBatch.DrawString(font, "Right Click",
+                    new Vector2(midpointRight - 100, this.border.Walls[2].LocationRect.Top - 75),
+                    fontColor, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+            }
+
+            spriteBatch.DrawString(font, "P: Instructions",
+                new Vector2(midpointRight - 145, this.border.Walls[0].LocationRect.Top + 660),
+                Color.White, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
+
+            spriteBatch.DrawString(font, "ESC: Close Game",
+                new Vector2(midpointRight - 145, this.border.Walls[0].LocationRect.Top + 685),
+                Color.White, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
         }
         
         private void FadeOutInstructionsImage()
@@ -311,7 +335,5 @@ namespace GP_Final
             }
         }
 
-
     }
-
 }

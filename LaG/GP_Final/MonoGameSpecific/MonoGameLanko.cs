@@ -133,7 +133,7 @@ namespace GP_Final
 
             this.controller = new InputController(game);
 
-            ThrowSound = content.Load<SoundEffect>("glub_throw2");
+            ThrowSound = content.Load<SoundEffect>("SFX/GlubThrow");
         }
 
         protected override void LoadContent()
@@ -144,12 +144,12 @@ namespace GP_Final
             updates_Between_Run = 6;
 
 
-            idle_sheet = content.Load<Texture2D>("Lanko_Idle_SpriteSheet");
-            run_sheet = content.Load<Texture2D>("Lanko_Run_SpriteSheet");
+            idle_sheet = content.Load<Texture2D>("SpriteSheets/LankoIdle");
+            run_sheet = content.Load<Texture2D>("SpriteSheets/LankoRun");
 
-            blueGemGet = content.Load<SoundEffect>("BlueGemGet");
-            catchGlub = content.Load<SoundEffect>("CatchGlub");
-            landOnGround = content.Load<SoundEffect>("Land");
+            blueGemGet = content.Load<SoundEffect>("SFX/BlueGemGet");
+            catchGlub = content.Load<SoundEffect>("SFX/CatchGlub");
+            landOnGround = content.Load<SoundEffect>("SFX/Land");
 
             spriteTexture = idle_sheet;
 
@@ -162,10 +162,10 @@ namespace GP_Final
 
             ground = this.border.Walls[2].LocationRect.Top;
 
-            aim = content.Load<Texture2D>("Aim");
+            aim = content.Load<Texture2D>("Sprites/Aim");
             aimScale = .5f;        
 
-            crossHair = content.Load<Texture2D>("Crosshair");
+            crossHair = content.Load<Texture2D>("Sprites/Crosshair");
             crossHairScale = .45f;            
                        
             Scale = .28f;
@@ -270,9 +270,9 @@ namespace GP_Final
 
             }
 
-            #region Keyboard
+        #region Keyboard
          
-            #region Walking
+        #region Walking
             if (this.controller.keys.IsKeyUp(Keys.A) && this.controller.keys.IsKeyUp(Keys.D))
             {
                 if(this.HasJumped == false)
@@ -314,7 +314,7 @@ namespace GP_Final
                     this.Direction.X += .8f;
             }
 
-#endregion
+        #endregion
 
             #region Jumping
             if (controller.keys.IsKeyDown(Keys.Space))

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GP_Final</RootNamespace>
-    <AssemblyName>GP_Final</AssemblyName>
+    <AssemblyName>Lanko and Glub</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <MonoGameContentBuilderExe>
@@ -27,7 +27,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,7 +68,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="MonoGameSpecific\PointSprite.cs" />
@@ -75,10 +76,10 @@
     <Compile Include="Portable Code\GameRound.cs" />
     <Compile Include="MonoGameSpecific\MonogameRoundManager.cs" />
     <Compile Include="Portable Code\ItemManager.cs" />
-    <Compile Include="Items\Basic_Target.cs" />
-    <Compile Include="Items\Cyan_PowerUp.cs" />
+    <Compile Include="Items\RedBat.cs" />
+    <Compile Include="Items\CyanGem.cs" />
     <Compile Include="MonoGameSpecific\DrawableSprite.cs" />
-    <Compile Include="Items\Golden_Target.cs" />
+    <Compile Include="Items\GoldenBat.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="MonoGameSpecific\LevelBorder.cs" />
     <Compile Include="Items\PowerUp.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MonoGameSpecific\Sprite.cs" />
     <Compile Include="Items\Target.cs" />
-    <Compile Include="Items\Green_PowerUp.cs" />
+    <Compile Include="Items\GreenGem.cs" />
     <Compile Include="MonoGameSpecific\Wall.cs" />
     <Compile Include="Utilities\Utility.cs" />
   </ItemGroup>
@@ -114,50 +115,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\Aim.png" />
-    <Content Include="Content\Background.png" />
-    <Content Include="Content\bat_hit2.wav" />
-    <Content Include="Content\BladeTrapAttack.wav" />
-    <Content Include="Content\BlueGemGet.wav" />
-    <Content Include="Content\Border_Bottom.png" />
-    <Content Include="Content\Border_Inside.png" />
-    <Content Include="Content\Border_Left.png" />
-    <Content Include="Content\Border_Right.png" />
-    <Content Include="Content\Border_Top.png" />
-    <Content Include="Content\CatchGlub.wav" />
-    <Content Include="Content\Credits.png" />
-    <Content Include="Content\Crosshair.png" />
-    <Content Include="Content\Cyan_SpriteSheet.png" />
-    <Content Include="Content\Exit.png" />
-    <Content Include="Content\game_end.wav" />
-    <Content Include="Content\Glub_BallAnim_SpriteSheet.png" />
-    <Content Include="Content\Glub_Burst_SpriteSheet.png" />
-    <Content Include="Content\Glub_Run_SpriteSheet.png" />
-    <Content Include="Content\glub_throw2.wav" />
-    <Content Include="Content\Gold_Bat_Point_SpriteSheet.png" />
-    <Content Include="Content\Gold_Bat_SpawnAnim_SpriteSheet.png" />
-    <Content Include="Content\Gold_Bat_SpriteSheet.png" />
-    <Content Include="Content\Green_Broken_SpriteSheet.png" />
-    <Content Include="Content\Green_SpriteSheet.png" />
-    <Content Include="Content\How_Play.png" />
-    <Content Include="Content\Instructions.png" />
-    <Content Include="Content\Jean_Luc.mp3" />
-    <Content Include="Content\Land.wav" />
-    <Content Include="Content\Lanko_Idle_SpriteSheet.png" />
-    <Content Include="Content\Lanko_Run_SpriteSheet.png" />
-    <Content Include="Content\music_game.wav" />
-    <Content Include="Content\music_waiting_loop.wav" />
-    <Content Include="Content\new_highscore.wav" />
-    <Content Include="Content\Options.png" />
-    <Content Include="Content\powerup_break.wav" />
-    <Content Include="Content\powerup_get.wav" />
-    <Content Include="Content\Red_Bat_Point_SpriteSheet.png" />
-    <Content Include="Content\Red_Bat_SpawnAnim_SpriteSheet.png" />
-    <Content Include="Content\Red_Bat_SpriteSheet.png" />
+    <Content Include="Content\Music\BetweenRounds.wav" />
+    <Content Include="Content\Music\Round.wav" />
+    <Content Include="Content\SFX\BatHit.wav" />
+    <Content Include="Content\SFX\BlueGemGet.wav" />
+    <Content Include="Content\SFX\CatchGlub.wav" />
+    <Content Include="Content\SFX\GameEnd.wav" />
+    <Content Include="Content\SFX\GlubThrow.wav" />
+    <Content Include="Content\SFX\Land.wav" />
+    <Content Include="Content\SFX\NewHighScore.wav" />
+    <Content Include="Content\SFX\PowerupBreak.wav" />
+    <Content Include="Content\SFX\PowerupGet.wav" />
     <Content Include="Content\SpriteMarker.png" />
-    <Content Include="Content\Start.png" />
-    <Content Include="Content\Title.png" />
-    <Content Include="Content\Title_Background.png" />
+    <Content Include="Content\SpriteSheets\CyanGem.png" />
+    <Content Include="Content\SpriteSheets\GlubBall.png" />
+    <Content Include="Content\SpriteSheets\GlubBurst.png" />
+    <Content Include="Content\SpriteSheets\GlubRun.png" />
+    <Content Include="Content\SpriteSheets\GoldBat.png" />
+    <Content Include="Content\SpriteSheets\GoldBatPoints.png" />
+    <Content Include="Content\SpriteSheets\GoldBatSpawn.png" />
+    <Content Include="Content\SpriteSheets\GreenGem.png" />
+    <Content Include="Content\SpriteSheets\GreenGemBroken.png" />
+    <Content Include="Content\SpriteSheets\LankoIdle.png" />
+    <Content Include="Content\SpriteSheets\LankoRun.png" />
+    <Content Include="Content\SpriteSheets\RedBat.png" />
+    <Content Include="Content\SpriteSheets\RedBatPoints.png" />
+    <Content Include="Content\SpriteSheets\RedBatSpawn.png" />
+    <Content Include="Content\Sprites\Aim.png" />
+    <Content Include="Content\Sprites\Background.png" />
+    <Content Include="Content\Sprites\BorderBottom.png" />
+    <Content Include="Content\Sprites\BorderInside.png" />
+    <Content Include="Content\Sprites\BorderLeft.png" />
+    <Content Include="Content\Sprites\BorderRight.png" />
+    <Content Include="Content\Sprites\BorderTop.png" />
+    <Content Include="Content\Sprites\Crosshair.png" />
+    <Content Include="Content\Sprites\Instructions.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

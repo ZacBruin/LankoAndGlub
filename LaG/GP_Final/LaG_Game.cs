@@ -28,8 +28,11 @@ namespace GP_Final
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1380;
+            graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+
+            graphics.HardwareModeSwitch = false;
+            graphics.IsFullScreen = true;
 
             utility = new Util(this);
             this.Components.Add(utility);
@@ -52,7 +55,6 @@ namespace GP_Final
 
         protected override void Initialize()
         {
-            this.graphics.IsFullScreen = true;
             this.graphics.ApplyChanges();
 
             this.sideColor = new Color(14, 13, 17);
@@ -72,9 +74,6 @@ namespace GP_Final
 
             IsMouseVisible = false;
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            //lanko.ShowMarkers = true;
-            //lanko.glub.ShowMarkers = true;
         }
 
         protected override void UnloadContent()
@@ -83,63 +82,12 @@ namespace GP_Final
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || 
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape) || Keyboard.GetState().IsKeyDown(Keys.End))
+            {
+                MediaPlayer.Pause();
                 Exit();
-
-            //if(Keyboard.GetState().IsKeyDown(Keys.P) && canTogglePause)
-            //{
-            //    canTogglePause = false;
-
-            //    if (gamePaused)
-            //    {
-            //        gamePaused = false;
-            //        MediaPlayer.Resume();
-            //        MediaPlayer.Volume = .1f;
-            //    }
-
-            //    else
-            //    {
-            //        gamePaused = true;
-            //        MediaPlayer.Pause();
-            //    }
-            //}
-
-            //if(Keyboard.GetState().IsKeyUp(Keys.P) && !canTogglePause)
-            //    canTogglePause = true;
-
-            #region Fullscreen
-            //if (Keyboard.GetState().IsKeyDown(Keys.F1))
-            //    this.ToggleFullScreen();
-            
-            //if(Keyboard.GetState().IsKeyDown(Keys.F2))
-            //{
-            //    this.graphics.PreferredBackBufferWidth += 10;
-            //    this.graphics.ApplyChanges();
-            //    this.lanko.border.Initialize();
-            //}
-
-            //else if (Keyboard.GetState().IsKeyDown(Keys.F3))
-            //{
-            //    this.graphics.PreferredBackBufferWidth -= 10;
-            //    this.graphics.ApplyChanges();
-            //    this.lanko.border.Initialize();
-            //}
-
-            //else if (Keyboard.GetState().IsKeyDown(Keys.F4))
-            //{
-            //    this.graphics.PreferredBackBufferHeight += 10;
-            //    this.graphics.ApplyChanges();
-            //    this.lanko.border.Initialize();
-            //}
-
-            //else if (Keyboard.GetState().IsKeyDown(Keys.F5))
-            //{
-            //    this.graphics.PreferredBackBufferHeight -= 10;
-            //    this.graphics.ApplyChanges();
-            //    this.lanko.border.Initialize();
-            //}
-            #endregion
+            }
 
             if (input.MouseState.RightButton == ButtonState.Pressed && !utility.GamePaused)
             {
@@ -168,20 +116,8 @@ namespace GP_Final
             
             spriteBatch.Begin();
             itemMan.Draw(spriteBatch);
-            //lanko.DrawMarkers(spriteBatch);
             lanko.glub.DrawMarkers(spriteBatch);
             spriteBatch.End();
         }
-
-        //private void ToggleFullScreen()
-        //{
-        //    if (this.graphics.IsFullScreen)
-        //        this.graphics.IsFullScreen = false;
-
-        //    else
-        //        this.graphics.IsFullScreen = true;
-
-        //    this.graphics.ApplyChanges();
-        //}
     }
 }

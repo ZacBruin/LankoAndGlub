@@ -20,19 +20,19 @@ namespace GP_Final
             switch(this.currentWallType)
             {
                 case WallType.Top:
-                    this.spriteTexture = content.Load<Texture2D>("Border_Top");
+                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderTop");
                     break;
 
                 case WallType.Bottom: 
-                    this.spriteTexture = content.Load<Texture2D>("Border_Bottom");
+                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderBottom");
                     break;
 
                 case WallType.Left:
-                    this.spriteTexture = content.Load<Texture2D>("Border_Left");
+                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderLeft");
                     break;
 
                 case WallType.Right:
-                    this.spriteTexture = content.Load<Texture2D>("Border_Right");
+                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderRight");
                     break;
 
             }

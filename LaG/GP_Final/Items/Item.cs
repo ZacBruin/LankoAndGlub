@@ -55,12 +55,12 @@ namespace GP_Final
                  Location.Y + (this.spriteTexture.Height * scale / 2));
 
             //Cyan PowerUp does not move
-            if (this is Cyan_PowerUp){ }
+            if (this is CyanGem){ }
             else
                 this.Location += (Vector2.Normalize(this.Direction) * (this.Speed) *
                     (float)gameTime.ElapsedGameTime.Milliseconds / 1000);
             
-            if (this is Green_PowerUp) { }
+            if (this is GreenGem) { }
             else
             {
                 if(this.state != State.Dying)

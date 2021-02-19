@@ -19,13 +19,13 @@ namespace GP_Final
             if(IsOne) 
             {
                 this.color = new Color(255, 140, 140);
-                this.pointSpriteSheet = content.Load<Texture2D>("Red_Bat_Point_SpriteSheet"); 
+                this.pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatPoints"); 
             }
 
             else 
             {
                 this.color = new Color(245, 215, 81);
-                this.pointSpriteSheet = content.Load<Texture2D>("Gold_Bat_Point_SpriteSheet"); 
+                this.pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatPoints"); 
             }
 
             Scale = .21f;

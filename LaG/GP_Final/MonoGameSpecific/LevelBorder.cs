@@ -43,8 +43,8 @@ namespace GP_Final
                 w.SetTranformAndRect();
             }
 
-            this.spriteTexture = content.Load<Texture2D>("Border_Inside");
-            this.background = content.Load<Texture2D>("Background");
+            this.spriteTexture = content.Load<Texture2D>("Sprites/BorderInside");
+            this.background = content.Load<Texture2D>("Sprites/Background");
 
             this.Location = new Vector2(this.Walls[3].LocationRect.Right, this.Walls[0].LocationRect.Bottom);
 
