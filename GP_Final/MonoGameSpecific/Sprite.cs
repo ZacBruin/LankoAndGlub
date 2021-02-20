@@ -26,9 +26,9 @@ namespace GP_Final
             {
                 spriteTexture = value;
                 // Extract collision data
-                this.SpriteTextureData =
-                    new Color[this.spriteTexture.Width * this.spriteTexture.Height];
-                this.spriteTexture.GetData(this.SpriteTextureData);
+                SpriteTextureData =
+                    new Color[spriteTexture.Width * spriteTexture.Height];
+                spriteTexture.GetData(SpriteTextureData);
             }
         }
 
@@ -41,23 +41,23 @@ namespace GP_Final
 
         public float Scale
         {
-            get { return this.scale; }
+            get { return scale; }
             set
             {
-                if (value != this.scale)
+                if (value != scale)
                 {
                     //reset spriteTransform and locationRect
                     SetTranformAndRect();
                 }
-                this.scale = value;
+                scale = value;
             }
         }
 
         protected bool showMarkers;
         public bool ShowMarkers
         {
-            get { return this.showMarkers; }
-            set { this.showMarkers = value; }
+            get { return showMarkers; }
+            set { showMarkers = value; }
         }
         protected Texture2D SpriteMarkersTexture;
 
@@ -65,7 +65,7 @@ namespace GP_Final
             : base(game)
         {
             content = game.Content;
-            this.Scale = 1;
+            Scale = 1;
         }
 
         public override void Initialize()
@@ -77,8 +77,8 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            this.SpriteMarkersTexture = content.Load<Texture2D>("SpriteMarker");
-            this.Origin = Vector2.Zero;
+            SpriteMarkersTexture = content.Load<Texture2D>("SpriteMarker");
+            Origin = Vector2.Zero;
             base.LoadContent();
         }
 
@@ -96,21 +96,21 @@ namespace GP_Final
             {
                 // Build the block's transform
                 spriteTransform =
-                    Matrix.CreateTranslation(new Vector3(this.Origin * -1, 0.0f)) *
-                    Matrix.CreateScale(this.Scale) *
+                    Matrix.CreateTranslation(new Vector3(Origin * -1, 0.0f)) *
+                    Matrix.CreateScale(Scale) *
                     Matrix.CreateRotationZ(0.0f) *
-                    Matrix.CreateTranslation(new Vector3(this.Location, 0.0f));
+                    Matrix.CreateTranslation(new Vector3(Location, 0.0f));
 
                 // Calculate the bounding rectangle of this block in world space
-                this.locationRect = CalculateBoundingRectangle(
-                         new Rectangle(0, 0, this.spriteTexture.Width,
-                             this.spriteTexture.Height),
+                locationRect = CalculateBoundingRectangle(
+                         new Rectangle(0, 0, spriteTexture.Width,
+                             spriteTexture.Height),
                          spriteTransform);
             }
             catch (NullReferenceException nu)
             {
                 //nothing
-                if (this.spriteTexture == null)
+                if (spriteTexture == null)
                 {
                     //first time this will fail because load content hasn't been called yet
                 }
@@ -128,16 +128,16 @@ namespace GP_Final
         public virtual void Draw(SpriteBatch sb)
         {
             //Hacky if else for implementing spritesheet system
-            if(this.SourceRectangle == new Rectangle(0,0,0,0))
+            if(SourceRectangle == new Rectangle(0,0,0,0))
             sb.Draw(spriteTexture,
               new Rectangle((int)Location.X, (int)Location.Y, 
-                  (int)(spriteTexture.Width * this.Scale),(int)(spriteTexture.Height * this.Scale)),
-                  null, this.color, MathHelper.ToRadians(Rotate), this.Origin, SpriteEffects, 0);
+                  (int)(spriteTexture.Width * Scale),(int)(spriteTexture.Height * Scale)),
+                  null, color, MathHelper.ToRadians(Rotate), Origin, SpriteEffects, 0);
             else
             sb.Draw(spriteTexture,
                 new Rectangle((int)Location.X, (int)Location.Y,
-                (int)(spriteTexture.Width * this.Scale)/spriteSheetFramesWide, (int)(spriteTexture.Height * this.Scale)),
-                SourceRectangle, this.color, MathHelper.ToRadians(Rotate), this.Origin, SpriteEffects, 0);
+                (int)(spriteTexture.Width * Scale)/spriteSheetFramesWide, (int)(spriteTexture.Height * Scale)),
+                SourceRectangle, color, MathHelper.ToRadians(Rotate), Origin, SpriteEffects, 0);
 
             DrawMarkers(sb);
         }
@@ -175,36 +175,36 @@ namespace GP_Final
                 //       SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
                 //   Color.Red);
 
-                sb.Draw(this.SpriteMarkersTexture,
-                    new Rectangle(this.Hitbox.Left - this.SpriteMarkersTexture.Width / 2,
-                        this.Hitbox.Top - this.SpriteMarkersTexture.Height / 2,
+                sb.Draw(SpriteMarkersTexture,
+                    new Rectangle(Hitbox.Left - SpriteMarkersTexture.Width / 2,
+                        Hitbox.Top - SpriteMarkersTexture.Height / 2,
                         SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
                     Color.Red);
 
                 //Rect Top Right
-                sb.Draw(this.SpriteMarkersTexture,
-                   new Rectangle(this.Hitbox.Right - this.SpriteMarkersTexture.Width / 2,
-                       this.Hitbox.Top, SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
+                sb.Draw(SpriteMarkersTexture,
+                   new Rectangle(Hitbox.Right - SpriteMarkersTexture.Width / 2,
+                       Hitbox.Top, SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
                    Color.Red);
 
                 //Rect Bottom Left
-                sb.Draw(this.SpriteMarkersTexture,
-                   new Rectangle(this.Hitbox.Left - this.SpriteMarkersTexture.Width / 2,
-                       this.Hitbox.Bottom - this.SpriteMarkersTexture.Height / 2,
+                sb.Draw(SpriteMarkersTexture,
+                   new Rectangle(Hitbox.Left - SpriteMarkersTexture.Width / 2,
+                       Hitbox.Bottom - SpriteMarkersTexture.Height / 2,
                        SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
                    Color.Red);
 
                 //Rect Bottom Right
-                sb.Draw(this.SpriteMarkersTexture,
-                   new Rectangle(this.Hitbox.Right - this.SpriteMarkersTexture.Width / 2,
-                       this.Hitbox.Bottom - this.SpriteMarkersTexture.Height / 2,
+                sb.Draw(SpriteMarkersTexture,
+                   new Rectangle(Hitbox.Right - SpriteMarkersTexture.Width / 2,
+                       Hitbox.Bottom - SpriteMarkersTexture.Height / 2,
                        SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
                    Color.Red);
 
                 //location Marker
-                sb.Draw(this.SpriteMarkersTexture,
-                    new Rectangle((int)this.Location.X - this.SpriteMarkersTexture.Width / 2,
-                        (int)this.Location.Y - this.SpriteMarkersTexture.Height / 2,
+                sb.Draw(SpriteMarkersTexture,
+                    new Rectangle((int)Location.X - SpriteMarkersTexture.Width / 2,
+                        (int)Location.Y - SpriteMarkersTexture.Height / 2,
                         SpriteMarkersTexture.Width, SpriteMarkersTexture.Height),
                     Color.Yellow);
             }
@@ -220,7 +220,7 @@ namespace GP_Final
 
         public bool Intersects(Sprite OtherSprite)
         {
-            return Sprite.Intersects(this.locationRect, OtherSprite.locationRect);
+            return Sprite.Intersects(locationRect, OtherSprite.locationRect);
         }
 
         public bool PerPixelCollision(Sprite OtherSprite)
@@ -230,13 +230,13 @@ namespace GP_Final
 
             OtherSpriteColors = new Color[OtherSprite.spriteTexture.Width *
                 OtherSprite.spriteTexture.Height];
-            SpriteColors = new Color[this.spriteTexture.Width * this.spriteTexture.Height];
+            SpriteColors = new Color[spriteTexture.Width * spriteTexture.Height];
 
-            this.spriteTexture.GetData<Color>(SpriteColors);
+            spriteTexture.GetData<Color>(SpriteColors);
 
             OtherSprite.spriteTexture.GetData<Color>(OtherSpriteColors);
 
-            return IntersectPixels(this.locationRect, SpriteColors,
+            return IntersectPixels(locationRect, SpriteColors,
                 OtherSprite.locationRect, OtherSpriteColors);
         }
 

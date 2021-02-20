@@ -11,28 +11,28 @@ namespace GP_Final
 
         public Wall(Game game, WallType type) : base(game)
         {
-            this.Location = Location;
-            this.currentWallType = type;
+            Location = Location;
+            currentWallType = type;
         }
 
         protected override void LoadContent()
         {
-            switch(this.currentWallType)
+            switch(currentWallType)
             {
                 case WallType.Top:
-                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderTop");
+                    spriteTexture = content.Load<Texture2D>("Sprites/BorderTop");
                     break;
 
                 case WallType.Bottom: 
-                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderBottom");
+                    spriteTexture = content.Load<Texture2D>("Sprites/BorderBottom");
                     break;
 
                 case WallType.Left:
-                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderLeft");
+                    spriteTexture = content.Load<Texture2D>("Sprites/BorderLeft");
                     break;
 
                 case WallType.Right:
-                    this.spriteTexture = content.Load<Texture2D>("Sprites/BorderRight");
+                    spriteTexture = content.Load<Texture2D>("Sprites/BorderRight");
                     break;
 
             }

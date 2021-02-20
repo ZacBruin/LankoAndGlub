@@ -11,8 +11,8 @@ namespace GP_Final
 
         public GameRound(Game game) : base(game)
         {
-            this.MaxRoundLength = 50;
-            this.RoundIsOver = true;
+            MaxRoundLength = 50;
+            RoundIsOver = true;
             HasRoundJustStarted = true;
         }
 
@@ -33,9 +33,9 @@ namespace GP_Final
                         CurrentRoundTime =
                             ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - TimeRoundStarted - Lanko_And_Glub.utility.lengthGamePaused/2f;
 
-                        if (this.CurrentRoundTime >= this.MaxRoundLength)
+                        if (CurrentRoundTime >= MaxRoundLength)
                         {
-                            this.RoundIsOver = true;
+                            RoundIsOver = true;
                         }
 
 
@@ -48,9 +48,9 @@ namespace GP_Final
 
         public void ResetRound()
         {
-            this.HasRoundJustStarted = true;
+            HasRoundJustStarted = true;
             Lanko_And_Glub.utility.lengthGamePaused = 0;
-            this.Points = 0;
+            Points = 0;
         }
     }
 }

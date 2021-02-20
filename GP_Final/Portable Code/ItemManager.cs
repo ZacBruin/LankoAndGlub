@@ -27,9 +27,9 @@ namespace GP_Final
 
         public ItemManager(Game game) : base(game)
         {
-            this.targets = new List<Target>();
-            this.powerUps = new List<PowerUp>();
-            this.pointSprites = new List<PointSprite>();
+            targets = new List<Target>();
+            powerUps = new List<PowerUp>();
+            pointSprites = new List<PointSprite>();
         }
 
         public List<Target> Targets
@@ -50,13 +50,13 @@ namespace GP_Final
             set { pointSprites = value; }
         }
 
-        public void AddTarget(Target t) {this.targets.Add(t);}
-        public void AddPowerUp(PowerUp p) {this.powerUps.Add(p);}
-        public void AddPointSprite(PointSprite ps) {this.pointSprites.Add(ps);}
+        public void AddTarget(Target t) {targets.Add(t);}
+        public void AddPowerUp(PowerUp p) {powerUps.Add(p);}
+        public void AddPointSprite(PointSprite ps) {pointSprites.Add(ps);}
 
-        public void RemoveTarget(Target t) {this.targets.Remove(t);}
-        public void RemovePowerUp(PowerUp p) {this.powerUps.Remove(p);}
-        public void RemovePointSprite(PointSprite ps) {this.pointSprites.Remove(ps);}
+        public void RemoveTarget(Target t) {targets.Remove(t);}
+        public void RemovePowerUp(PowerUp p) {powerUps.Remove(p);}
+        public void RemovePointSprite(PointSprite ps) {pointSprites.Remove(ps);}
 
         public override void Update(GameTime gameTime)
         {

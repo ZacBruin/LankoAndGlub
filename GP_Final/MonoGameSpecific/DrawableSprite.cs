@@ -7,10 +7,7 @@ namespace GP_Final
     {
         protected SpriteBatch spriteBatch;
 
-        public DrawableSprite(Game game)
-            : base(game)
-        {
-        }
+        public DrawableSprite(Game game) : base(game) {}
 
         public override void Initialize()
         {
@@ -31,7 +28,7 @@ namespace GP_Final
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            this.Draw(spriteBatch);
+            Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

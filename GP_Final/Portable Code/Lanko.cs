@@ -17,7 +17,7 @@ namespace GP_Final
             {
                 if (proct_State != value)
                 {
-                    this.Log("Lanko state: " + value);
+                    Log("Lanko state: " + value);
                     proct_State = value;
                 }
             }
@@ -33,7 +33,7 @@ namespace GP_Final
             { 
                 if(hasGlub != value)
                 {
-                    this.Log("Lanko HasGlub: " + value);
+                    Log("Lanko HasGlub: " + value);
                     hasGlub = value;
                 }
             }
@@ -47,7 +47,7 @@ namespace GP_Final
             {
                 if (hasJumped != value)
                 {
-                    this.Log("Lanko HasJumped: " + value);
+                    Log("Lanko HasJumped: " + value);
                     hasJumped = value;
                 }
             }
@@ -61,7 +61,7 @@ namespace GP_Final
             {
                 if (isAiming != value)
                 {
-                    this.Log("Lanko IsAiming: " + value);
+                    Log("Lanko IsAiming: " + value);
                     isAiming = value;
                 }
             }

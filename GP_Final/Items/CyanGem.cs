@@ -7,17 +7,17 @@ namespace GP_Final
     {
         public CyanGem(Game game) : base (game)
         {
-            this.scale = .18f;
-            this.MaxTimeOnScreen = 12;
+            scale = .18f;
+            MaxTimeOnScreen = 12;
         }
 
         protected override void LoadContent()
         {
             spriteTexture = content.Load<Texture2D>("SpriteSheets/CyanGem");
-            sheetInfo = new SpriteSheetInfo(4, spriteTexture.Width, spriteTexture.Height, updates_Between_Frames);
+            sheetInfo = new SpriteSheetInfo(4, spriteTexture.Width, spriteTexture.Height, updatesBetweenFrames);
 
-            this.SourceRectangle = sheetInfo.sourceFrame;
-            this.spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = sheetInfo.sourceFrame;
+            spriteSheetFramesWide = sheetInfo.totalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();

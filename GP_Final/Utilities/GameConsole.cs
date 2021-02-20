@@ -45,15 +45,15 @@ namespace GP_Final
             : base(game)
         {
             // TODO: Construct any child components here
-            this.fontName = "Arial";
-            this.gameConsoleText = new List<string>();
-            this.gameConsoleText.Add("Console Initalized");
+            fontName = "Arial";
+            gameConsoleText = new List<string>();
+            gameConsoleText.Add("Console Initalized");
             content = new ContentManager(game.Services);
-            this.maxLines = 20;
-            this.debugText = "Console default \n         debug text";
-            this.ToggleConsoleKey = Keys.OemTilde;
+            maxLines = 20;
+            debugText = "Console default \n         debug text";
+            ToggleConsoleKey = Keys.OemTilde;
 
-            this.gameConsoleState = GameConsoleState.Closed;
+            gameConsoleState = GameConsoleState.Closed;
 
 
             input = (InputHandler)game.Services.GetService(typeof(IInputHandler));
@@ -90,11 +90,11 @@ namespace GP_Final
 
             if (input.KeyboardState.HasReleasedKey(ToggleConsoleKey))
             {
-                if (this.gameConsoleState == GameConsoleState.Closed)
-                    this.gameConsoleState = GameConsoleState.Open;
+                if (gameConsoleState == GameConsoleState.Closed)
+                    gameConsoleState = GameConsoleState.Open;
 
                 else
-                    this.gameConsoleState = GameConsoleState.Closed;
+                    gameConsoleState = GameConsoleState.Closed;
             }
 
             base.Update(gameTime);
@@ -102,7 +102,7 @@ namespace GP_Final
 
         public override void Draw(GameTime gameTime)
         {
-            if (this.gameConsoleState == GameConsoleState.Open)
+            if (gameConsoleState == GameConsoleState.Open)
             {
                 spriteBatch.Begin();
 

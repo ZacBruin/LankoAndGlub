@@ -35,36 +35,36 @@ namespace GP_Final
             graphics.IsFullScreen = true;
 
             utility = new Util(this);
-            this.Components.Add(utility);
+            Components.Add(utility);
           
             input = new InputHandler(this);
-            this.Components.Add(input);
+            Components.Add(input);
 
             console = new GameConsole(this);
-            this.Components.Add(console);
+            Components.Add(console);
 
             lanko = new MonoGameLanko(this);
-            this.Components.Add(lanko);
+            Components.Add(lanko);
 
             itemMan = new MonogameItemManager(this);
-            this.Components.Add(itemMan);
+            Components.Add(itemMan);
 
             gameRoundMan = new MonogameRoundManager(this);
-            this.Components.Add(gameRoundMan);
+            Components.Add(gameRoundMan);
         }
 
         protected override void Initialize()
         {
-            this.graphics.ApplyChanges();
+            graphics.ApplyChanges();
 
-            this.sideColor = new Color(14, 13, 17);
+            sideColor = new Color(14, 13, 17);
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            itemMan.border = gameRoundMan.border = this.lanko.border;
+            itemMan.border = gameRoundMan.border = lanko.border;
             itemMan.lanko = lanko;
             itemMan.glub = lanko.glub;
             itemMan.round = gameRoundMan.round;
@@ -91,13 +91,13 @@ namespace GP_Final
 
             if (input.MouseState.RightButton == ButtonState.Pressed && !utility.GamePaused)
             {
-                if (this.itemMan.round.RoundIsOver )
+                if (itemMan.round.RoundIsOver )
                 {
-                    if (this.gameRoundMan.FirstRoundStartHasStarted == true)
+                    if (gameRoundMan.FirstRoundStartHasStarted == true)
                     {
                         utility.lengthGamePaused = 0;
-                        this.itemMan.round.RoundIsOver = false;
-                        this.gameRoundMan.HasStartedRound = true;
+                        itemMan.round.RoundIsOver = false;
+                        gameRoundMan.HasStartedRound = true;
                         
                     }
                 }
@@ -110,7 +110,7 @@ namespace GP_Final
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(this.sideColor);
+            GraphicsDevice.Clear(sideColor);
 
             base.Draw(gameTime);
             

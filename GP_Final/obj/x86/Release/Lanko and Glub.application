@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="Lanko and Glub.exe.manifest" size="42672">
+    <dependentAssembly dependencyType="install" codebase="Lanko and Glub.exe.manifest" size="61331">
       <assemblyIdentity name="Lanko and Glub.exe" version="1.0.0.2" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>0FVYKcbmTvWpU/iE4ggnlq6TR4Fpi0wp5FhqABR54OI=</dsig:DigestValue>
+        <dsig:DigestValue>FyKnZv4xbMUjBCVAMroPSZmq0TSRb8ZaruCDY0bMAos=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

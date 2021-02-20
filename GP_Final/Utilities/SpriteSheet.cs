@@ -12,9 +12,9 @@ namespace GP_Final
         public SpriteSheetInfo(int totalFrames, int sheet_Width, int sheet_Height, int updates)
         {
             this.totalFrames = totalFrames;
-            this.frameWidth = sheet_Width / totalFrames;
-            this.frameHeight = sheet_Height;
-            this.updatesPerFrame = updates;
+            frameWidth = sheet_Width / totalFrames;
+            frameHeight = sheet_Height;
+            updatesPerFrame = updates;
 
             currentFrame = 0;
 
@@ -23,7 +23,7 @@ namespace GP_Final
 
         public void UpdateSourceFrame()
         {
-            this.sourceFrame = new Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+            sourceFrame = new Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
         }
     }
 }

@@ -6,12 +6,12 @@
 
         public GameConsoleGlub()
         {
-            this.console = null;
+            console = null;
         }
 
         public GameConsoleGlub(GameConsole gameconsole)
         {
-            this.console = gameconsole;
+            console = gameconsole;
         }
 
         public override void Log(string s)

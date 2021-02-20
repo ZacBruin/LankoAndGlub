@@ -32,23 +32,23 @@ namespace GP_Final
         protected GlubState state;
         public GlubState State
         {
-            get {return this.state;}
+            get {return state;}
 
             set
             {
-                if (this.state != value)
+                if (state != value)
                 {
-                    this.state = this.gcGlub.Pub_State = value;
+                    state = gcGlub.Pub_State = value;
 
-                    if(this.state == GlubState.Still || this.state == GlubState.Following)
+                    if(state == GlubState.Still || state == GlubState.Following)
                     {                        
-                        SwapSpriteSheet(this.run_sheet, this.run_info);
-                        this.ball_info.currentFrame = 0;
+                        SwapSpriteSheet(run_sheet, run_info);
+                        ball_info.currentFrame = 0;
                     }
 
                     else
                     {
-                        SwapSpriteSheet(this.ball_sheet, this.ball_info);
+                        SwapSpriteSheet(ball_sheet, ball_info);
                     }
                 }
             }
@@ -58,26 +58,26 @@ namespace GP_Final
 
         public bool WithLanko
         {
-            get { return this.withLanko; }
+            get { return withLanko; }
 
             private set
             {
-                if (this.withLanko != value)
-                    this.withLanko = this.gcGlub.WithLanko = value;
+                if (withLanko != value)
+                    withLanko = gcGlub.WithLanko = value;
             }
         }
 
         public bool HasStrongBuff
         {
-            get { return this.hasStrongBuff; }
+            get { return hasStrongBuff; }
             set
             {
-                if (this.hasStrongBuff != value)
-                    this.hasStrongBuff = this.gcGlub.HasStrongBuff = value;
+                if (hasStrongBuff != value)
+                    hasStrongBuff = gcGlub.HasStrongBuff = value;
 
                 if (value == true)
                 {
-                    this.airSpeed = this.buffSpeed;
+                    airSpeed = buffSpeed;
                     color = Color.Green;
                 }
 
@@ -85,7 +85,7 @@ namespace GP_Final
                 { 
                     color = Color.White;
                     updatesBetweenFlicker = 2;
-                    this.airSpeed = 750;
+                    airSpeed = 750;
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace GP_Final
             spriteTexture = run_sheet;
             spriteSheetFramesWide = run_info.totalFrames;
 
-            border = this.lanko.border;
+            border = lanko.border;
 
             maxBounces = 3;
             maxBouncesAfterFalling = 6;
@@ -134,13 +134,13 @@ namespace GP_Final
                 
             Direction = new Vector2(0, 0);
 
-            this.center = new Vector2(Location.X + this.Hitbox.Width / 2, Location.Y + this.Hitbox.Height / 2);
+            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
 
             WithLanko = true;
             HasStrongBuff = false;
 
             SetTranformAndRect();
-            this.SourceRectangle = run_info.sourceFrame;
+            SourceRectangle = run_info.sourceFrame;
 
             base.LoadContent();
         }
@@ -151,11 +151,11 @@ namespace GP_Final
 
             if(isAnimatingBurst)
             {
-                spriteBatch.Draw(this.catch_burst_sheet, this.cached_Location, this.burst_info.sourceFrame, Color.White, 0f,
+                spriteBatch.Draw(catch_burst_sheet, cached_Location, burst_info.sourceFrame, Color.White, 0f,
                     new Vector2(0,0), burst_scale, SpriteEffects.None, 0f);
 
-                this.CycleBurstAnim();
-                this.CheckBurstAnimComplete();
+                CycleBurstAnim();
+                CheckBurstAnimComplete();
             }
 
             spriteBatch.End();
@@ -166,9 +166,9 @@ namespace GP_Final
         {
             if (!Lanko_And_Glub.utility.GamePaused)
             {
-                this.UpdateGlub(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
+                UpdateGlub(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
 
-                if (this.HasStrongBuff)
+                if (HasStrongBuff)
                 {
                     CheckBuffTime(gameTime);
                     MakeShimmer();
@@ -184,19 +184,19 @@ namespace GP_Final
 
             #region State Logic Switch 
 
-            switch (this.State)
+            switch (State)
             {
                 case GlubState.Following:
-                    if (this.center.X - this.lanko.center.X > 0)
+                    if (center.X - lanko.center.X > 0)
                     {
-                        this.Direction = new Vector2(-1, 0);
-                        this.SpriteEffects = SpriteEffects.FlipHorizontally;
+                        Direction = new Vector2(-1, 0);
+                        SpriteEffects = SpriteEffects.FlipHorizontally;
                     }
 
-                    else if (this.center.X - this.lanko.center.X < 0)
+                    else if (center.X - lanko.center.X < 0)
                     {
-                        this.Direction = new Vector2(1, 0);
-                        this.SpriteEffects = SpriteEffects.None;
+                        Direction = new Vector2(1, 0);
+                        SpriteEffects = SpriteEffects.None;
                     }
 
                     CheckIfFollowingLanko();
@@ -206,51 +206,51 @@ namespace GP_Final
                 case GlubState.Still:
                     run_info.currentFrame = 0;
                     run_info.UpdateSourceFrame();
-                    this.SourceRectangle = run_info.sourceFrame;
+                    SourceRectangle = run_info.sourceFrame;
                     
-                    this.Direction = new Vector2(0, 0);
+                    Direction = new Vector2(0, 0);
                     CheckIfFollowingLanko();
                     break;
 
                 case GlubState.Held:
-                    this.Location = new Vector2(this.lanko.Location.X + 15, this.lanko.Location.Y - 15);
+                    Location = new Vector2(lanko.Location.X + 15, lanko.Location.Y - 15);
 
                     CycleBallAnim(true);
 
                     //Puts Glub back on the ground after Lanko lands (post catch)
-                    if (this.lanko.IsAiming == false && this.lanko.HasJumped == false)
+                    if (lanko.IsAiming == false && lanko.HasJumped == false)
                     {
-                        this.Location =
-                            new Vector2(this.lanko.Location.X - 40, this.ground - (this.SpriteTexture.Height * this.Scale));
+                        Location =
+                            new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
 
-                        this.State = GlubState.AnimCoolDown;
+                        State = GlubState.AnimCoolDown;
                     }
 
                     break;
 
                 case GlubState.Falling:
-                    this.Direction.Y += .03f;
+                    Direction.Y += .03f;
 
-                    if (this.Direction.X != 0)
+                    if (Direction.X != 0)
                     {
-                        if (this.Direction.X < 0)
-                            this.Direction.X += .05f;
+                        if (Direction.X < 0)
+                            Direction.X += .05f;
 
-                        if (this.Direction.X > 0)
-                            this.Direction.X -= .05f;
+                        if (Direction.X > 0)
+                            Direction.X -= .05f;
 
-                        if (this.Direction.X > -.05f && this.Direction.X < .05f)
-                            this.Direction.X = 0;
+                        if (Direction.X > -.05f && Direction.X < .05f)
+                            Direction.X = 0;
                     }
 
-                    this.Location += ((this.Direction) * this.Speed * (float)timeElapsed);
+                    Location += ((Direction) * Speed * (float)timeElapsed);
 
-                    if (this.numBouncesAfterFalling >= this.maxBouncesAfterFalling)
+                    if (numBouncesAfterFalling >= maxBouncesAfterFalling)
                     {
-                        this.State = GlubState.Stranded;
-                        this.Location.Y = this.ground - (this.spriteTexture.Height * this.scale);
-                        this.Direction = new Vector2(0, 0);
-                        this.numBouncesAfterFalling = 0;
+                        State = GlubState.Stranded;
+                        Location.Y = ground - (spriteTexture.Height * scale);
+                        Direction = new Vector2(0, 0);
+                        numBouncesAfterFalling = 0;
                     }
 
                     break;
@@ -259,7 +259,7 @@ namespace GP_Final
                     CycleBallAnim(false);
 
                     if (ball_info.currentFrame == 0)
-                        this.State = GlubState.Still;
+                        State = GlubState.Still;
 
                     break;
 
@@ -267,20 +267,20 @@ namespace GP_Final
 
                     CycleBallAnim(true);
 
-                    if(this.lanko.HasGlub == false)
-                        this.Direction = SeekLanko();
+                    if(lanko.HasGlub == false)
+                        Direction = SeekLanko();
 
                     break;
 
                 case GlubState.Thrown:
                         CycleBallAnim(true);
 
-                    if (this.numBounces >= this.maxBounces)
+                    if (numBounces >= maxBounces)
                     {
-                        this.State = GlubState.Falling;
-                        this.Direction.Y = 0;
-                        this.Direction.X = this.Direction.X / 500;
-                        this.numBounces = 0;
+                        State = GlubState.Falling;
+                        Direction.Y = 0;
+                        Direction.X = Direction.X / 500;
+                        numBounces = 0;
                     }
                     break;
 
@@ -293,10 +293,10 @@ namespace GP_Final
 
             SaveGlubFromDeath();
 
-            if(Math.Abs(this.Direction.Length()) > 0 && this.State != GlubState.Falling)
-                this.Location += (Vector2.Normalize(this.Direction) * this.Speed * (float)timeElapsed);
+            if(Math.Abs(Direction.Length()) > 0 && State != GlubState.Falling)
+                Location += (Vector2.Normalize(Direction) * Speed * (float)timeElapsed);
 
-            this.center = new Vector2(Location.X + this.Hitbox.Width / 2, Location.Y + this.Hitbox.Height / 2);
+            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
 
             UpdateHitbox();
         }
@@ -305,60 +305,60 @@ namespace GP_Final
 
         private void CheckIfFollowingLanko()
         {
-            distanceFromLanko = Math.Abs(this.center.X - this.lanko.center.X);
+            distanceFromLanko = Math.Abs(center.X - lanko.center.X);
 
             if (distanceFromLanko >= 50)
-                this.State = GlubState.Following;
+                State = GlubState.Following;
 
             else
-                this.State = GlubState.Still;
+                State = GlubState.Still;
         }
 
         private void SettleBorderCollision()
         {
-            foreach (Wall w in this.border.Walls)
+            foreach (Wall w in border.Walls)
             {
-                if (this.Hitbox.Intersects(w.LocationRect))
+                if (Hitbox.Intersects(w.LocationRect))
                 {
-                    if (this.State == GlubState.Thrown)
+                    if (State == GlubState.Thrown)
                     {
-                        this.HasBounced = true;
-                        this.numBounces++;
+                        HasBounced = true;
+                        numBounces++;
                     }
 
-                    else if (this.State == GlubState.Falling)
-                        this.numBouncesAfterFalling++;
+                    else if (State == GlubState.Falling)
+                        numBouncesAfterFalling++;
 
-                    Rectangle rect = this.Intersection(this.Hitbox, w.LocationRect);
+                    Rectangle rect = Intersection(Hitbox, w.LocationRect);
 
-                    if (w == this.border.Walls[0] || w == this.border.Walls[2])
+                    if (w == border.Walls[0] || w == border.Walls[2])
                     {
-                        if (this.state != GlubState.Following && this.state != GlubState.Still)
+                        if (state != GlubState.Following && state != GlubState.Still)
                         {
-                            this.Direction.Y *= -1;
+                            Direction.Y *= -1;
 
-                            if (this.State == GlubState.Falling)
+                            if (State == GlubState.Falling)
                             {
-                                this.Direction.Y = this.Direction.Y / 1.5f;
+                                Direction.Y = Direction.Y / 1.5f;
                             }
 
-                            if (rect.Top < this.center.Y)
-                                this.Location.Y += (float)rect.Height;
+                            if (rect.Top < center.Y)
+                                Location.Y += (float)rect.Height;
 
-                            else if (rect.Bottom > this.center.Y)
-                                this.Location.Y -= (float)rect.Height;
+                            else if (rect.Bottom > center.Y)
+                                Location.Y -= (float)rect.Height;
                         }
                     }
 
-                    else if (w == this.border.Walls[1] || w == this.border.Walls[3])
+                    else if (w == border.Walls[1] || w == border.Walls[3])
                     {
-                        this.Direction.X *= -1;
+                        Direction.X *= -1;
 
-                        if (rect.Right > this.center.X)
-                            this.Location.X -= (float)rect.Width;
+                        if (rect.Right > center.X)
+                            Location.X -= (float)rect.Width;
 
-                        else if (rect.Left < this.center.X)
-                            this.Location.X += (float)rect.Width;
+                        else if (rect.Left < center.X)
+                            Location.X += (float)rect.Width;
                     }
                     UpdateHitbox();
                     return;
@@ -369,17 +369,17 @@ namespace GP_Final
 
         Vector2 SeekLanko()
         {
-            Vector2 desiredDirection = (Vector2.Normalize(this.lanko.center - this.Location));
+            Vector2 desiredDirection = (Vector2.Normalize(lanko.center - Location));
             return (desiredDirection);
         }
 
         //Called when Glub hits an item that he can damage
         public void ThrownToSeeking()
         {
-            if (this.State == GlubState.Thrown)
+            if (State == GlubState.Thrown)
             {
-                this.State = GlubState.SeekingLanko;
-                this.Speed = this.seekSpeed;
+                State = GlubState.SeekingLanko;
+                Speed = seekSpeed;
             }
         }
 
@@ -388,45 +388,45 @@ namespace GP_Final
             int hitBoxWidthReduction = 8;
             int hitBoxHeightReduction = 3;
 
-            this.locationRect.Location = this.Location.ToPoint();
+            locationRect.Location = Location.ToPoint();
 
             float scaledHeight = run_info.sourceFrame.Height * scale;
             float scaledWidth = run_info.sourceFrame.Width * scale;
 
-            this.Hitbox = new Rectangle(this.LocationRect.X + hitBoxWidthReduction, this.LocationRect.Y + hitBoxHeightReduction,
+            Hitbox = new Rectangle(LocationRect.X + hitBoxWidthReduction, LocationRect.Y + hitBoxHeightReduction,
                 (int)scaledWidth - hitBoxWidthReduction*2, (int)scaledHeight - hitBoxHeightReduction*2);
         }
 
         public void GetCaughtByLanko()
         {
-            this.numBounces = 0;
-            this.cached_Location = new Vector2(this.LocationRect.X, this.LocationRect.Y);
-            this.isAnimatingBurst = true;
-            this.Speed = this.groundSpeed;
-            this.Direction = new Vector2(0, 0);
-            this.HasBounced = false;
+            numBounces = 0;
+            cached_Location = new Vector2(LocationRect.X, LocationRect.Y);
+            isAnimatingBurst = true;
+            Speed = groundSpeed;
+            Direction = new Vector2(0, 0);
+            HasBounced = false;
 
-            if (this.lanko.HasJumped)
-                this.State = GlubState.Held;
+            if (lanko.HasJumped)
+                State = GlubState.Held;
 
             else
             {
-                this.State = GlubState.AnimCoolDown;
-                this.Location =
-                    new Vector2(this.lanko.Location.X - 40, this.ground - this.locationRect.Height);
+                State = GlubState.AnimCoolDown;
+                Location =
+                    new Vector2(lanko.Location.X - 40, ground - locationRect.Height);
             }
         }
 
         public void CheckBuffTime(GameTime gameTime)
         {
-            if ((gameTime.TotalGameTime.TotalMilliseconds / 1000) - this.timeOnBuffPickup > this.maxTimeAllowedBuffed)
-                this.HasStrongBuff = false;
+            if ((gameTime.TotalGameTime.TotalMilliseconds / 1000) - timeOnBuffPickup > maxTimeAllowedBuffed)
+                HasStrongBuff = false;
         }
 
         public void GetBuffed(GameTime gameTime)
         {
-            this.HasStrongBuff = true;
-            this.timeOnBuffPickup = (float)gameTime.TotalGameTime.TotalMilliseconds / 1000;
+            HasStrongBuff = true;
+            timeOnBuffPickup = (float)gameTime.TotalGameTime.TotalMilliseconds / 1000;
         }
         #endregion
 
@@ -452,27 +452,27 @@ namespace GP_Final
 
         private void SwapSpriteSheet(Texture2D spriteSheet, SpriteSheetInfo info)
         {
-            this.spriteTexture = spriteSheet;
+            spriteTexture = spriteSheet;
 
-            this.run_info.currentFrame = 0;
-            this.spriteSheetFramesWide = info.totalFrames;
+            run_info.currentFrame = 0;
+            spriteSheetFramesWide = info.totalFrames;
 
             info.UpdateSourceFrame();
-            this.SourceRectangle = info.sourceFrame;
+            SourceRectangle = info.sourceFrame;
 
-            if (info == this.ball_info)
-                this.run_Anim_Count = 0;
-            else if (info == this.run_info)
-                this.ball_Anim_Count = 0;
+            if (info == ball_info)
+                run_Anim_Count = 0;
+            else if (info == run_info)
+                ball_Anim_Count = 0;
 
-            this.current_info = info;
+            current_info = info;
 
-            this.UpdateHitbox();
+            UpdateHitbox();
         }
 
         private void CycleRunAnim()
         {
-            if (run_Anim_Count >= this.updates_Between_Run)
+            if (run_Anim_Count >= updates_Between_Run)
             {
                 run_info.currentFrame++;
                 run_Anim_Count = 0;
@@ -481,7 +481,7 @@ namespace GP_Final
                     run_info.currentFrame = 0;
 
                 run_info.UpdateSourceFrame();
-                this.SourceRectangle = run_info.sourceFrame;
+                SourceRectangle = run_info.sourceFrame;
             }
 
             else
@@ -498,7 +498,7 @@ namespace GP_Final
                 if (ball_info.currentFrame == ball_info.totalFrames - 1)
                     return;
 
-                if (ball_Anim_Count >= this.updates_Between_Ball)
+                if (ball_Anim_Count >= updates_Between_Ball)
                 {
                     ball_info.currentFrame++;
                     ball_Anim_Count = 0;
@@ -507,7 +507,7 @@ namespace GP_Final
                         ball_info.currentFrame = 0;
 
                     ball_info.UpdateSourceFrame();
-                    this.SourceRectangle = ball_info.sourceFrame;
+                    SourceRectangle = ball_info.sourceFrame;
                 }
 
                 else
@@ -526,7 +526,7 @@ namespace GP_Final
                     return;
                 }
 
-                if (ball_Anim_Count >= this.updates_Between_Ball)
+                if (ball_Anim_Count >= updates_Between_Ball)
                 {
                     ball_info.currentFrame--;
                     ball_Anim_Count = 0;
@@ -535,7 +535,7 @@ namespace GP_Final
                         ball_info.currentFrame = 0;
 
                     ball_info.UpdateSourceFrame();
-                    this.SourceRectangle = ball_info.sourceFrame;
+                    SourceRectangle = ball_info.sourceFrame;
                 }
 
                 else
@@ -551,7 +551,7 @@ namespace GP_Final
             if (burst_info.currentFrame == burst_info.totalFrames)
                 return;
 
-            if (burst_Anim_Count >= this.updates_Between_Ball)
+            if (burst_Anim_Count >= updates_Between_Ball)
             {
                 burst_info.currentFrame++;
                 burst_Anim_Count = 0;
@@ -568,7 +568,7 @@ namespace GP_Final
 
         private void CheckBurstAnimComplete()
         {
-            if (this.burst_info.currentFrame == 5)
+            if (burst_info.currentFrame == 5)
             {
                 isAnimatingBurst = false;
                 burst_info.currentFrame = 0;
@@ -583,26 +583,26 @@ namespace GP_Final
         //HACK: Didn't want to deal with the screwy call orders. Called in Lanko's LoadContent()
         public void SetStartLocationAndGround()
         {
-            this.ground = this.lanko.ground;
+            ground = lanko.ground;
 
-            this.Location =
-                  new Vector2(this.lanko.Location.X - 40, this.ground - (this.SpriteTexture.Height * this.Scale));
+            Location =
+                  new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
 
-            this.SetTranformAndRect();
+            SetTranformAndRect();
 
-            this.center = new Vector2(Location.X + this.Hitbox.Width / 2, Location.Y + this.Hitbox.Height / 2);
+            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
         }
 
         //HACK: Sometimes Glub gets out of the borders
         private void SaveGlubFromDeath()
         {
-            if (this.center.X < this.border.Walls[3].LocationRect.Left ||
-                this.center.X > this.border.Walls[1].LocationRect.Right ||
-                this.center.Y < this.border.Walls[0].LocationRect.Top ||
-                this.center.Y > this.border.Walls[2].LocationRect.Bottom)
+            if (center.X < border.Walls[3].LocationRect.Left ||
+                center.X > border.Walls[1].LocationRect.Right ||
+                center.Y < border.Walls[0].LocationRect.Top ||
+                center.Y > border.Walls[2].LocationRect.Bottom)
             {
                 GetCaughtByLanko();
-                this.lanko.HasGlub = true;
+                lanko.HasGlub = true;
             }
         }
         #endregion
@@ -618,21 +618,21 @@ namespace GP_Final
             switch (s)
             {
                 case "IsAiming":
-                    if(b) this.State = GlubState.Held;
+                    if(b) State = GlubState.Held;
                     break;
 
                 case "HasGlub":
                     if (b == false)
                     {
-                        this.State = GlubState.Thrown;
-                        this.HasBounced = false;
-                        this.Speed = this.airSpeed;
-                        this.Direction = this.lanko.aimDirection;
+                        State = GlubState.Thrown;
+                        HasBounced = false;
+                        Speed = airSpeed;
+                        Direction = lanko.aimDirection;
                     }
 
                     break;
 
-                default: this.gcGlub.Log("BoolUpdate Error: Incorrect string input, check code.");
+                default: gcGlub.Log("BoolUpdate Error: Incorrect string input, check code.");
                     return;
             }
         }

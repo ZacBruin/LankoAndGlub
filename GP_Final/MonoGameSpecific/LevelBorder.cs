@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GP_Final
 {
     /// <summary>
-    /// Wall Guide: 0->Top  1->Right 2->Bottom  3->Left
+    /// Wall Guide: 0->Top 1->Right 2->Bottom 3->Left
     /// </summary>
     public sealed class LevelBorder : DrawableSprite
     {
@@ -24,29 +23,28 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            Walls[0].Initialize(); Walls[1].Initialize(); Walls[2].Initialize(); Walls[3].Initialize();
-
+            Walls[0].Initialize();
             Walls[0].Location = new Vector2(35, 0);
             Walls[0].SetTranformAndRect();
 
-            Walls[1].Location = new Vector2(Walls[0].LocationRect.Right - Walls[1].SpriteTexture.Width,
-                Walls[0].LocationRect.Bottom);
+            Walls[1].Initialize();
+            Walls[1].Location = new Vector2(Walls[0].LocationRect.Right - Walls[1].SpriteTexture.Width, Walls[0].LocationRect.Bottom);
 
-            Walls[2].Location = new Vector2(Walls[0].Location.X,
-                this.Game.GraphicsDevice.Viewport.Bounds.Bottom - Walls[2].SpriteTexture.Height);
+            Walls[2].Initialize();
+            Walls[2].Location = new Vector2(Walls[0].Location.X, Game.GraphicsDevice.Viewport.Bounds.Bottom - Walls[2].SpriteTexture.Height);
 
-            Walls[3].Location = new Vector2(Walls[0].Location.X,
-                Walls[0].LocationRect.Bottom);
+            Walls[3].Initialize();
+            Walls[3].Location = new Vector2(Walls[0].Location.X, Walls[0].LocationRect.Bottom);
 
-            foreach(Wall w in this.Walls)
+            foreach (Wall w in Walls)
             {
                 w.SetTranformAndRect();
             }
 
-            this.spriteTexture = content.Load<Texture2D>("Sprites/BorderInside");
-            this.background = content.Load<Texture2D>("Sprites/Background");
+            spriteTexture = content.Load<Texture2D>("Sprites/BorderInside");
+            background = content.Load<Texture2D>("Sprites/Background");
 
-            this.Location = new Vector2(this.Walls[3].LocationRect.Right, this.Walls[0].LocationRect.Bottom);
+            Location = new Vector2(Walls[3].LocationRect.Right, Walls[0].LocationRect.Bottom);
 
             base.LoadContent();
         }
@@ -54,20 +52,19 @@ namespace GP_Final
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
+            Vector2 backgroundPosition = new Vector2(Walls[3].LocationRect.Left, Walls[0].LocationRect.Bottom);
 
-            spriteBatch.Draw(background, new Vector2(this.Walls[3].LocationRect.Left,
-                this.Walls[0].LocationRect.Bottom), null, Color.White, 0, new Vector2(0, 0), .563f,
-                SpriteEffects.None, 0);
+            spriteBatch.Draw(background, backgroundPosition, null, Color.White, 0, Vector2.Zero, .563f, SpriteEffects.None, 0);
 
             foreach (Wall w in Walls)
             {
-                spriteBatch.Draw(w.SpriteTexture, new Rectangle((int)w.Location.X, (int)w.Location.Y,
-                  (int)(w.SpriteTexture.Width * this.Scale), (int)(w.SpriteTexture.Height * this.Scale)),
-                   null, Color.White, 0f, w.Origin, SpriteEffects, 0);
+                Rectangle destinationRect = new Rectangle((int)w.Location.X, (int)w.Location.Y,
+                  (int)(w.SpriteTexture.Width * Scale), (int)(w.SpriteTexture.Height * Scale));
+
+                spriteBatch.Draw(w.SpriteTexture, destinationRect, null, Color.White, 0f, w.Origin, SpriteEffects, 0);
             }
 
             spriteBatch.End();
-
             base.Draw(gameTime);
         }
 

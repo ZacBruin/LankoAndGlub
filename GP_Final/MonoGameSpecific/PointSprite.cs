@@ -18,26 +18,26 @@ namespace GP_Final
         {
             if(IsOne) 
             {
-                this.color = new Color(255, 140, 140);
-                this.pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatPoints"); 
+                color = new Color(255, 140, 140);
+                pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatPoints"); 
             }
 
             else 
             {
-                this.color = new Color(245, 215, 81);
-                this.pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatPoints"); 
+                color = new Color(245, 215, 81);
+                pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatPoints"); 
             }
 
             Scale = .21f;
             updatesBetweenFrames = 9;
 
-            this.sheetInfo = new SpriteSheetInfo(6, pointSpriteSheet.Width, pointSpriteSheet.Height, updatesBetweenFrames);
+            sheetInfo = new SpriteSheetInfo(6, pointSpriteSheet.Width, pointSpriteSheet.Height, updatesBetweenFrames);
             spriteTexture = pointSpriteSheet;
 
             SetTranformAndRect();
 
-            this.SourceRectangle = sheetInfo.sourceFrame;
-            this.spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = sheetInfo.sourceFrame;
+            spriteSheetFramesWide = sheetInfo.totalFrames;
         }
 
         protected override void LoadContent()
@@ -63,13 +63,13 @@ namespace GP_Final
                 return;
             }              
 
-            if (pointAnimCount >= this.updatesBetweenFrames)
+            if (pointAnimCount >= updatesBetweenFrames)
             {
                 sheetInfo.currentFrame++;
                 pointAnimCount = 0;
 
                 sheetInfo.UpdateSourceFrame();
-                this.SourceRectangle = sheetInfo.sourceFrame;
+                SourceRectangle = sheetInfo.sourceFrame;
             }
 
             else
@@ -81,28 +81,28 @@ namespace GP_Final
 
         public void SetStartPos()
         {
-            if(this.startingPos == new Vector2(0,0)) 
-                this.startingPos = this.Location;
+            if(startingPos == new Vector2(0,0)) 
+                startingPos = Location;
         }
 
         private void FadeOut()
         {
-            if (this.color.A != 0)
+            if (color.A != 0)
             {
-                if (this.color.A > 200)
+                if (color.A > 200)
                 {
-                    this.color.R -= 1;
-                    this.color.G -= 1;
-                    this.color.B -= 1;
-                    this.color.A -= 1;
+                    color.R -= 1;
+                    color.G -= 1;
+                    color.B -= 1;
+                    color.A -= 1;
                 }
 
                 else
                 {
-                    if (color.R > 5) this.color.R -= 5;
-                    if (color.G > 5) this.color.G -= 5;
-                    if (color.B > 5) this.color.B -= 5;
-                    if (color.A > 5) this.color.A -= 5;
+                    if (color.R > 5) color.R -= 5;
+                    if (color.G > 5) color.G -= 5;
+                    if (color.B > 5) color.B -= 5;
+                    if (color.A > 5) color.A -= 5;
                 }
             }
         }
@@ -111,7 +111,7 @@ namespace GP_Final
         {
             if(IsMovingDown)
             {
-                this.Location.Y += MovementAmt;
+                Location.Y += MovementAmt;
 
                 if (Location.Y == startingPos.Y + MovementAmt)
                     IsMovingDown = false;
@@ -119,7 +119,7 @@ namespace GP_Final
 
             else if (!IsMovingDown)
             {
-                this.Location.Y -= MovementAmt;
+                Location.Y -= MovementAmt;
 
                 if (Location.Y == startingPos.Y - MovementAmt)
                     IsMovingDown = true;

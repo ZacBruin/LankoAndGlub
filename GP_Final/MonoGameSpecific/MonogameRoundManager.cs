@@ -30,7 +30,7 @@ namespace GP_Final
         {
             get
             {
-                return this.round.Points;
+                return round.Points;
             }
         }
         private int highScore;
@@ -57,17 +57,17 @@ namespace GP_Final
 
         public MonogameRoundManager(Game game) : base(game)
         {
-            this.round = new GameRound(game);
+            round = new GameRound(game);
         }
 
         protected override void LoadContent()
         {
-            this.font = content.Load<SpriteFont>("ConsoleFont");
+            font = content.Load<SpriteFont>("ConsoleFont");
 
-            this.placeHolder = content.Load<Texture2D>("Sprites/Instructions");
-            this.spriteTexture = content.Load<Texture2D>("SpriteMarker");
-            this.roundMusic = content.Load<Song>("Music/Round");
-            this.waitMusic = content.Load<Song>("Music/BetweenRounds");
+            placeHolder = content.Load<Texture2D>("Sprites/Instructions");
+            spriteTexture = content.Load<Texture2D>("SpriteMarker");
+            roundMusic = content.Load<Song>("Music/Round");
+            waitMusic = content.Load<Song>("Music/BetweenRounds");
 
             NewHigh = content.Load<SoundEffect>("SFX/NewHighScore");
             EndRound = content.Load<SoundEffect>("SFX/GameEnd");
@@ -78,20 +78,20 @@ namespace GP_Final
             MediaPlayer.Volume = .3f;
             MediaPlayer.IsRepeating = true;          
 
-            this.FirstRoundStartHasStarted = this.firstRoundOver = false;
-            this.HasStartedRound = false;
+            FirstRoundStartHasStarted = firstRoundOver = false;
+            HasStartedRound = false;
 
-            this.highScore = 0;
+            highScore = 0;
 
             if (!Lanko_And_Glub.utility.ShowInstructions)
-                this.instructionsColor = new Color(0, 0, 0, 0);
+                instructionsColor = new Color(0, 0, 0, 0);
             else
-                this.instructionsColor = Color.White;
+                instructionsColor = Color.White;
 
-            this.scale = 0;
+            scale = 0;
 
-            this.fontScale = 1f;
-            this.fontColor = timerColor = Color.White;
+            fontScale = 1f;
+            fontColor = timerColor = Color.White;
 
             base.LoadContent();
         }
@@ -103,12 +103,12 @@ namespace GP_Final
                 updateGameRound(gameTime);
             }
 
-            if (Lanko_And_Glub.utility.GamePaused && this.FirstRoundStartHasStarted)
-                this.instructionsColor = new Color(255, 255, 255, 255);
-            else if (!Lanko_And_Glub.utility.GamePaused && this.FirstRoundStartHasStarted)
+            if (Lanko_And_Glub.utility.GamePaused && FirstRoundStartHasStarted)
+                instructionsColor = new Color(255, 255, 255, 255);
+            else if (!Lanko_And_Glub.utility.GamePaused && FirstRoundStartHasStarted)
             {
-                if (this.instructionsColor.A != 0)
-                    this.instructionsColor = new Color(0, 0, 0, 0);
+                if (instructionsColor.A != 0)
+                    instructionsColor = new Color(0, 0, 0, 0);
             }
 
             switch(musicState)
@@ -168,7 +168,7 @@ namespace GP_Final
 
         private void updateGameRound(GameTime gameTime)
         {
-            this.round.Update(gameTime);
+            round.Update(gameTime);
 
             if (timeLeftInRound < 10 && timeLeftInRound > 0)
                 timerColor = Color.Red;
@@ -241,27 +241,27 @@ namespace GP_Final
             float horizPosition = midpointRight - 90;
 
             spriteBatch.DrawString(font, "Programming:",
-                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 405),
+                new Vector2(horizPosition, border.Walls[0].LocationRect.Top + 405),
                 Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "Zac Bruin",
-                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 420),
+                new Vector2(horizPosition, border.Walls[0].LocationRect.Top + 420),
                 Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "Art:",
-                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 445),
+                new Vector2(horizPosition, border.Walls[0].LocationRect.Top + 445),
                 Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "Becca Hallstedt",
-                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 460),
+                new Vector2(horizPosition, border.Walls[0].LocationRect.Top + 460),
                 Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "Sound:",
-                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 485),
+                new Vector2(horizPosition, border.Walls[0].LocationRect.Top + 485),
                 Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "Bret Merritt",
-                new Vector2(horizPosition, this.border.Walls[0].LocationRect.Top + 500),
+                new Vector2(horizPosition, border.Walls[0].LocationRect.Top + 500),
                 Color.Purple, 0f, new Vector2(0, 0), fontSize, SpriteEffects.None, 0f);
         }
 
@@ -270,20 +270,20 @@ namespace GP_Final
             if (round.RoundIsOver && firstRoundOver)
             {
                 spriteBatch.DrawString(font, "Start Round:",
-                    new Vector2(midpointRight - 100, this.border.Walls[2].LocationRect.Top - 95),
+                    new Vector2(midpointRight - 100, border.Walls[2].LocationRect.Top - 95),
                     fontColor, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
 
                 spriteBatch.DrawString(font, "Right Click",
-                    new Vector2(midpointRight - 100, this.border.Walls[2].LocationRect.Top - 75),
+                    new Vector2(midpointRight - 100, border.Walls[2].LocationRect.Top - 75),
                     fontColor, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
             }
 
             spriteBatch.DrawString(font, "P: Instructions",
-                new Vector2(midpointRight - 145, this.border.Walls[0].LocationRect.Top + 660),
+                new Vector2(midpointRight - 145, border.Walls[0].LocationRect.Top + 660),
                 Color.White, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "ESC: Close Game",
-                new Vector2(midpointRight - 145, this.border.Walls[0].LocationRect.Top + 685),
+                new Vector2(midpointRight - 145, border.Walls[0].LocationRect.Top + 685),
                 Color.White, 0f, new Vector2(0, 0), fontScale / 2, SpriteEffects.None, 0f);
         }
         
@@ -306,32 +306,32 @@ namespace GP_Final
         //and the left and right Level borders to help with text placement
         private void CalculateMidpoints()
         {
-            this.midpointLeft = 
-                ((this.border.Walls[3].LocationRect.Left - this.Game.GraphicsDevice.Viewport.Bounds.Left) / 2) +
-                this.Game.GraphicsDevice.Viewport.Bounds.Left;
+            midpointLeft = 
+                ((border.Walls[3].LocationRect.Left - Game.GraphicsDevice.Viewport.Bounds.Left) / 2) +
+                Game.GraphicsDevice.Viewport.Bounds.Left;
 
-            this.midpointRight = 
-                ((this.Game.GraphicsDevice.Viewport.Bounds.Right - this.border.Walls[1].LocationRect.Right) / 2) +
-                this.border.Walls[1].LocationRect.Right;
+            midpointRight = 
+                ((Game.GraphicsDevice.Viewport.Bounds.Right - border.Walls[1].LocationRect.Right) / 2) +
+                border.Walls[1].LocationRect.Right;
         }
 
         public void FirstTimeSetup()
         {
             CalculateMidpoints();
 
-            this.Location =
-                new Vector2(this.border.Walls[3].LocationRect.Right + 115,
-                this.border.Walls[0].LocationRect.Bottom);
+            Location =
+                new Vector2(border.Walls[3].LocationRect.Right + 115,
+                border.Walls[0].LocationRect.Bottom);
         }
 
         private void StartFirstRound()
         {
-            this.FirstRoundStartHasStarted = true;
+            FirstRoundStartHasStarted = true;
 
-            if (this.round.RoundIsOver == true)
+            if (round.RoundIsOver == true)
             {
-                this.round.RoundIsOver = false;
-                this.HasStartedRound = true;
+                round.RoundIsOver = false;
+                HasStartedRound = true;
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GP_Final
@@ -16,8 +15,8 @@ namespace GP_Final
 
         public GreenGem(Game game) : base(game)
         {
-            this.MaxTimeOnScreen = 10;
-            this.Speed = 150;
+            MaxTimeOnScreen = 10;
+            Speed = 150;
         }
 
         protected override void LoadContent()
@@ -28,13 +27,13 @@ namespace GP_Final
             EmeraldGet = content.Load<SoundEffect>("SFX/PowerupGet");
             EmeraldBreak = content.Load<SoundEffect>("SFX/PowerupBreak");
 
-            sheetInfo = new SpriteSheetInfo(4, not_broken.Width, not_broken.Height, updates_Between_Frames);
-            sheetInfo_Broken = new SpriteSheetInfo(4, broken.Width, broken.Height, updates_Between_Frames);
+            sheetInfo = new SpriteSheetInfo(4, not_broken.Width, not_broken.Height, updatesBetweenFrames);
+            sheetInfo_Broken = new SpriteSheetInfo(4, broken.Width, broken.Height, updatesBetweenFrames);
 
             spriteTexture = not_broken;
 
-            this.SourceRectangle = sheetInfo.sourceFrame;
-            this.spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = sheetInfo.sourceFrame;
+            spriteSheetFramesWide = sheetInfo.totalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();
@@ -44,7 +43,7 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (this.IsDamaged == false)
+            if (IsDamaged == false)
                 UpdateItemSpriteSheet();
             else
                 UpdateItemSpriteSheet(sheetInfo_Broken);
@@ -63,10 +62,10 @@ namespace GP_Final
             else
             {
                 EmeraldBreak.Play(.2f, 0, 0);
-                this.IsDamaged = true;
-                this.animationCount = 0;
+                IsDamaged = true;
+                animationCount = 0;
                 spriteTexture = broken;
-                this.SourceRectangle = sheetInfo_Broken.sourceFrame;
+                SourceRectangle = sheetInfo_Broken.sourceFrame;
                 return false;
             }
         }

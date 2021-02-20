@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GP_Final
@@ -18,19 +17,17 @@ namespace GP_Final
 
         public Target(Game game) : base(game)
         {
-            this.state = State.Spawning;
+            state = State.Spawning;
 
-            this.currentFlicker = 0;
-            this.numDeathFlickers = 20;
+            currentFlicker = 0;
+            numDeathFlickers = 20;
             timeBetweenFlickers = 0;
             updates_Between_Point = 4;
 
-            this.color = Color.White;
+            color = Color.White;
 
             flickerLow = new Color(50, 50, 50, 50);
-            flickerNorm = new Color(230, 230, 230, 230);
-
-            
+            flickerNorm = new Color(230, 230, 230, 230);  
         }
 
         protected override void LoadContent()
@@ -57,27 +54,27 @@ namespace GP_Final
 
         public bool DeathAnim()
         {
-            if (this.state != State.Dying)
+            if (state != State.Dying)
                 return false;
 
             else
             {
-                if (this.sheetInfo.currentFrame != 4)
+                if (sheetInfo.currentFrame != 4)
                 {
-                    this.sheetInfo.currentFrame = 4;
-                    this.sheetInfo.UpdateSourceFrame();
-                    this.SourceRectangle = this.sheetInfo.sourceFrame;
+                    sheetInfo.currentFrame = 4;
+                    sheetInfo.UpdateSourceFrame();
+                    SourceRectangle = sheetInfo.sourceFrame;
                 }
 
-                if (this.currentFlicker != this.numDeathFlickers )
+                if (currentFlicker != numDeathFlickers )
                 {
                     if (timeBetweenFlickers == 1)
                     {
-                        if (this.color == this.flickerNorm)
-                            this.color = this.flickerLow;
+                        if (color == flickerNorm)
+                            color = flickerLow;
 
-                        else if (this.color == this.flickerLow)
-                            this.color = this.flickerNorm;
+                        else if (color == flickerLow)
+                            color = flickerNorm;
 
                         currentFlicker++;
                         timeBetweenFlickers = 0;
@@ -96,26 +93,26 @@ namespace GP_Final
 
         protected override void UpdateItemSpriteSheet()
         {
-            if (this.state != State.DeSpawning)
+            if (state != State.DeSpawning)
             {
-                if (animationCount >= this.sheetInfo.updatesPerFrame)
+                if (animationCount >= sheetInfo.updatesPerFrame)
                 {
-                    if (this.sheetInfo.currentFrame < this.sheetInfo.totalFrames - 1)
-                        this.sheetInfo.currentFrame++;
+                    if (sheetInfo.currentFrame < sheetInfo.totalFrames - 1)
+                        sheetInfo.currentFrame++;
 
                     animationCount = 0;
 
-                    if (this.spriteTexture == this.movementSpriteSheet)
+                    if (spriteTexture == movementSpriteSheet)
                     {
-                        if (this.sheetInfo.currentFrame > this.sheetInfo.totalFrames - 2)
-                            this.sheetInfo.currentFrame = 0;
+                        if (sheetInfo.currentFrame > sheetInfo.totalFrames - 2)
+                            sheetInfo.currentFrame = 0;
                     }
 
-                    this.sheetInfo.UpdateSourceFrame();
-                    this.SourceRectangle = this.sheetInfo.sourceFrame;
+                    sheetInfo.UpdateSourceFrame();
+                    SourceRectangle = sheetInfo.sourceFrame;
 
-                    if (this.spriteTexture == this.spawningSpriteSheet && this.sheetInfo.currentFrame == 4)
-                        this.hasSpawned = true;
+                    if (spriteTexture == spawningSpriteSheet && sheetInfo.currentFrame == 4)
+                        hasSpawned = true;
                 }
 
                 else
@@ -126,15 +123,15 @@ namespace GP_Final
             }
         }
 
-        public override bool SpawnInAnim()
+        public override bool SpawnAnimation()
         {
-            if (this.state != State.Spawning)
+            if (state != State.Spawning)
                 return false;
             else
             {
-                if (this.hasSpawned)
+                if (hasSpawned)
                 {
-                    this.updates_Between_Frames = 6;
+                    updatesBetweenFrames = 6;
                     return true;
                 }
 
@@ -142,29 +139,29 @@ namespace GP_Final
             }
         }
 
-        public override bool SpawnOutAnim()
+        public override bool DespawnAnimation()
         {
-            if (this.spriteTexture != this.spawningSpriteSheet)
+            if (spriteTexture != spawningSpriteSheet)
             {
-                this.spriteTexture = this.spawningSpriteSheet;
-                this.sheetInfo.currentFrame = 4;
-                this.sheetInfo.UpdateSourceFrame();
-                this.SourceRectangle = this.sheetInfo.sourceFrame;
-                this.updates_Between_Frames = 7;
+                spriteTexture = spawningSpriteSheet;
+                sheetInfo.currentFrame = 4;
+                sheetInfo.UpdateSourceFrame();
+                SourceRectangle = sheetInfo.sourceFrame;
+                updatesBetweenFrames = 7;
             }
 
-            if (this.state != State.DeSpawning)
+            if (state != State.DeSpawning)
                 return false;
 
             else
             {
-                if (animationCount >= this.sheetInfo.updatesPerFrame)
+                if (animationCount >= sheetInfo.updatesPerFrame)
                 {
-                    this.sheetInfo.currentFrame--;
+                    sheetInfo.currentFrame--;
                     animationCount = 0;
 
-                    this.sheetInfo.UpdateSourceFrame();
-                    this.SourceRectangle = this.sheetInfo.sourceFrame;
+                    sheetInfo.UpdateSourceFrame();
+                    SourceRectangle = sheetInfo.sourceFrame;
                 }
 
                 else
@@ -173,7 +170,7 @@ namespace GP_Final
                     return false;
                 }
 
-                if (this.sheetInfo.currentFrame == 0)
+                if (sheetInfo.currentFrame == 0)
                     return true;
 
                 else

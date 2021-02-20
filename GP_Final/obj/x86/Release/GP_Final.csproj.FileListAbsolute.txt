@@ -480,3 +480,124 @@ D:\Documents\GitHub\LaG\LaG\GP_Final\obj\x86\Release\GP_Final.csproj.CopyComplet
 D:\Documents\GitHub\LaG\LaG\GP_Final\obj\x86\Release\Lanko and Glub.exe
 D:\Documents\GitHub\LaG\LaG\GP_Final\obj\x86\Release\Lanko and Glub.pdb
 D:\Documents\GitHub\LaG\LaG\GP_Final\obj\x86\Release\GP_Final.csprojAssemblyReference.cache
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Aim.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Arrow.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Background.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\bat_hit2.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\BladeTrapAttack.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\BlueGemGet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Border_Bottom.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Border_Inside.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Border_Left.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Border_Right.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Border_Top.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\CatchGlub.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Credits.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Crosshair.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Cyan_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Exit.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\game_end.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Glub_BallAnim_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Glub_Burst_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\glub_runanimation_spritesheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Glub_Run_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\glub_throw.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\glub_throw2.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Gold_Bat_Point_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Gold_Bat_SpawnAnim_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Gold_Bat_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Green_Broken_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Green_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\How_Play.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Instructions.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Jean_Luc.wma
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Jean_Luc.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Land.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Lanko_Idle_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Lanko_Run_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\music_game.wma
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\music_game.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\music_waiting_loop.wma
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\music_waiting_loop.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\new_highscore.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Options.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\powerup_break.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\PowerUp_Diamond copy.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\powerup_get.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Red_Bat_Point_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Red_Bat_SpawnAnim_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Red_Bat_SpriteSheet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Start.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Title.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Title_Background.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\CyanGem.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GlubBall.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GlubBurst.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GlubRun.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GoldBat.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GoldBatPoints.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GoldBatSpawn.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GreenGem.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\GreenGemBroken.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\LankoIdle.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\LankoRun.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\RedBat.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\RedBatPoints.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteSheets\RedBatSpawn.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\BatHit.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\BlueGemGet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\CatchGlub.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\GameEnd.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\GlubThrow.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\Land.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\NewHighScore.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\PowerupBreak.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SFX\PowerupGet.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\Aim.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\Background.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\BorderBottom.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\BorderInside.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\BorderLeft.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\BorderRight.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\BorderTop.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\Crosshair.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Sprites\Instructions.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Music\BetweenRounds.wma
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Music\BetweenRounds.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Music\Round.wma
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Music\Round.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\ConsoleFont.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\Font.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Content\SpriteMarker.xnb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Lanko and Glub.exe.config
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Lanko and Glub.exe.manifest
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Lanko and Glub.application
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Lanko and Glub.exe
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\Lanko and Glub.pdb
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\MonoGame.Framework.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.MediaFoundation.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.XAudio2.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.DXGI.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.Direct3D11.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.Direct2D1.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.XInput.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.RawInput.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.Direct3D9.dll
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\MonoGame.Framework.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.MediaFoundation.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.XAudio2.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.DXGI.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.Direct3D11.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.Direct2D1.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.XInput.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.RawInput.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\bin\Windows\Release\SharpDX.Direct3D9.xml
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\GP_Final.csprojAssemblyReference.cache
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\GP_Final.csproj.CoreCompileInputs.cache
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\Lanko and Glub.exe.manifest
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\Lanko and Glub.application
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\GP_Final.csproj.CopyComplete
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\Lanko and Glub.exe
+D:\Documents\GitHub\LankoAndGlub\GP_Final\obj\x86\Release\Lanko and Glub.pdb

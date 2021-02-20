@@ -6,12 +6,12 @@
 
         public GameConsoleLanko()
         {
-            this.console = null;
+            console = null;
         }
 
         public GameConsoleLanko(GameConsole gameconsole)
         {
-            this.console = gameconsole;
+            console = gameconsole;
         }
 
         public override void Log(string s)

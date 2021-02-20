@@ -30,31 +30,31 @@ namespace GP_Final
         private int idleAnimationCount, runAnimationCount, 
             updates_Between_Idle, updates_Between_Run;
 
-        private bool idleAnimCycled, spaceReleased, canJumpAgain;
+        private bool idleAnimCycled, canJumpAgain;
 
         SoundEffect ThrowSound;
 
         protected LankoState state;
         public LankoState State
         {
-            get { return this.state; }
+            get { return state; }
 
             set
             {
-                if (this.state != value)
+                if (state != value)
                 {
-                    this.state = this.gcLanko.Pub_State = value;
+                    state = gcLanko.Pub_State = value;
 
-                    if (this.state == LankoState.Standing)
+                    if (state == LankoState.Standing)
                     {
-                        this.SwapSpriteSheet(idle_sheet, idle_Info);
-                        this.Location.Y += Math.Abs(Hitbox.Bottom - this.border.Walls[2].LocationRect.Top);
-                        this.UpdateHitbox();
+                        SwapSpriteSheet(idle_sheet, idle_Info);
+                        Location.Y += Math.Abs(Hitbox.Bottom - border.Walls[2].LocationRect.Top);
+                        UpdateHitbox();
                     }
 
                     else
                     {                        
-                        this.SwapSpriteSheet(run_sheet, run_Info);
+                        SwapSpriteSheet(run_sheet, run_Info);
                     }
                 }
             }
@@ -64,25 +64,24 @@ namespace GP_Final
 
         public bool HasJumped
         {
-            get { return this.hasJumped; }
+            get { return hasJumped; }
             set
             {
-                if (this.hasJumped != value)
+                if (hasJumped != value)
                 {
-                    this.hasJumped = this.gcLanko.HasJumped = value;
+                    hasJumped = gcLanko.HasJumped = value;
                     if (value == true)
                     {
-                        if (this.state == LankoState.Standing)
-                            this.SwapSpriteSheet(run_sheet, run_Info);
+                        if (state == LankoState.Standing)
+                            SwapSpriteSheet(run_sheet, run_Info);
 
                         run_Info.currentFrame = 2;
                         run_Info.UpdateSourceFrame();
-                        this.SourceRectangle = run_Info.sourceFrame;
+                        SourceRectangle = run_Info.sourceFrame;
                     }
 
-                    else if (this.state == LankoState.Standing)
+                    else if (state == LankoState.Standing)
                     {
-                        spaceReleased = false;
                         SwapSpriteSheet(idle_sheet, idle_Info);
                     }
 
@@ -93,26 +92,26 @@ namespace GP_Final
       
         public bool HasGlub
         {
-            get { return this.hasGlub; }
+            get { return hasGlub; }
             set
             {
-                if (this.hasGlub != value)
+                if (hasGlub != value)
                 {
-                    this.hasGlub = this.gcLanko.HasGlub = value;
-                    this.BoolNotify(HasGlub, "HasGlub");
+                    hasGlub = gcLanko.HasGlub = value;
+                    BoolNotify(HasGlub, "HasGlub");
                 }
             }
         }
 
         public bool IsAiming
         {
-            get { return this.isAiming; }
+            get { return isAiming; }
             set
             {
-                if (this.isAiming != value)
+                if (isAiming != value)
                 {
-                    this.isAiming = this.gcLanko.IsAiming = value;
-                    this.BoolNotify(this.IsAiming, "IsAiming");
+                    isAiming = gcLanko.IsAiming = value;
+                    BoolNotify(IsAiming, "IsAiming");
                 }
             }
         }
@@ -121,17 +120,17 @@ namespace GP_Final
         {
             gcLanko = new GameConsoleLanko((GameConsole)game.Services.GetService<IGameConsole>());
      
-            this.border = new LevelBorder(game);
+            border = new LevelBorder(game);
             game.Components.Add(border);
 
-            this.glub = new MonoGameGlub(game);
-            this.glub.lanko = this;
+            glub = new MonoGameGlub(game);
+            glub.lanko = this;
             game.Components.Add(glub);
 
-            this.observers = new List<ILankoObserver>();
-            this.Attach(glub);
+            observers = new List<ILankoObserver>();
+            Attach(glub);
 
-            this.controller = new InputController(game);
+            controller = new InputController(game);
 
             ThrowSound = content.Load<SoundEffect>("SFX/GlubThrow");
         }
@@ -160,7 +159,7 @@ namespace GP_Final
 
             spriteSheetFramesWide = idle_Info.totalFrames;
 
-            ground = this.border.Walls[2].LocationRect.Top;
+            ground = border.Walls[2].LocationRect.Top;
 
             aim = content.Load<Texture2D>("Sprites/Aim");
             aimScale = .5f;        
@@ -181,16 +180,15 @@ namespace GP_Final
 
             Direction = new Vector2(0, 0);
             Location = new Vector2(border.Walls[2].LocationRect.Width/2, 
-                this.ground - this.Hitbox.Height);
+                ground - Hitbox.Height);
            
-            this.center = new Vector2(Location.X + this.Hitbox.Width / 2, Location.Y + this.Hitbox.Height / 2);
+            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
 
-            aimDirection = this.controller.mouseDirection - this.center;
+            aimDirection = controller.mouseDirection - center;
            
             HasJumped = false;
             HasGlub = true;
             idleAnimCycled = false;
-            spaceReleased = false;
 
             SetTranformAndRect();
             glub.SetStartLocationAndGround();          
@@ -202,14 +200,14 @@ namespace GP_Final
         {
             spriteBatch.Begin();
 
-            if (this.IsAiming)
+            if (IsAiming)
             {
-                spriteBatch.Draw(aim, this.glub.center, null, Color.MonoGameOrange, (float)Math.Atan2(this.aimDirection.Y, 
-                    this.aimDirection.X) + (float)(Math.PI * .5f),
+                spriteBatch.Draw(aim, glub.center, null, Color.MonoGameOrange, (float)Math.Atan2(aimDirection.Y, 
+                    aimDirection.X) + (float)(Math.PI * .5f),
                     new Vector2(aim.Width / 2, aim.Bounds.Bottom), aimScale, SpriteEffects.None, 0f);
             }
 
-            spriteBatch.Draw(crossHair, this.controller.mouseDirection, null, Color.White, 0f,
+            spriteBatch.Draw(crossHair, controller.mouseDirection, null, Color.White, 0f,
                 new Vector2(crossHair.Width / 2, crossHair.Height / 2), crossHairScale, SpriteEffects.None, 0f);
                 spriteBatch.End();
 
@@ -218,11 +216,11 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            this.controller.Update();
+            controller.Update();
 
             if (!Lanko_And_Glub.utility.GamePaused)
             {
-                this.UpdateLanko(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
+                UpdateLanko(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
                 base.Update(gameTime);
             }
         }
@@ -231,7 +229,7 @@ namespace GP_Final
         {
             LevelBorderCollision();
 
-            switch (this.State)
+            switch (State)
             {
                 case LankoState.Standing:
                     CycleIdleAnim();
@@ -243,25 +241,25 @@ namespace GP_Final
                     break;
             }
 
-            if(this.HasJumped == true)
-                this.Direction += new Vector2(0, gravity);
+            if(HasJumped == true)
+                Direction += new Vector2(0, gravity);
 
-            if (this.glub.HasBounced)
+            if (glub.HasBounced)
             {
-                switch(this.glub.State)
+                switch(glub.State)
                 {
                     case GlubState.Thrown:
                     case GlubState.Falling:
                     case GlubState.Stranded:
                     case GlubState.SeekingLanko:
+                    {
+                        if (Hitbox.Intersects(glub.Hitbox))
                         {
-                            if (this.Hitbox.Intersects(this.glub.Hitbox))
-                            {
-                                this.glub.GetCaughtByLanko();                                
-                                this.HasGlub = true;
-                                catchGlub.Play(.4f, 0f, 0f);
-                            }
+                            glub.GetCaughtByLanko();                                
+                            HasGlub = true;
+                            catchGlub.Play(.4f, 0f, 0f);
                         }
+                    }
                         break;
 
                     default:
@@ -273,45 +271,45 @@ namespace GP_Final
         #region Keyboard
          
         #region Walking
-            if (this.controller.keys.IsKeyUp(Keys.A) && this.controller.keys.IsKeyUp(Keys.D))
+            if (controller.keys.IsKeyUp(Keys.A) && controller.keys.IsKeyUp(Keys.D))
             {
-                if(this.HasJumped == false)
+                if(HasJumped == false)
                 {
-                    this.State = LankoState.Standing;
-                    this.Direction = new Vector2(0, 0);
+                    State = LankoState.Standing;
+                    Direction = new Vector2(0, 0);
                 }
 
                 else
                 {
-                    if (this.Direction.X > 0)
-                        this.Direction.X -= .05f;
-                    else if (this.Direction.X < 0)
-                        this.Direction.X += .05f;
+                    if (Direction.X > 0)
+                        Direction.X -= .05f;
+                    else if (Direction.X < 0)
+                        Direction.X += .05f;
                 }
             }
 
             else if(controller.keys.IsKeyDown(Keys.A))
             {
-                this.SpriteEffects = SpriteEffects.None;
+                SpriteEffects = SpriteEffects.None;
 
-                this.Direction.X = 0;
+                Direction.X = 0;
 
-                if (this.HasJumped == false)
-                    this.Direction.X -= 1;
+                if (HasJumped == false)
+                    Direction.X -= 1;
                 else
-                    this.Direction.X -= .8f;
+                    Direction.X -= .8f;
             }
 
             else if (controller.keys.IsKeyDown(Keys.D))
             {
-                this.SpriteEffects = SpriteEffects.FlipHorizontally;
+                SpriteEffects = SpriteEffects.FlipHorizontally;
 
-                this.Direction.X = 0;
+                Direction.X = 0;
 
-                if (this.HasJumped == false)
-                    this.Direction.X += 1;
+                if (HasJumped == false)
+                    Direction.X += 1;
                 else
-                    this.Direction.X += .8f;
+                    Direction.X += .8f;
             }
 
         #endregion
@@ -319,93 +317,91 @@ namespace GP_Final
             #region Jumping
             if (controller.keys.IsKeyDown(Keys.Space))
             {
-                if (this.HasJumped)
+                if (HasJumped)
                 {
-                    if (this.Direction.Y <= 0)
-                        this.Direction.Y -= .15f;
+                    if (Direction.Y <= 0)
+                        Direction.Y -= .15f;
                 }
 
-                else if(!this.HasJumped && canJumpAgain)
+                else if(!HasJumped && canJumpAgain)
                 {
-                    this.HasJumped = true;
-                    this.Location.Y -= 5;
-                    this.Direction.Y -= jumpForce;
+                    HasJumped = true;
+                    Location.Y -= 5;
+                    Direction.Y -= jumpForce;
 
                     idleAnimationCount = 0;
                     runAnimationCount = 0;
                 }
             } 
 
-            if (this.HasJumped == true && controller.keys.IsKeyUp(Keys.Space))
+            if (HasJumped == true && controller.keys.IsKeyUp(Keys.Space))
             {
-                spaceReleased = true;
 
-                if (this.Direction.Y >= 0)
+                if (Direction.Y >= 0)
                 {
-                    if (this.Direction.Y <= 1)
-                        this.Direction.Y += .015f;
+                    if (Direction.Y <= 1)
+                        Direction.Y += .015f;
 
                     else
-                        this.Direction.Y += .035f;
+                        Direction.Y += .035f;
                 }
                     
             }
 
-            if (!this.HasJumped && controller.keys.IsKeyUp(Keys.Space))
+            if (!HasJumped && controller.keys.IsKeyUp(Keys.Space))
                 canJumpAgain = true;
 
             #endregion
-
             #endregion
 
             #region Mouse
 
-            if (this.controller.mouse.LeftButton == ButtonState.Pressed && this.HasGlub)
+            if (controller.mouse.LeftButton == ButtonState.Pressed && HasGlub)
             {
-                switch (this.glub.State)
+                switch (glub.State)
                 {
                     case GlubState.Held:
                     case GlubState.Still:
                     case GlubState.AnimCoolDown:
-                        this.IsAiming = true;
+                        IsAiming = true;
                         break;
                 }
                  
-                this.aimDirection = this.controller.mouseDirection - this.glub.center;
+                aimDirection = controller.mouseDirection - glub.center;
             }
 
-            if (this.controller.mouse.LeftButton == ButtonState.Released && this.IsAiming)
+            if (controller.mouse.LeftButton == ButtonState.Released && IsAiming)
             {
-                this.IsAiming = false;
-                this.HasGlub = false;
+                IsAiming = false;
+                HasGlub = false;
                 ThrowSound.Play(.3f, 0, 0);
             }
 
             #endregion
 
-            if (Math.Abs(this.Direction.Length()) > 0)
+            if (Math.Abs(Direction.Length()) > 0)
             {
                 idleAnimationCount = 0;
 
-                if (this.HasJumped == false)
+                if (HasJumped == false)
                 {
-                    this.State = LankoState.Walking;
-                    this.Location += (Vector2.Normalize(this.Direction) * (this.Speed * this.speedMod) * (float)timeElapsed);
+                    State = LankoState.Walking;
+                    Location += (Vector2.Normalize(Direction) * (Speed * speedMod) * (float)timeElapsed);
                 }
 
                 else
                 {
                     //Clamps X direction
-                    if (this.Direction.X > 1f)
-                        this.Direction.X = 1f;
+                    if (Direction.X > 1f)
+                        Direction.X = 1f;
 
-                    else if (this.Direction.X < -1f)
-                        this.Direction.X = -1f;
+                    else if (Direction.X < -1f)
+                        Direction.X = -1f;
 
-                    this.Location += ((this.Direction) * (this.Speed * this.speedMod) * (float)timeElapsed);
+                    Location += ((Direction) * (Speed * speedMod) * (float)timeElapsed);
                 }
 
-                this.center = new Vector2(Location.X + this.Hitbox.Width/2, Location.Y + this.Hitbox.Height/2);
+                center = new Vector2(Location.X + Hitbox.Width/2, Location.Y + Hitbox.Height/2);
 
                 UpdateHitbox();
             }
@@ -413,40 +409,40 @@ namespace GP_Final
 
         public void IncreaseSpeedMod()
         {
-            this.speedMod += .1f;
+            speedMod += .1f;
             blueGemGet.Play(.5f, 0f, 0f);
         }
 
         public void ResetSpeedMod()
         {
-            this.speedMod = 1;
+            speedMod = 1;
         }
 
         #region Animation Methods
 
         private void SwapSpriteSheet(Texture2D spriteSheet, SpriteSheetInfo info)
         {
-            this.spriteTexture = spriteSheet;
+            spriteTexture = spriteSheet;
 
-            this.idle_Info.currentFrame = 0;
-            this.spriteSheetFramesWide = info.totalFrames;
+            idle_Info.currentFrame = 0;
+            spriteSheetFramesWide = info.totalFrames;
 
             info.UpdateSourceFrame();
-            this.SourceRectangle = info.sourceFrame;
+            SourceRectangle = info.sourceFrame;
 
-            if (info == this.idle_Info)
-                this.runAnimationCount = 0;
-            else if (info == this.run_Info)
-                this.idleAnimationCount = 0;
+            if (info == idle_Info)
+                runAnimationCount = 0;
+            else if (info == run_Info)
+                idleAnimationCount = 0;
 
-            this.current_Info = info;
+            current_Info = info;
 
             UpdateHitbox();
         }
 
         private void CycleRunAnim()
         {
-            if (runAnimationCount >= this.updates_Between_Run)
+            if (runAnimationCount >= updates_Between_Run)
             {
                 run_Info.currentFrame++;
                 runAnimationCount = 0;
@@ -455,7 +451,7 @@ namespace GP_Final
                     run_Info.currentFrame = 0;
 
                 run_Info.UpdateSourceFrame();
-                this.SourceRectangle = run_Info.sourceFrame;
+                SourceRectangle = run_Info.sourceFrame;
             }
 
             else
@@ -467,7 +463,7 @@ namespace GP_Final
 
         private void CycleIdleAnim()
         {
-            if(idleAnimationCount >= this.updates_Between_Idle)
+            if(idleAnimationCount >= updates_Between_Idle)
             {
                 switch (idle_Info.currentFrame)
                 {
@@ -492,7 +488,7 @@ namespace GP_Final
                 idleAnimationCount = 0;
 
                 idle_Info.UpdateSourceFrame();
-                this.SourceRectangle = idle_Info.sourceFrame;
+                SourceRectangle = idle_Info.sourceFrame;
             }
 
             else
@@ -506,51 +502,51 @@ namespace GP_Final
 
         private void UpdateHitbox()
         {
-            this.locationRect.Location = this.Location.ToPoint();
+            locationRect.Location = Location.ToPoint();
 
             float scaledHeight = current_Info.sourceFrame.Height * scale;
             float scaledWidth = current_Info.sourceFrame.Width * scale;
 
-            this.Hitbox = new Rectangle(this.LocationRect.X, this.LocationRect.Y,
+            Hitbox = new Rectangle(LocationRect.X, LocationRect.Y,
                 (int)scaledWidth, (int)scaledHeight);
         }
 
         private void LevelBorderCollision()
         {
-            foreach(Wall w in this.border.Walls)
+            foreach(Wall w in border.Walls)
 
-            if(this.Hitbox.Intersects(w.LocationRect))
+            if(Hitbox.Intersects(w.LocationRect))
             {
-                Rectangle rect = this.Intersection(this.Hitbox, w.LocationRect);
+                Rectangle rect = Intersection(Hitbox, w.LocationRect);
                 if (rect.Height < rect.Width)
                 {
-                    if (rect.Top > this.center.Y)
+                    if (rect.Top > center.Y)
                     {
                         if (HasJumped) { landOnGround.Play(.3f, 0, 0); }
 
-                        this.Location.Y -= (float)rect.Height;
-                        this.HasJumped = false;
-                        this.Location.Y = this.ground - this.Hitbox.Height;
-                        this.Direction.Y = 0;
+                        Location.Y -= (float)rect.Height;
+                        HasJumped = false;
+                        Location.Y = ground - Hitbox.Height;
+                        Direction.Y = 0;
                         
 
                         if(controller.keys.IsKeyDown(Keys.Space))
                             canJumpAgain = false;
                     }
 
-                    if (rect.Bottom < this.center.Y)
-                        this.Location.Y += (float)rect.Height;
+                    if (rect.Bottom < center.Y)
+                        Location.Y += (float)rect.Height;
                 }
 
                 else if (rect.Height > rect.Width)
                 {
-                    if (rect.Right > this.center.X)
+                    if (rect.Right > center.X)
                     {
-                        this.Location.X -= (float)rect.Width;
+                        Location.X -= (float)rect.Width;
                     }
 
-                    if (rect.Left < this.center.X)
-                        this.Location.X += (float)rect.Width;
+                    if (rect.Left < center.X)
+                        Location.X += (float)rect.Width;
                 }
 
                 UpdateHitbox();
@@ -567,12 +563,12 @@ namespace GP_Final
 
         public void Attach(ILankoObserver observer)
         {
-            this.observers.Add(observer);
+            observers.Add(observer);
         }
 
         public void Detach(ILankoObserver observer)
         {
-            this.observers.Remove(observer);
+            observers.Remove(observer);
         }
 
         public void Attach(IObserver observer)
@@ -586,7 +582,7 @@ namespace GP_Final
 
         public void BoolNotify(bool b, string s)
         {
-            foreach (ILankoObserver o in this.observers)
+            foreach (ILankoObserver o in observers)
             {
                 o.Update(b, s);
             }

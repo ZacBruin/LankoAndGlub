@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Audio;
 
 namespace GP_Final
 {
@@ -20,8 +18,10 @@ namespace GP_Final
         public MonoGameLanko lanko;
         public GameRound round;
 
-        public float TimeBetweenTargetSpawns, TimeTargetSpawned,
-            TimeBetweenPowerUpSpawns, TimePowerUpSpawned;
+        public float TimeBetweenTargetSpawns, 
+                     TimeTargetSpawned, 
+                     TimeBetweenPowerUpSpawns, 
+                     TimePowerUpSpawned;
 
         private int maxTargets, maxPowerUps;
 
@@ -75,18 +75,18 @@ namespace GP_Final
                 switch (p.state)
                 {
                     case Item.State.Spawning:
-                        if (p.SpawnInAnim())
+                        if (p.SpawnAnimation())
                             p.state = Target.State.Moving;
                         break;
 
                     case Item.State.DeSpawning:
-                        if (p.SpawnOutAnim())
+                        if (p.DespawnAnimation())
                             PowerUpsToDelete.Add(p);
                         break;
                 }
 
 
-                if (p.MaxTimeOnScreen < p.CurrentTimeOnScreen || this.round.RoundIsOver)
+                if (p.MaxTimeOnScreen < p.CurrentTimeOnScreen || round.RoundIsOver)
                 {
                     if (p.state == Item.State.Moving)
                         p.state = Item.State.DeSpawning;
@@ -94,27 +94,27 @@ namespace GP_Final
 
                 else if (p is GreenGem)
                 {
-                    if (this.glub.State == GlubState.Thrown && this.glub.Hitbox.Intersects(p.Hitbox))
+                    if (glub.State == GlubState.Thrown && glub.Hitbox.Intersects(p.Hitbox))
                     {
-                        if (this.glub.HasStrongBuff == false)
-                            this.glub.ThrownToSeeking();
+                        if (glub.HasStrongBuff == false)
+                            glub.ThrownToSeeking();
 
                         if (p.CheckDamage())
                         {
-                            this.glub.GetBuffed(gameTime);
+                            glub.GetBuffed(gameTime);
                             PowerUpsToDelete.Add(p);
                         }
 
-                        this.glub.HasBounced = true;
+                        glub.HasBounced = true;
                     }
                 }
 
                 else if (p is CyanGem)
                 {
-                    if (this.lanko.Hitbox.Intersects(p.Hitbox))
+                    if (lanko.Hitbox.Intersects(p.Hitbox))
                     {
                         PowerUpsToDelete.Add(p);
-                        this.lanko.IncreaseSpeedMod();
+                        lanko.IncreaseSpeedMod();
                     }
                 }
 
@@ -122,13 +122,13 @@ namespace GP_Final
             }
 
             foreach (Target t in TargetsToDelete)
-                this.Targets.Remove(t);
+                Targets.Remove(t);
 
             foreach (PowerUp p in PowerUpsToDelete)
-                this.PowerUps.Remove(p);
+                PowerUps.Remove(p);
 
             foreach (PointSprite ps in PointSpritesToDelete)
-                this.Points.Remove(ps);
+                Points.Remove(ps);
 
             TargetsToDelete.Clear();
             PowerUpsToDelete.Clear();
@@ -142,12 +142,12 @@ namespace GP_Final
                 switch (t.state)
                 {
                     case Target.State.Spawning:
-                        if (t.SpawnInAnim())
+                        if (t.SpawnAnimation())
                             t.state = Target.State.Moving;
                         break;
 
                     case Target.State.DeSpawning:
-                        if (t.SpawnOutAnim())
+                        if (t.DespawnAnimation())
                             TargetsToDelete.Add(t);
                         break;
 
@@ -157,7 +157,7 @@ namespace GP_Final
                         break;
                 }
 
-                if (t.MaxTimeOnScreen < t.CurrentTimeOnScreen || this.round.RoundIsOver)
+                if (t.MaxTimeOnScreen < t.CurrentTimeOnScreen || round.RoundIsOver)
                 {
                     switch (t.state)
                     {
@@ -171,7 +171,7 @@ namespace GP_Final
 
                 else
                 {
-                    if (this.glub.State == GlubState.Thrown && this.glub.Hitbox.Intersects(t.Hitbox))
+                    if (glub.State == GlubState.Thrown && glub.Hitbox.Intersects(t.Hitbox))
                     {
                         PointSprite ps;
                         switch (t.state)
@@ -180,23 +180,25 @@ namespace GP_Final
                             case Target.State.SpeedDown:
                             case Target.State.SpeedUp:
                             case Target.State.DeSpawning:
-                                if(t is RedBat) { ps = new PointSprite(this.Game, true); }
-                                else { ps = new PointSprite(this.Game, false); }
+                                if(t is RedBat)
+                                    ps = new PointSprite(Game, true);
+                                else
+                                    ps = new PointSprite(Game, false);
 
                                 ps.Initialize();
                                 ps.Location = new Vector2(t.LocationRect.X + 25, t.LocationRect.Y - 10);
                                 ps.SetStartPos();
 
-                                this.AddPointSprite(ps);
+                                AddPointSprite(ps);
 
                                 t.PlayHitSound();
 
-                                this.round.Points += t.pointValue;
+                                round.Points += t.pointValue;
 
-                                if (this.glub.HasStrongBuff == false)
-                                    this.glub.ThrownToSeeking();
+                                if (glub.HasStrongBuff == false)
+                                    glub.ThrownToSeeking();
 
-                                this.glub.HasBounced = true;
+                                glub.HasBounced = true;
                                 t.state = Target.State.Dying;
                                 t.Speed = 10;
                                 t.color = new Color(230, 230, 230, 230);
@@ -214,22 +216,22 @@ namespace GP_Final
 
         private void updatePointSprites(GameTime gameTime)
         {
-            foreach(PointSprite ps in this.Points)
+            foreach(PointSprite ps in Points)
             {
                 ps.Update(gameTime);
-                if (ps.color.A < 10) { this.PointSpritesToDelete.Add(ps); }
+                if (ps.color.A < 10) { PointSpritesToDelete.Add(ps); }
             }
         }
 
         private void updateItemManager(GameTime gameTime)
         {
-            if (this.round.RoundIsOver == false)
-                this.generateItem(gameTime);
+            if (round.RoundIsOver == false)
+                generateItem(gameTime);
 
             else
             {
-                this.lanko.ResetSpeedMod();
-                this.glub.HasStrongBuff = false;
+                lanko.ResetSpeedMod();
+                glub.HasStrongBuff = false;
             }
 
             updatePowerup(gameTime);
@@ -245,34 +247,34 @@ namespace GP_Final
 
             if (i is RedBat)
             {
-                i.Location = new Vector2(rand.Next((int)(this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    ((int)this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                    rand.Next((int)(this.border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
-                    (int)(this.border.Walls[0].LocationRect.Bottom + 400)));
+                i.Location = new Vector2(rand.Next((border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
+                    (border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
+                    rand.Next((border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
+                    (border.Walls[0].LocationRect.Bottom + 400)));
             }
 
             else if (i is GoldenBat)
             {
-                i.Location = new Vector2(rand.Next((this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                    rand.Next((this.border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
-                    this.border.Walls[0].LocationRect.Bottom + 150));
+                i.Location = new Vector2(rand.Next((border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
+                    (border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
+                    rand.Next((border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
+                    border.Walls[0].LocationRect.Bottom + 150));
             }
 
             else if (i is CyanGem)
             {
-                i.Location = new Vector2(rand.Next((this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                     rand.Next((this.border.Walls[0].LocationRect.Bottom + 300),
-                     this.border.Walls[2].LocationRect.Top - 50));
+                i.Location = new Vector2(rand.Next((border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
+                    (border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
+                     rand.Next((border.Walls[0].LocationRect.Bottom + 300),
+                     border.Walls[2].LocationRect.Top - 50));
             }
 
             else if (i is GreenGem)
             {
-                i.Location = new Vector2(rand.Next((this.border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (this.border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                    rand.Next((this.border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
-                    this.border.Walls[0].LocationRect.Bottom + 400));
+                i.Location = new Vector2(rand.Next((border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
+                    (border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
+                    rand.Next((border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
+                    border.Walls[0].LocationRect.Bottom + 400));
             }
 
             i.SetTranformAndRect();
@@ -293,7 +295,7 @@ namespace GP_Final
                     return true;
             }
 
-            if(i.Hitbox.Intersects(this.lanko.LocationRect) || i.Hitbox.Intersects(this.glub.Hitbox))
+            if(i.Hitbox.Intersects(lanko.LocationRect) || i.Hitbox.Intersects(glub.Hitbox))
                 return true;
 
             return false;
@@ -303,13 +305,13 @@ namespace GP_Final
         {
             Target targ;
 
-            if(IsBasicTarget) targ = new RedBat(this.Game);    
-            else targ = new GoldenBat(this.Game);
+            if(IsBasicTarget) targ = new RedBat(Game);    
+            else targ = new GoldenBat(Game);
 
             targ.Initialize();
-            this.positionItem(targ);
+            positionItem(targ);
 
-            while (checkForOverlap(targ)) { this.positionItem(targ); }
+            while (checkForOverlap(targ)) { positionItem(targ); }
 
             do
             {                
@@ -321,48 +323,47 @@ namespace GP_Final
             if (targ.Direction.X > 0)
                 targ.SpriteEffects = SpriteEffects.FlipHorizontally;
 
-            this.AddTarget(targ);
+            AddTarget(targ);
         }
 
         private void spawnPowerUp(bool IsTriangle)
         {
             if (IsTriangle)
             {
-                GreenGem tp = new GreenGem(this.Game);
+                GreenGem tp = new GreenGem(Game);
                 tp.Initialize();
-                this.positionItem(tp);
+                positionItem(tp);
 
                 while (checkForOverlap(tp))
                 {
-                    this.positionItem(tp);
+                    positionItem(tp);
                 }
 
                 tp.Direction = new Vector2(rand.Next(-100, 100), rand.Next(-30, 30));
-                this.AddPowerUp(tp);
+                AddPowerUp(tp);
             }
 
             else
             {
-                CyanGem dp = new CyanGem(this.Game);
+                CyanGem dp = new CyanGem(Game);
                 dp.Initialize();
-                this.positionItem(dp);
+                positionItem(dp);
 
                 while (checkForOverlap(dp))
                 {
-                    this.positionItem(dp);
+                    positionItem(dp);
                 }
 
-                this.AddPowerUp(dp);
+                AddPowerUp(dp);
             }
         }
 
         private void generateItem(GameTime gametime)
         {
-            if (this.Targets.Count == 0 ||
-                (gametime.TotalGameTime.TotalMilliseconds / 1000 - this.TimeTargetSpawned > this.TimeBetweenTargetSpawns))
+            if (Targets.Count == 0 ||
+                (gametime.TotalGameTime.TotalMilliseconds / 1000 - TimeTargetSpawned > TimeBetweenTargetSpawns))
             {
-
-                if (this.Targets.Count < maxTargets)
+                if (Targets.Count < maxTargets)
                 {
                     int odds = rand.Next(0, 50);
 
@@ -371,13 +372,13 @@ namespace GP_Final
                         case 1:
                         case 44:
                         case 19:
-                            this.spawnTarget(true);
-                            this.TimeTargetSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
+                            spawnTarget(true);
+                            TimeTargetSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
                             break;
 
                         case 14:
-                            this.spawnTarget(false);
-                            this.TimeTargetSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
+                            spawnTarget(false);
+                            TimeTargetSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
                             break;
 
                         default:
@@ -386,11 +387,11 @@ namespace GP_Final
                 }
             }
 
-            if (this.round.CurrentRoundTime > 5)
+            if (round.CurrentRoundTime > 5)
             {
-                if ((gametime.TotalGameTime.TotalMilliseconds / 1000 - this.TimePowerUpSpawned > this.TimeBetweenPowerUpSpawns))
+                if ((gametime.TotalGameTime.TotalMilliseconds / 1000 - TimePowerUpSpawned > TimeBetweenPowerUpSpawns))
                 {
-                    if (this.PowerUps.Count < maxPowerUps)
+                    if (PowerUps.Count < maxPowerUps)
                     {
                         int odds = rand.Next(60, 90);
 
@@ -399,13 +400,13 @@ namespace GP_Final
                             case 62:
                             case 87:
                             case 84:
-                                this.spawnPowerUp(false);
-                                this.TimePowerUpSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
+                                spawnPowerUp(false);
+                                TimePowerUpSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
                                 break;
 
                             case 71:
-                                this.spawnPowerUp(true);
-                                this.TimePowerUpSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
+                                spawnPowerUp(true);
+                                TimePowerUpSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
                                 break;
 
                             default:
@@ -421,7 +422,7 @@ namespace GP_Final
         #region "Physics"
         private void checkCollision(Item i)
         {
-            foreach (Wall w in this.border.Walls)
+            foreach (Wall w in border.Walls)
             {
                 if (i.Hitbox.Intersects(w.LocationRect))
                 {

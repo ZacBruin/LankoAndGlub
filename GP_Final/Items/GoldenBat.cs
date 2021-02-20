@@ -16,9 +16,9 @@ namespace GP_Final
 
         public GoldenBat(Game game) : base(game)
         {
-            this.MaxTimeOnScreen = 4f;
-            this.pointValue = 3;
-            this.Speed = 250;
+            MaxTimeOnScreen = 4f;
+            pointValue = 3;
+            Speed = 250;
 
             timeBetweenChecks = .1f;
             minTimeBeforeDirChange = 1.0f;
@@ -29,14 +29,14 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            this.movementSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBat");
-            this.spawningSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatSpawn");
+            movementSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBat");
+            spawningSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatSpawn");
 
-            this.spriteTexture = this.spawningSpriteSheet;
-            sheetInfo = new SpriteSheetInfo(5, spriteTexture.Width, spriteTexture.Height, updates_Between_Frames);
+            spriteTexture = spawningSpriteSheet;
+            sheetInfo = new SpriteSheetInfo(5, spriteTexture.Width, spriteTexture.Height, updatesBetweenFrames);
 
-            this.SourceRectangle = sheetInfo.sourceFrame;
-            this.spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = sheetInfo.sourceFrame;
+            spriteSheetFramesWide = sheetInfo.totalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();
@@ -53,43 +53,43 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (this.hasSpawned)
+            if (hasSpawned)
             {
-                this.spriteTexture = this.movementSpriteSheet;
-                this.sheetInfo.currentFrame = 0;
-                this.sheetInfo.UpdateSourceFrame();
-                this.SourceRectangle = this.sheetInfo.sourceFrame;
-                this.hasSpawned = false;
+                spriteTexture = movementSpriteSheet;
+                sheetInfo.currentFrame = 0;
+                sheetInfo.UpdateSourceFrame();
+                SourceRectangle = sheetInfo.sourceFrame;
+                hasSpawned = false;
             }
 
             if (coroutines.Count == 0)
-                if(this.CurrentTimeOnScreen <= this.MaxTimeOnScreen)
+                if(CurrentTimeOnScreen <= MaxTimeOnScreen)
                     coroutines.Start(DirectionChangeDelay(gameTime));
 
-            switch (this.state)
+            switch (state)
             {
                 case State.SpeedDown:
-                    if (this.Speed > 100)
-                        this.Speed -= 2;
+                    if (Speed > 100)
+                        Speed -= 2;
                     else
                         ChangeDirection(gameTime);
-                        break;
+                    break;
 
                 case State.SpeedUp:
-                        if (this.Speed < 250)
-                            this.Speed += 2;
-                        else
-                            this.state = State.Moving;
-                        break;   
+                    if (Speed < 250)
+                        Speed += 2;
+                    else
+                        state = State.Moving;
+                    break;   
             
                 case State.DeSpawning:
                 case State.Dying:
-                    if(this.coroutines.Running)
-                        this.coroutines.StopAll();
-                        break;
+                    if(coroutines.Running)
+                        coroutines.StopAll();
+                    break;
             }
 
-            if (this.state != State.Dying && this.state != State.DeSpawning)
+            if (state != State.Dying && state != State.DeSpawning)
             {
                 if (coroutines.Running)
                     coroutines.Update();
@@ -112,12 +112,12 @@ namespace GP_Final
         private IEnumerator DirectionChangeDelay(GameTime gameTime)
         {
             //Allow bat to be on screen for one second before it can change its direction
-            if (CurrentTimeOnScreen <= this.minTimeBeforeDirChange)
-                yield return coroutines.Pause(this.minTimeBeforeDirChange);
+            if (CurrentTimeOnScreen <= minTimeBeforeDirChange)
+                yield return coroutines.Pause(minTimeBeforeDirChange);
 
             else
             {
-                yield return coroutines.Pause(this.timeBetweenChecks);
+                yield return coroutines.Pause(timeBetweenChecks);
                 CheckForDirectionChange(gameTime);
             }
         }
@@ -126,28 +126,28 @@ namespace GP_Final
         {          
             do
             {
-                if (this.Direction.X >= 0)
-                    this.newDirection.X = rand.Next(-100, -30);
+                if (Direction.X >= 0)
+                    newDirection.X = rand.Next(-100, -30);
                 else
-                    this.newDirection.X = rand.Next(30, 100);
+                    newDirection.X = rand.Next(30, 100);
 
-                this.newDirection.Y = rand.Next(-20, 20);
+                newDirection.Y = rand.Next(-20, 20);
             }
-            while (Math.Abs(this.newDirection.Y) > Math.Abs(this.newDirection.X));
+            while (Math.Abs(newDirection.Y) > Math.Abs(newDirection.X));
 
-            this.state = State.SpeedDown;
+            state = State.SpeedDown;
         }
 
         private void ChangeDirection(GameTime gameTime)
         {
-            this.Direction = this.newDirection;
+            Direction = newDirection;
 
-            if (this.Direction.X > 0)
-                this.SpriteEffects = SpriteEffects.FlipHorizontally;
+            if (Direction.X > 0)
+                SpriteEffects = SpriteEffects.FlipHorizontally;
             else
-                this.SpriteEffects = SpriteEffects.None;
+                SpriteEffects = SpriteEffects.None;
 
-            this.state = State.SpeedUp;
+            state = State.SpeedUp;
 
             timeChangedDir = (float)gameTime.TotalGameTime.TotalMilliseconds / 1000;
             numTimesChangedDir++;

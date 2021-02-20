@@ -17,7 +17,7 @@ namespace GP_Final
             {
                 if(proct_State != value)
                 {
-                    this.Log("Glub State: " + value);
+                    Log("Glub State: " + value);
                     proct_State = value;
                 }
             }
@@ -33,7 +33,7 @@ namespace GP_Final
             {
                 if (withLanko != value)
                 {
-                    this.Log("Glub WithLanko: " + value);
+                    Log("Glub WithLanko: " + value);
                     withLanko = value;
                 }
             }
@@ -47,7 +47,7 @@ namespace GP_Final
             {
                 if (hasStrongBuff != value)
                 {
-                    this.Log("Glub CanDamage: " + value);
+                    Log("Glub CanDamage: " + value);
                     hasStrongBuff = value;
                 }
             }

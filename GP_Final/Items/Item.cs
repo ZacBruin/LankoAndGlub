@@ -11,7 +11,7 @@ namespace GP_Final
 
         protected bool firstUpdate, hasSpawned, isDespawning;
 
-        protected int updates_Between_Frames;
+        protected int updatesBetweenFrames;
 
         protected int animationCount;
         public SpriteSheetInfo sheetInfo;
@@ -21,14 +21,12 @@ namespace GP_Final
 
         public Item (Game game) : base(game)
         {
-            this.firstUpdate = true;
-            this.scale = .25f;
-            this.Direction = new Vector2(0, 0);
-            this.updates_Between_Frames = 7;
-            //this.ShowMarkers = true;
-            this.color = new Color(0, 0, 0, 0);
-            //this.color = new Color(256, 256, 256, 256);
-            this.hasSpawned = false;
+            firstUpdate = true;
+            scale = .25f;
+            Direction = new Vector2(0, 0);
+            updatesBetweenFrames = 7;
+            color = new Color(0, 0, 0, 0);
+            hasSpawned = false;
         }
 
         protected override void LoadContent()
@@ -50,20 +48,20 @@ namespace GP_Final
                     ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - GameTimeWhenSpawned;
             }
 
-            this.center = new Vector2
-                (Location.X + (this.spriteTexture.Width * scale / (2 * this.spriteSheetFramesWide)),
-                 Location.Y + (this.spriteTexture.Height * scale / 2));
+            center = new Vector2
+                (Location.X + (spriteTexture.Width * scale / (2 * spriteSheetFramesWide)),
+                 Location.Y + (spriteTexture.Height * scale / 2));
 
             //Cyan PowerUp does not move
             if (this is CyanGem){ }
             else
-                this.Location += (Vector2.Normalize(this.Direction) * (this.Speed) *
-                    (float)gameTime.ElapsedGameTime.Milliseconds / 1000);
+                Location += (Vector2.Normalize(Direction) * (Speed) *
+                    gameTime.ElapsedGameTime.Milliseconds / 1000);
             
             if (this is GreenGem) { }
             else
             {
-                if(this.state != State.Dying)
+                if(state != State.Dying)
                     UpdateItemSpriteSheet();
             }
 
@@ -73,16 +71,16 @@ namespace GP_Final
 
         protected virtual void UpdateItemSpriteSheet()
         {
-            if (animationCount >= this.sheetInfo.updatesPerFrame)
+            if (animationCount >= sheetInfo.updatesPerFrame)
             {
-                this.sheetInfo.currentFrame++;
+                sheetInfo.currentFrame++;
                 animationCount = 0;
 
-                if (this.sheetInfo.currentFrame > this.sheetInfo.totalFrames - 1)
-                    this.sheetInfo.currentFrame = 0;
+                if (sheetInfo.currentFrame > sheetInfo.totalFrames - 1)
+                    sheetInfo.currentFrame = 0;
 
-                this.sheetInfo.UpdateSourceFrame();
-                this.SourceRectangle = this.sheetInfo.sourceFrame;
+                sheetInfo.UpdateSourceFrame();
+                SourceRectangle = sheetInfo.sourceFrame;
             }
 
             else
@@ -92,11 +90,11 @@ namespace GP_Final
             }
         }
 
-        protected virtual void UpdateItemSpriteSheet(SpriteSheetInfo SSI)
+        protected virtual void UpdateItemSpriteSheet(SpriteSheetInfo ssi)
         {
-            if (animationCount >= SSI.updatesPerFrame)
+            if (animationCount >= ssi.updatesPerFrame)
             {
-                SSI.currentFrame++;
+                ssi.currentFrame++;
                 animationCount = 0;
             }
 
@@ -106,16 +104,16 @@ namespace GP_Final
                 return;
             }
 
-            if (SSI.currentFrame > SSI.totalFrames - 1)
-                SSI.currentFrame = 0;
+            if (ssi.currentFrame > ssi.totalFrames - 1)
+                ssi.currentFrame = 0;
 
-            SSI.UpdateSourceFrame();
-            this.SourceRectangle = SSI.sourceFrame;           
+            ssi.UpdateSourceFrame();
+            SourceRectangle = ssi.sourceFrame;           
         }
 
         public void UpdateHitbox()
         {
-            this.locationRect.Location = this.Location.ToPoint();
+            locationRect.Location = Location.ToPoint();
 
             float scaledHeight = sheetInfo.sourceFrame.Height * scale;
             float scaledWidth = sheetInfo.sourceFrame.Width * scale;
@@ -125,31 +123,30 @@ namespace GP_Final
                 int hitBoxWidthReduction = 12;
                 int hitBoxHeightReduction = 5;
 
-                this.Hitbox = new Rectangle(this.LocationRect.X + hitBoxWidthReduction, this.LocationRect.Y + hitBoxHeightReduction,
+                Hitbox = new Rectangle(LocationRect.X + hitBoxWidthReduction, LocationRect.Y + hitBoxHeightReduction,
                     (int)scaledWidth - hitBoxWidthReduction*2, (int)scaledHeight - hitBoxHeightReduction*2);
             }
 
             else
-                this.Hitbox = new Rectangle(this.LocationRect.X, this.LocationRect.Y,
+                Hitbox = new Rectangle(LocationRect.X, LocationRect.Y,
                         (int)scaledWidth, (int)scaledHeight);
         }
 
-        public virtual bool SpawnInAnim()
+        public virtual bool SpawnAnimation()
         {
-            if (this.state != State.Spawning)
+            if (state != State.Spawning)
                 return false;
 
             else
             {
-                this.color.R += 7;
-                this.color.G += 7;
-                this.color.B += 7;
-                this.color.A += 7;
+                color.R += 7;
+                color.G += 7;
+                color.B += 7;
+                color.A += 7;
 
-                if (this.color.R == 252)
+                if (color.R == 252)
                 {
-                    this.color = new Color(255, 255, 255, 255);
-                    //this.hasSpawned = true;
+                    color = new Color(255, 255, 255, 255);
                     return true;
                 }
 
@@ -158,19 +155,19 @@ namespace GP_Final
             }
         }
 
-        public virtual bool SpawnOutAnim()
+        public virtual bool DespawnAnimation()
         {
-            if (this.state != State.DeSpawning)
+            if (state != State.DeSpawning)
                 return false;
 
             else
             {
-                this.color.R -= 5;
-                this.color.G -= 5;
-                this.color.B -= 5;
-                this.color.A -= 5;
+                color.R -= 5;
+                color.G -= 5;
+                color.B -= 5;
+                color.A -= 5;
 
-                if (this.color.R == 0)
+                if (color.R == 0)
                     return true;
 
                 else

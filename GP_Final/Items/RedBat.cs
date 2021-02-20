@@ -7,21 +7,21 @@ namespace GP_Final
     {
         public RedBat(Game game) : base(game)
         {
-            this.MaxTimeOnScreen = 6;
-            this.pointValue = 1;
-            this.Speed = 110;
+            MaxTimeOnScreen = 6;
+            pointValue = 1;
+            Speed = 110;
         }
 
         protected override void LoadContent()
         {
-            this.movementSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBat");
-            this.spawningSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatSpawn");
+            movementSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBat");
+            spawningSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatSpawn");
 
-            this.spriteTexture = this.spawningSpriteSheet;
+            spriteTexture = spawningSpriteSheet;
             sheetInfo = new SpriteSheetInfo(5, spriteTexture.Width, spriteTexture.Height, 6);
 
-            this.SourceRectangle = sheetInfo.sourceFrame;
-            this.spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = sheetInfo.sourceFrame;
+            spriteSheetFramesWide = sheetInfo.totalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();
@@ -31,13 +31,13 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (this.hasSpawned)
+            if (hasSpawned)
             {
-                this.spriteTexture = this.movementSpriteSheet;
-                this.sheetInfo.currentFrame = 0;
-                this.sheetInfo.UpdateSourceFrame();
-                this.SourceRectangle = this.sheetInfo.sourceFrame;
-                this.hasSpawned = false;
+                spriteTexture = movementSpriteSheet;
+                sheetInfo.currentFrame = 0;
+                sheetInfo.UpdateSourceFrame();
+                SourceRectangle = sheetInfo.sourceFrame;
+                hasSpawned = false;
             }
 
             base.Update(gameTime);
