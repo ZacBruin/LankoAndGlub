@@ -5,23 +5,33 @@ namespace GP_Final
 {
     public sealed class RedBat : Target
     {
+        private const int speed = 110;
+        private const int pointVal = 1;
+        private const int maxTimeOnScreen = 6;
+
+        private const string moveSpriteSheet = "SpriteSheets/RedBat";
+        private const string spawnSpriteSheet = "SpriteSheets/RedBatSpawn";
+
+        private const int spriteSheetFrames = 5;
+
         public RedBat(Game game) : base(game)
         {
-            MaxTimeOnScreen = 6;
-            pointValue = 1;
-            Speed = 110;
+            MaxTimeOnScreen = maxTimeOnScreen;
+            pointValue = pointVal;
+            Speed = speed;
+            updatesPerFrame = 6;
         }
 
         protected override void LoadContent()
         {
-            movementSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBat");
-            spawningSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatSpawn");
+            movementSpriteSheet = content.Load<Texture2D>(moveSpriteSheet);
+            spawningSpriteSheet = content.Load<Texture2D>(spawnSpriteSheet);
 
             spriteTexture = spawningSpriteSheet;
-            sheetInfo = new SpriteSheetInfo(5, spriteTexture.Width, spriteTexture.Height, 6);
+            SheetInfo = new SpriteSheetInfo(spriteSheetFrames, spriteTexture.Width, spriteTexture.Height, updatesPerFrame);
 
-            SourceRectangle = sheetInfo.sourceFrame;
-            spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = SheetInfo.SourceFrame;
+            spriteSheetFramesWide = SheetInfo.TotalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();
@@ -34,9 +44,9 @@ namespace GP_Final
             if (hasSpawned)
             {
                 spriteTexture = movementSpriteSheet;
-                sheetInfo.currentFrame = 0;
-                sheetInfo.UpdateSourceFrame();
-                SourceRectangle = sheetInfo.sourceFrame;
+                SheetInfo.CurrentFrame = 0;
+                SheetInfo.UpdateSourceFrame();
+                SourceRectangle = SheetInfo.SourceFrame;
                 hasSpawned = false;
             }
 

@@ -19,11 +19,11 @@ namespace GP_Final
         void RemovePoint(PointSprite ps);
     }
 
-    public class ItemManager : Microsoft.Xna.Framework.GameComponent
+    public class ItemManager : GameComponent
     {
-        List<Target> targets;
-        List<PowerUp> powerUps;
-        List<PointSprite> pointSprites;
+        private List<Target> targets;
+        private List<PowerUp> powerUps;
+        private List<PointSprite> pointSprites;
 
         public ItemManager(Game game) : base(game)
         {
@@ -86,7 +86,7 @@ namespace GP_Final
                 ps.DrawMarkers(sb);
                 ps.Draw(sb);
             }
-
         }
+
     }
 }

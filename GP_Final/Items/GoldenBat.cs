@@ -11,8 +11,12 @@ namespace GP_Final
         Coroutine coroutines;
         Vector2 newDirection;
 
-        private int numTimesChangedDir, maxAllowedDirChanges;
-        private float timeChangedDir, minTimeBeforeDirChange, timeBetweenChecks;
+        private int numTimesChangedDir, 
+                    maxAllowedDirChanges;
+
+        private float timeChangedDir, 
+                      minTimeBeforeDirChange, 
+                      timeBetweenChecks;
 
         public GoldenBat(Game game) : base(game)
         {
@@ -33,10 +37,10 @@ namespace GP_Final
             spawningSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatSpawn");
 
             spriteTexture = spawningSpriteSheet;
-            sheetInfo = new SpriteSheetInfo(5, spriteTexture.Width, spriteTexture.Height, updatesBetweenFrames);
+            SheetInfo = new SpriteSheetInfo(5, spriteTexture.Width, spriteTexture.Height, updatesPerFrame);
 
-            SourceRectangle = sheetInfo.sourceFrame;
-            spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = SheetInfo.SourceFrame;
+            spriteSheetFramesWide = SheetInfo.TotalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();
@@ -56,9 +60,9 @@ namespace GP_Final
             if (hasSpawned)
             {
                 spriteTexture = movementSpriteSheet;
-                sheetInfo.currentFrame = 0;
-                sheetInfo.UpdateSourceFrame();
-                SourceRectangle = sheetInfo.sourceFrame;
+                SheetInfo.CurrentFrame = 0;
+                SheetInfo.UpdateSourceFrame();
+                SourceRectangle = SheetInfo.SourceFrame;
                 hasSpawned = false;
             }
 
@@ -126,10 +130,9 @@ namespace GP_Final
         {          
             do
             {
-                if (Direction.X >= 0)
-                    newDirection.X = rand.Next(-100, -30);
-                else
-                    newDirection.X = rand.Next(30, 100);
+                newDirection.X = Direction.X >= 0
+                    ? rand.Next(-100, -30)
+                    : rand.Next(30, 100);
 
                 newDirection.Y = rand.Next(-20, 20);
             }
@@ -142,10 +145,9 @@ namespace GP_Final
         {
             Direction = newDirection;
 
-            if (Direction.X > 0)
-                SpriteEffects = SpriteEffects.FlipHorizontally;
-            else
-                SpriteEffects = SpriteEffects.None;
+            SpriteEffects = Direction.X > 0 
+                ? SpriteEffects.FlipHorizontally
+                : SpriteEffects.None;
 
             state = State.SpeedUp;
 

@@ -1,29 +1,32 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GP_Final
 {
     public class SpriteSheetInfo
     {
-        public int currentFrame, totalFrames, frameHeight, frameWidth, updatesPerFrame;
+        public int CurrentFrame, 
+                   TotalFrames, 
+                   FrameHeight, 
+                   FrameWidth, 
+                   UpdatesPerFrame;
 
-        public Rectangle sourceFrame;
+        public Rectangle SourceFrame;
 
-        public SpriteSheetInfo(int totalFrames, int sheet_Width, int sheet_Height, int updates)
+        public SpriteSheetInfo(int totalFrames, int sheetWidth, int sheetHeight, int updates)
         {
-            this.totalFrames = totalFrames;
-            frameWidth = sheet_Width / totalFrames;
-            frameHeight = sheet_Height;
-            updatesPerFrame = updates;
+            TotalFrames = totalFrames;
+            FrameWidth = sheetWidth / totalFrames;
+            FrameHeight = sheetHeight;
+            UpdatesPerFrame = updates;
 
-            currentFrame = 0;
+            CurrentFrame = 0;
 
             UpdateSourceFrame();
         }
 
         public void UpdateSourceFrame()
         {
-            sourceFrame = new Rectangle(currentFrame * frameWidth, 0, frameWidth, frameHeight);
+            SourceFrame = new Rectangle(CurrentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
         }
     }
 }

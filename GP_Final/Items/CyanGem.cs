@@ -5,19 +5,24 @@ namespace GP_Final
 {
     public sealed class CyanGem : PowerUp
     {
+        private const float spriteScale = .18f;
+        private const float maxTimeOnScreen = 12;
+        private const int cyanSheetFrames = 4;
+        private const string spriteSheet = "SpriteSheets/CyanGem";
+
         public CyanGem(Game game) : base (game)
         {
-            scale = .18f;
-            MaxTimeOnScreen = 12;
+            scale = spriteScale;
+            MaxTimeOnScreen = maxTimeOnScreen;
         }
 
         protected override void LoadContent()
         {
-            spriteTexture = content.Load<Texture2D>("SpriteSheets/CyanGem");
-            sheetInfo = new SpriteSheetInfo(4, spriteTexture.Width, spriteTexture.Height, updatesBetweenFrames);
+            spriteTexture = content.Load<Texture2D>(spriteSheet);
+            SheetInfo = new SpriteSheetInfo(cyanSheetFrames, spriteTexture.Width, spriteTexture.Height, updatesPerFrame);
 
-            SourceRectangle = sheetInfo.sourceFrame;
-            spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = SheetInfo.SourceFrame;
+            spriteSheetFramesWide = SheetInfo.TotalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();

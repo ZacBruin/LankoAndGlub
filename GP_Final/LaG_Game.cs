@@ -9,28 +9,28 @@ namespace GP_Final
     public class Lanko_And_Glub : Game
     {
         public static Util utility;
-
+      
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        const int resolutionWidth = 1280;
+        const int resolutionHeight = 720;
 
-        Color sideColor;
+        SpriteBatch spriteBatch;
+        Color borderColor;
 
         GameConsole console;
         InputHandler input;
 
         MonoGameLanko lanko;
-
-        MonogameItemManager itemMan;
-        MonogameRoundManager gameRoundMan;
+        MonogameItemManager itemManager;
+        MonogameRoundManager roundManager;
        
         public Lanko_And_Glub() : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
-
+            graphics.PreferredBackBufferWidth = resolutionWidth;
+            graphics.PreferredBackBufferHeight = resolutionHeight;
             graphics.HardwareModeSwitch = false;
             graphics.IsFullScreen = true;
 
@@ -46,31 +46,29 @@ namespace GP_Final
             lanko = new MonoGameLanko(this);
             Components.Add(lanko);
 
-            itemMan = new MonogameItemManager(this);
-            Components.Add(itemMan);
+            itemManager = new MonogameItemManager(this);
+            Components.Add(itemManager);
 
-            gameRoundMan = new MonogameRoundManager(this);
-            Components.Add(gameRoundMan);
+            roundManager = new MonogameRoundManager(this);
+            Components.Add(roundManager);
         }
 
         protected override void Initialize()
         {
             graphics.ApplyChanges();
-
-            sideColor = new Color(14, 13, 17);
-
+            borderColor = new Color(14, 13, 17);
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            itemMan.border = gameRoundMan.border = lanko.border;
-            itemMan.lanko = lanko;
-            itemMan.glub = lanko.glub;
-            itemMan.round = gameRoundMan.round;
+            itemManager.border = roundManager.border = lanko.border;
+            itemManager.lanko = lanko;
+            itemManager.glub = lanko.glub;
+            itemManager.round = roundManager.round;
 
-            gameRoundMan.FirstTimeSetup();
-            utility.MRM = gameRoundMan;
+            roundManager.FirstTimeSetup();
+            utility.roundManager = roundManager;
 
             IsMouseVisible = false;
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -82,40 +80,40 @@ namespace GP_Final
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape) || Keyboard.GetState().IsKeyDown(Keys.End))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 MediaPlayer.Pause();
                 Exit();
             }
 
-            if (input.MouseState.RightButton == ButtonState.Pressed && !utility.GamePaused)
-            {
-                if (itemMan.round.RoundIsOver )
-                {
-                    if (gameRoundMan.FirstRoundStartHasStarted == true)
-                    {
-                        utility.lengthGamePaused = 0;
-                        itemMan.round.RoundIsOver = false;
-                        gameRoundMan.HasStartedRound = true;
-                        
-                    }
-                }
-            }
+            if (input.MouseState.RightButton == ButtonState.Pressed && !utility.IsGamePaused)
+                StartNewRound();
 
             utility.Update(gameTime);
-
             base.Update(gameTime);
+        }
+
+        private void StartNewRound()
+        {
+            if (itemManager.round.RoundIsOver)
+            {
+                if (roundManager.FirstRoundStartHasStarted == true)
+                {
+                    utility.LengthGamePaused = 0;
+                    itemManager.round.RoundIsOver = false;
+                    roundManager.HasStartedRound = true;
+                }
+            }
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(sideColor);
+            GraphicsDevice.Clear(borderColor);
 
             base.Draw(gameTime);
             
             spriteBatch.Begin();
-            itemMan.Draw(spriteBatch);
+            itemManager.Draw(spriteBatch);
             lanko.glub.DrawMarkers(spriteBatch);
             spriteBatch.End();
         }

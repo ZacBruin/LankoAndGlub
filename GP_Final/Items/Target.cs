@@ -59,11 +59,11 @@ namespace GP_Final
 
             else
             {
-                if (sheetInfo.currentFrame != 4)
+                if (SheetInfo.CurrentFrame != 4)
                 {
-                    sheetInfo.currentFrame = 4;
-                    sheetInfo.UpdateSourceFrame();
-                    SourceRectangle = sheetInfo.sourceFrame;
+                    SheetInfo.CurrentFrame = 4;
+                    SheetInfo.UpdateSourceFrame();
+                    SourceRectangle = SheetInfo.SourceFrame;
                 }
 
                 if (currentFlicker != numDeathFlickers )
@@ -95,23 +95,23 @@ namespace GP_Final
         {
             if (state != State.DeSpawning)
             {
-                if (animationCount >= sheetInfo.updatesPerFrame)
+                if (animationCount >= SheetInfo.UpdatesPerFrame)
                 {
-                    if (sheetInfo.currentFrame < sheetInfo.totalFrames - 1)
-                        sheetInfo.currentFrame++;
+                    if (SheetInfo.CurrentFrame < SheetInfo.TotalFrames - 1)
+                        SheetInfo.CurrentFrame++;
 
                     animationCount = 0;
 
                     if (spriteTexture == movementSpriteSheet)
                     {
-                        if (sheetInfo.currentFrame > sheetInfo.totalFrames - 2)
-                            sheetInfo.currentFrame = 0;
+                        if (SheetInfo.CurrentFrame > SheetInfo.TotalFrames - 2)
+                            SheetInfo.CurrentFrame = 0;
                     }
 
-                    sheetInfo.UpdateSourceFrame();
-                    SourceRectangle = sheetInfo.sourceFrame;
+                    SheetInfo.UpdateSourceFrame();
+                    SourceRectangle = SheetInfo.SourceFrame;
 
-                    if (spriteTexture == spawningSpriteSheet && sheetInfo.currentFrame == 4)
+                    if (spriteTexture == spawningSpriteSheet && SheetInfo.CurrentFrame == 4)
                         hasSpawned = true;
                 }
 
@@ -131,7 +131,7 @@ namespace GP_Final
             {
                 if (hasSpawned)
                 {
-                    updatesBetweenFrames = 6;
+                    updatesPerFrame = 6;
                     return true;
                 }
 
@@ -144,10 +144,10 @@ namespace GP_Final
             if (spriteTexture != spawningSpriteSheet)
             {
                 spriteTexture = spawningSpriteSheet;
-                sheetInfo.currentFrame = 4;
-                sheetInfo.UpdateSourceFrame();
-                SourceRectangle = sheetInfo.sourceFrame;
-                updatesBetweenFrames = 7;
+                SheetInfo.CurrentFrame = 4;
+                SheetInfo.UpdateSourceFrame();
+                SourceRectangle = SheetInfo.SourceFrame;
+                updatesPerFrame = 7;
             }
 
             if (state != State.DeSpawning)
@@ -155,13 +155,13 @@ namespace GP_Final
 
             else
             {
-                if (animationCount >= sheetInfo.updatesPerFrame)
+                if (animationCount >= SheetInfo.UpdatesPerFrame)
                 {
-                    sheetInfo.currentFrame--;
+                    SheetInfo.CurrentFrame--;
                     animationCount = 0;
 
-                    sheetInfo.UpdateSourceFrame();
-                    SourceRectangle = sheetInfo.sourceFrame;
+                    SheetInfo.UpdateSourceFrame();
+                    SourceRectangle = SheetInfo.SourceFrame;
                 }
 
                 else
@@ -170,7 +170,7 @@ namespace GP_Final
                     return false;
                 }
 
-                if (sheetInfo.currentFrame == 0)
+                if (SheetInfo.CurrentFrame == 0)
                     return true;
 
                 else

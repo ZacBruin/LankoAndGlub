@@ -4,31 +4,33 @@ using Microsoft.Xna.Framework.Media;
 
 namespace GP_Final
 {
-    public class Util : Microsoft.Xna.Framework.GameComponent
+    public class Util : GameComponent
     {
-        public bool GamePaused
+        public bool IsGamePaused
         {
             get;
             private set;
         }
 
-        public bool ShowInstructions
+        public bool IsShowingInstructions
         {
             get;
             private set;
         }
 
-        public float lengthGamePaused;
+        public float LengthGamePaused;
+        public MonogameRoundManager roundManager;
 
-        public bool canTogglePause;
+        private const Keys pauseKey = Keys.P;
 
-        public MonogameRoundManager MRM;
-
+        //This is essentially a way to track if the pauseKey has been pressed
+        private bool canTogglePause;
+        
         public Util(Game game) : base(game)
         {
-            GamePaused = false;
+            IsGamePaused = false;
             canTogglePause = true;
-            ShowInstructions = true;
+            IsShowingInstructions = true;
         }
 
         public override void Initialize()
@@ -38,28 +40,29 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (GamePaused)
-                lengthGamePaused += ((float)gameTime.ElapsedGameTime.Milliseconds / 1000);
+            if (IsGamePaused)
+                LengthGamePaused += (float)gameTime.ElapsedGameTime.Milliseconds / 1000;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.P) && canTogglePause && MRM.FirstRoundStartHasStarted)
-            {
-                canTogglePause = false;
+            if (Keyboard.GetState().IsKeyDown(pauseKey) && canTogglePause)
+                AttemptTogglePause();
 
-                if (GamePaused)
-                {
-                    GamePaused = false;
-                    MediaPlayer.Resume();
-                }
-
-                else
-                {
-                    GamePaused = true;
-                    MediaPlayer.Pause();
-                }
-            }
-
-            if (Keyboard.GetState().IsKeyUp(Keys.P) && !canTogglePause)
+            if (Keyboard.GetState().IsKeyUp(pauseKey) && !canTogglePause)
                 canTogglePause = true;
         }
+
+        private void AttemptTogglePause()
+        {
+            if (roundManager.FirstRoundStartHasStarted)
+            {
+                canTogglePause = false;
+                IsGamePaused = !IsGamePaused;
+           
+                if (IsGamePaused)
+                    MediaPlayer.Pause();
+                else
+                    MediaPlayer.Resume();
+            }
+        }
+
     }
 }

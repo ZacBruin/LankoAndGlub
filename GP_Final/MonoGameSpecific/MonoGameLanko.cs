@@ -75,9 +75,9 @@ namespace GP_Final
                         if (state == LankoState.Standing)
                             SwapSpriteSheet(run_sheet, run_Info);
 
-                        run_Info.currentFrame = 2;
+                        run_Info.CurrentFrame = 2;
                         run_Info.UpdateSourceFrame();
-                        SourceRectangle = run_Info.sourceFrame;
+                        SourceRectangle = run_Info.SourceFrame;
                     }
 
                     else if (state == LankoState.Standing)
@@ -157,7 +157,7 @@ namespace GP_Final
 
             current_Info = idle_Info;
 
-            spriteSheetFramesWide = idle_Info.totalFrames;
+            spriteSheetFramesWide = idle_Info.TotalFrames;
 
             ground = border.Walls[2].LocationRect.Top;
 
@@ -184,7 +184,7 @@ namespace GP_Final
            
             center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
 
-            aimDirection = controller.mouseDirection - center;
+            aimDirection = controller.MouseDirection - center;
            
             HasJumped = false;
             HasGlub = true;
@@ -207,7 +207,7 @@ namespace GP_Final
                     new Vector2(aim.Width / 2, aim.Bounds.Bottom), aimScale, SpriteEffects.None, 0f);
             }
 
-            spriteBatch.Draw(crossHair, controller.mouseDirection, null, Color.White, 0f,
+            spriteBatch.Draw(crossHair, controller.MouseDirection, null, Color.White, 0f,
                 new Vector2(crossHair.Width / 2, crossHair.Height / 2), crossHairScale, SpriteEffects.None, 0f);
                 spriteBatch.End();
 
@@ -218,7 +218,7 @@ namespace GP_Final
         {
             controller.Update();
 
-            if (!Lanko_And_Glub.utility.GamePaused)
+            if (!Lanko_And_Glub.utility.IsGamePaused)
             {
                 UpdateLanko(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
                 base.Update(gameTime);
@@ -271,7 +271,7 @@ namespace GP_Final
         #region Keyboard
          
         #region Walking
-            if (controller.keys.IsKeyUp(Keys.A) && controller.keys.IsKeyUp(Keys.D))
+            if (controller.Keys.IsKeyUp(Keys.A) && controller.Keys.IsKeyUp(Keys.D))
             {
                 if(HasJumped == false)
                 {
@@ -288,7 +288,7 @@ namespace GP_Final
                 }
             }
 
-            else if(controller.keys.IsKeyDown(Keys.A))
+            else if(controller.Keys.IsKeyDown(Keys.A))
             {
                 SpriteEffects = SpriteEffects.None;
 
@@ -300,7 +300,7 @@ namespace GP_Final
                     Direction.X -= .8f;
             }
 
-            else if (controller.keys.IsKeyDown(Keys.D))
+            else if (controller.Keys.IsKeyDown(Keys.D))
             {
                 SpriteEffects = SpriteEffects.FlipHorizontally;
 
@@ -315,7 +315,7 @@ namespace GP_Final
         #endregion
 
             #region Jumping
-            if (controller.keys.IsKeyDown(Keys.Space))
+            if (controller.Keys.IsKeyDown(Keys.Space))
             {
                 if (HasJumped)
                 {
@@ -334,7 +334,7 @@ namespace GP_Final
                 }
             } 
 
-            if (HasJumped == true && controller.keys.IsKeyUp(Keys.Space))
+            if (HasJumped == true && controller.Keys.IsKeyUp(Keys.Space))
             {
 
                 if (Direction.Y >= 0)
@@ -348,7 +348,7 @@ namespace GP_Final
                     
             }
 
-            if (!HasJumped && controller.keys.IsKeyUp(Keys.Space))
+            if (!HasJumped && controller.Keys.IsKeyUp(Keys.Space))
                 canJumpAgain = true;
 
             #endregion
@@ -356,7 +356,7 @@ namespace GP_Final
 
             #region Mouse
 
-            if (controller.mouse.LeftButton == ButtonState.Pressed && HasGlub)
+            if (controller.Mouse.LeftButton == ButtonState.Pressed && HasGlub)
             {
                 switch (glub.State)
                 {
@@ -367,10 +367,10 @@ namespace GP_Final
                         break;
                 }
                  
-                aimDirection = controller.mouseDirection - glub.center;
+                aimDirection = controller.MouseDirection - glub.center;
             }
 
-            if (controller.mouse.LeftButton == ButtonState.Released && IsAiming)
+            if (controller.Mouse.LeftButton == ButtonState.Released && IsAiming)
             {
                 IsAiming = false;
                 HasGlub = false;
@@ -424,11 +424,11 @@ namespace GP_Final
         {
             spriteTexture = spriteSheet;
 
-            idle_Info.currentFrame = 0;
-            spriteSheetFramesWide = info.totalFrames;
+            idle_Info.CurrentFrame = 0;
+            spriteSheetFramesWide = info.TotalFrames;
 
             info.UpdateSourceFrame();
-            SourceRectangle = info.sourceFrame;
+            SourceRectangle = info.SourceFrame;
 
             if (info == idle_Info)
                 runAnimationCount = 0;
@@ -444,14 +444,14 @@ namespace GP_Final
         {
             if (runAnimationCount >= updates_Between_Run)
             {
-                run_Info.currentFrame++;
+                run_Info.CurrentFrame++;
                 runAnimationCount = 0;
 
-                if (run_Info.currentFrame > run_Info.totalFrames - 1)
-                    run_Info.currentFrame = 0;
+                if (run_Info.CurrentFrame > run_Info.TotalFrames - 1)
+                    run_Info.CurrentFrame = 0;
 
                 run_Info.UpdateSourceFrame();
-                SourceRectangle = run_Info.sourceFrame;
+                SourceRectangle = run_Info.SourceFrame;
             }
 
             else
@@ -465,22 +465,22 @@ namespace GP_Final
         {
             if(idleAnimationCount >= updates_Between_Idle)
             {
-                switch (idle_Info.currentFrame)
+                switch (idle_Info.CurrentFrame)
                 {
                     case 0:
-                        idle_Info.currentFrame++;
+                        idle_Info.CurrentFrame++;
                         idleAnimCycled = false;
                         break;
 
                     case 1:
                         if(idleAnimCycled)
-                            idle_Info.currentFrame--;
+                            idle_Info.CurrentFrame--;
                         else
-                            idle_Info.currentFrame++;
+                            idle_Info.CurrentFrame++;
                         break;
 
                     case 2:
-                        idle_Info.currentFrame--;
+                        idle_Info.CurrentFrame--;
                         idleAnimCycled = true;
                         break;
                 }
@@ -488,7 +488,7 @@ namespace GP_Final
                 idleAnimationCount = 0;
 
                 idle_Info.UpdateSourceFrame();
-                SourceRectangle = idle_Info.sourceFrame;
+                SourceRectangle = idle_Info.SourceFrame;
             }
 
             else
@@ -504,8 +504,8 @@ namespace GP_Final
         {
             locationRect.Location = Location.ToPoint();
 
-            float scaledHeight = current_Info.sourceFrame.Height * scale;
-            float scaledWidth = current_Info.sourceFrame.Width * scale;
+            float scaledHeight = current_Info.SourceFrame.Height * scale;
+            float scaledWidth = current_Info.SourceFrame.Width * scale;
 
             Hitbox = new Rectangle(LocationRect.X, LocationRect.Y,
                 (int)scaledWidth, (int)scaledHeight);
@@ -530,7 +530,7 @@ namespace GP_Final
                         Direction.Y = 0;
                         
 
-                        if(controller.keys.IsKeyDown(Keys.Space))
+                        if(controller.Keys.IsKeyDown(Keys.Space))
                             canJumpAgain = false;
                     }
 

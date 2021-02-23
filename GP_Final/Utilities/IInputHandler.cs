@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
 
 namespace GP_Final
 {
@@ -26,7 +24,7 @@ namespace GP_Final
     /// <summary>
     /// This is a game component that implements GameComponent and IInuputHandler
     /// </summary>
-    public partial class InputHandler : Microsoft.Xna.Framework.GameComponent, IInputHandler
+    public partial class InputHandler : GameComponent, IInputHandler
     {
         //Local enum wraps xna buttons
         public enum ButtonType { A, B, Back, LeftShoulder, LeftStick, RightShoulder, RightStick, Start, X, Y }

@@ -6,34 +6,44 @@ namespace GP_Final
 {
     public sealed class GreenGem : PowerUp
     {
-        public bool IsDamaged;
-        public SpriteSheetInfo sheetInfo_Broken;
+        private bool isDamaged;
 
+        private SpriteSheetInfo sheetInfo_Broken;
         private Texture2D broken, not_broken;
+        private SoundEffect emeraldGet, emeraldBreak;
 
-        SoundEffect EmeraldGet, EmeraldBreak;
+        private const float speed = 150;
+        private const float maxTimeOnScreen = 10;
+        private const int numSheetFrames = 4;
+        private const float getVolume = .3f;
+        private const float breakVolume = .2f;
+
+        private const string notBrokenSpriteSheet = "SpriteSheets/GreenGem";
+        private const string brokenSpriteSheet = "SpriteSheets/GreenGemBroken";
+        private const string getSFX = "SFX/PowerupGet";
+        private const string breakSFX = "SFX/PowerupBreak";
 
         public GreenGem(Game game) : base(game)
         {
-            MaxTimeOnScreen = 10;
-            Speed = 150;
+            MaxTimeOnScreen = maxTimeOnScreen;
+            Speed = speed;
         }
 
         protected override void LoadContent()
         {
-            not_broken = content.Load<Texture2D>("SpriteSheets/GreenGem");
-            broken = content.Load<Texture2D>("SpriteSheets/GreenGemBroken");
+            not_broken = content.Load<Texture2D>(notBrokenSpriteSheet);
+            broken = content.Load<Texture2D>(brokenSpriteSheet);
 
-            EmeraldGet = content.Load<SoundEffect>("SFX/PowerupGet");
-            EmeraldBreak = content.Load<SoundEffect>("SFX/PowerupBreak");
+            emeraldGet = content.Load<SoundEffect>(getSFX);
+            emeraldBreak = content.Load<SoundEffect>(breakSFX);
 
-            sheetInfo = new SpriteSheetInfo(4, not_broken.Width, not_broken.Height, updatesBetweenFrames);
-            sheetInfo_Broken = new SpriteSheetInfo(4, broken.Width, broken.Height, updatesBetweenFrames);
+            SheetInfo = new SpriteSheetInfo(numSheetFrames, not_broken.Width, not_broken.Height, updatesPerFrame);
+            sheetInfo_Broken = new SpriteSheetInfo(numSheetFrames, broken.Width, broken.Height, updatesPerFrame);
 
             spriteTexture = not_broken;
 
-            SourceRectangle = sheetInfo.sourceFrame;
-            spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = SheetInfo.SourceFrame;
+            spriteSheetFramesWide = SheetInfo.TotalFrames;
 
             SetTranformAndRect();
             UpdateHitbox();
@@ -43,7 +53,7 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (IsDamaged == false)
+            if (isDamaged == false)
                 UpdateItemSpriteSheet();
             else
                 UpdateItemSpriteSheet(sheetInfo_Broken);
@@ -53,19 +63,19 @@ namespace GP_Final
 
         public override bool CheckDamage()
         {
-            if (IsDamaged)
+            if (isDamaged)
             {
-                EmeraldGet.Play(.3f, 0, 0);
+                emeraldGet.Play(getVolume, 0, 0);
                 return true;
             }
 
             else
             {
-                EmeraldBreak.Play(.2f, 0, 0);
-                IsDamaged = true;
+                emeraldBreak.Play(breakVolume, 0, 0);
+                isDamaged = true;
                 animationCount = 0;
                 spriteTexture = broken;
-                SourceRectangle = sheetInfo_Broken.sourceFrame;
+                SourceRectangle = sheetInfo_Broken.SourceFrame;
                 return false;
             }
         }

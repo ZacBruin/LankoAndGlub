@@ -4,27 +4,39 @@ namespace GP_Final
 {
     public abstract class Item : DrawableSprite
     {
-        public Vector2 center;
+        public Vector2 Center;
+        public SpriteSheetInfo SheetInfo;
+
+        public enum State
+        {
+            Spawning,
+            DeSpawning,
+            Dying,
+            Moving,
+            SpeedUp,
+            SpeedDown
+        };
+        public State state;
 
         //These times should be in units of seconds
-        public float GameTimeWhenSpawned, CurrentTimeOnScreen, MaxTimeOnScreen;
+        public float GameTimeWhenSpawned, 
+                     CurrentTimeOnScreen, 
+                     MaxTimeOnScreen;
 
-        protected bool firstUpdate, hasSpawned, isDespawning;
-
-        protected int updatesBetweenFrames;
+        protected bool firstUpdate, 
+                       hasSpawned, 
+                       isDespawning;
 
         protected int animationCount;
-        public SpriteSheetInfo sheetInfo;
 
-        public enum State { Spawning, DeSpawning, Dying, Moving, SpeedUp, SpeedDown };
-        public State state;
+        protected int updatesPerFrame;
 
         public Item (Game game) : base(game)
         {
             firstUpdate = true;
             scale = .25f;
             Direction = new Vector2(0, 0);
-            updatesBetweenFrames = 7;
+            updatesPerFrame = 7;
             color = new Color(0, 0, 0, 0);
             hasSpawned = false;
         }
@@ -35,35 +47,30 @@ namespace GP_Final
         }
 
         public override void Update(GameTime gameTime)
-        {          
-            if(firstUpdate)
+        {
+            float totalGameTime = (float)gameTime.TotalGameTime.TotalMilliseconds;          
+
+            if (firstUpdate)
             {
                 firstUpdate = false;
-                GameTimeWhenSpawned = ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000);
+                GameTimeWhenSpawned = (totalGameTime / 1000);
             }
 
             else
-            {
-                CurrentTimeOnScreen =
-                    ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - GameTimeWhenSpawned;
-            }
+                CurrentTimeOnScreen = (totalGameTime / 1000) - GameTimeWhenSpawned;
 
-            center = new Vector2
-                (Location.X + (spriteTexture.Width * scale / (2 * spriteSheetFramesWide)),
-                 Location.Y + (spriteTexture.Height * scale / 2));
+            Center = new Vector2
+            (
+                Location.X + (spriteTexture.Width * scale / (2 * spriteSheetFramesWide)),
+                Location.Y + (spriteTexture.Height * scale / 2)
+            );
 
             //Cyan PowerUp does not move
-            if (this is CyanGem){ }
-            else
-                Location += (Vector2.Normalize(Direction) * (Speed) *
-                    gameTime.ElapsedGameTime.Milliseconds / 1000);
-            
-            if (this is GreenGem) { }
-            else
-            {
-                if(state != State.Dying)
-                    UpdateItemSpriteSheet();
-            }
+            if (!(this is CyanGem))
+                Location += (Vector2.Normalize(Direction) * (Speed) * gameTime.ElapsedGameTime.Milliseconds / 1000);           
+
+            if (!(this is GreenGem) && state != State.Dying)
+                UpdateItemSpriteSheet();
 
             UpdateHitbox();
             base.Update(gameTime);
@@ -71,30 +78,27 @@ namespace GP_Final
 
         protected virtual void UpdateItemSpriteSheet()
         {
-            if (animationCount >= sheetInfo.updatesPerFrame)
+            if (animationCount >= SheetInfo.UpdatesPerFrame)
             {
-                sheetInfo.currentFrame++;
+                SheetInfo.CurrentFrame++;
                 animationCount = 0;
 
-                if (sheetInfo.currentFrame > sheetInfo.totalFrames - 1)
-                    sheetInfo.currentFrame = 0;
+                if (SheetInfo.CurrentFrame > SheetInfo.TotalFrames - 1)
+                    SheetInfo.CurrentFrame = 0;
 
-                sheetInfo.UpdateSourceFrame();
-                SourceRectangle = sheetInfo.sourceFrame;
+                SheetInfo.UpdateSourceFrame();
+                SourceRectangle = SheetInfo.SourceFrame;
             }
 
             else
-            {
                 animationCount++;
-                return;
-            }
         }
 
-        protected virtual void UpdateItemSpriteSheet(SpriteSheetInfo ssi)
+        protected virtual void UpdateItemSpriteSheet(SpriteSheetInfo info)
         {
-            if (animationCount >= ssi.updatesPerFrame)
+            if (animationCount >= info.UpdatesPerFrame)
             {
-                ssi.currentFrame++;
+                info.CurrentFrame++;
                 animationCount = 0;
             }
 
@@ -104,32 +108,35 @@ namespace GP_Final
                 return;
             }
 
-            if (ssi.currentFrame > ssi.totalFrames - 1)
-                ssi.currentFrame = 0;
+            if (info.CurrentFrame > info.TotalFrames - 1)
+                info.CurrentFrame = 0;
 
-            ssi.UpdateSourceFrame();
-            SourceRectangle = ssi.sourceFrame;           
+            info.UpdateSourceFrame();
+            SourceRectangle = info.SourceFrame;           
         }
 
         public void UpdateHitbox()
         {
             locationRect.Location = Location.ToPoint();
 
-            float scaledHeight = sheetInfo.sourceFrame.Height * scale;
-            float scaledWidth = sheetInfo.sourceFrame.Width * scale;
+            float scaledHeight = SheetInfo.SourceFrame.Height * scale;
+            float scaledWidth = SheetInfo.SourceFrame.Width * scale;
 
             if (this is Target)
             {
                 int hitBoxWidthReduction = 12;
                 int hitBoxHeightReduction = 5;
 
-                Hitbox = new Rectangle(LocationRect.X + hitBoxWidthReduction, LocationRect.Y + hitBoxHeightReduction,
-                    (int)scaledWidth - hitBoxWidthReduction*2, (int)scaledHeight - hitBoxHeightReduction*2);
+                Hitbox = new Rectangle(
+                    LocationRect.X + hitBoxWidthReduction, 
+                    LocationRect.Y + hitBoxHeightReduction,
+                    (int)scaledWidth - hitBoxWidthReduction*2, 
+                    (int)scaledHeight - hitBoxHeightReduction*2
+                );
             }
 
             else
-                Hitbox = new Rectangle(LocationRect.X, LocationRect.Y,
-                        (int)scaledWidth, (int)scaledHeight);
+                Hitbox = new Rectangle(LocationRect.X, LocationRect.Y, (int)scaledWidth, (int)scaledHeight);
         }
 
         public virtual bool SpawnAnimation()

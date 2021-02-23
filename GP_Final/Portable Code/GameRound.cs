@@ -18,7 +18,7 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (!Lanko_And_Glub.utility.GamePaused)
+            if (!Lanko_And_Glub.utility.IsGamePaused)
             {
                 if (RoundIsOver == false)
                 {
@@ -31,7 +31,7 @@ namespace GP_Final
                     else
                     {
                         CurrentRoundTime =
-                            ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - TimeRoundStarted - Lanko_And_Glub.utility.lengthGamePaused/2f;
+                            ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - TimeRoundStarted - Lanko_And_Glub.utility.LengthGamePaused/2f;
 
                         if (CurrentRoundTime >= MaxRoundLength)
                         {
@@ -49,7 +49,7 @@ namespace GP_Final
         public void ResetRound()
         {
             HasRoundJustStarted = true;
-            Lanko_And_Glub.utility.lengthGamePaused = 0;
+            Lanko_And_Glub.utility.LengthGamePaused = 0;
             Points = 0;
         }
     }

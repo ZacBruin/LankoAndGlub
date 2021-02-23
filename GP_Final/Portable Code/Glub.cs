@@ -3,7 +3,16 @@
 namespace GP_Final
 {
     public enum GlubState
-    {Still, Following, Held, Thrown, Falling, SeekingLanko, Stranded, AnimCoolDown};
+    {
+        Still,
+        Following,
+        Held,
+        Thrown,
+        Falling,
+        SeekingLanko,
+        Stranded,
+        AnimCoolDown
+    };
 
     public class Glub
     {

@@ -83,7 +83,7 @@ namespace GP_Final
 
             highScore = 0;
 
-            if (!Lanko_And_Glub.utility.ShowInstructions)
+            if (!Lanko_And_Glub.utility.IsShowingInstructions)
                 instructionsColor = new Color(0, 0, 0, 0);
             else
                 instructionsColor = Color.White;
@@ -98,14 +98,14 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (!Lanko_And_Glub.utility.GamePaused)
+            if (!Lanko_And_Glub.utility.IsGamePaused)
             {
                 updateGameRound(gameTime);
             }
 
-            if (Lanko_And_Glub.utility.GamePaused && FirstRoundStartHasStarted)
+            if (Lanko_And_Glub.utility.IsGamePaused && FirstRoundStartHasStarted)
                 instructionsColor = new Color(255, 255, 255, 255);
-            else if (!Lanko_And_Glub.utility.GamePaused && FirstRoundStartHasStarted)
+            else if (!Lanko_And_Glub.utility.IsGamePaused && FirstRoundStartHasStarted)
             {
                 if (instructionsColor.A != 0)
                     instructionsColor = new Color(0, 0, 0, 0);

@@ -43,7 +43,7 @@ namespace GP_Final
                     if(state == GlubState.Still || state == GlubState.Following)
                     {                        
                         SwapSpriteSheet(run_sheet, run_info);
-                        ball_info.currentFrame = 0;
+                        ball_info.CurrentFrame = 0;
                     }
 
                     else
@@ -112,7 +112,7 @@ namespace GP_Final
             burst_info = new SpriteSheetInfo(5, catch_burst_sheet.Width, catch_burst_sheet.Height, updates_Between_Burst);
 
             spriteTexture = run_sheet;
-            spriteSheetFramesWide = run_info.totalFrames;
+            spriteSheetFramesWide = run_info.TotalFrames;
 
             border = lanko.border;
 
@@ -140,7 +140,7 @@ namespace GP_Final
             HasStrongBuff = false;
 
             SetTranformAndRect();
-            SourceRectangle = run_info.sourceFrame;
+            SourceRectangle = run_info.SourceFrame;
 
             base.LoadContent();
         }
@@ -151,7 +151,7 @@ namespace GP_Final
 
             if(isAnimatingBurst)
             {
-                spriteBatch.Draw(catch_burst_sheet, cached_Location, burst_info.sourceFrame, Color.White, 0f,
+                spriteBatch.Draw(catch_burst_sheet, cached_Location, burst_info.SourceFrame, Color.White, 0f,
                     new Vector2(0,0), burst_scale, SpriteEffects.None, 0f);
 
                 CycleBurstAnim();
@@ -164,7 +164,7 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (!Lanko_And_Glub.utility.GamePaused)
+            if (!Lanko_And_Glub.utility.IsGamePaused)
             {
                 UpdateGlub(gameTime.ElapsedGameTime.TotalMilliseconds / 1000);
 
@@ -204,9 +204,9 @@ namespace GP_Final
                     break;
 
                 case GlubState.Still:
-                    run_info.currentFrame = 0;
+                    run_info.CurrentFrame = 0;
                     run_info.UpdateSourceFrame();
-                    SourceRectangle = run_info.sourceFrame;
+                    SourceRectangle = run_info.SourceFrame;
                     
                     Direction = new Vector2(0, 0);
                     CheckIfFollowingLanko();
@@ -258,7 +258,7 @@ namespace GP_Final
                 case GlubState.AnimCoolDown:
                     CycleBallAnim(false);
 
-                    if (ball_info.currentFrame == 0)
+                    if (ball_info.CurrentFrame == 0)
                         State = GlubState.Still;
 
                     break;
@@ -390,8 +390,8 @@ namespace GP_Final
 
             locationRect.Location = Location.ToPoint();
 
-            float scaledHeight = run_info.sourceFrame.Height * scale;
-            float scaledWidth = run_info.sourceFrame.Width * scale;
+            float scaledHeight = run_info.SourceFrame.Height * scale;
+            float scaledWidth = run_info.SourceFrame.Width * scale;
 
             Hitbox = new Rectangle(LocationRect.X + hitBoxWidthReduction, LocationRect.Y + hitBoxHeightReduction,
                 (int)scaledWidth - hitBoxWidthReduction*2, (int)scaledHeight - hitBoxHeightReduction*2);
@@ -454,11 +454,11 @@ namespace GP_Final
         {
             spriteTexture = spriteSheet;
 
-            run_info.currentFrame = 0;
-            spriteSheetFramesWide = info.totalFrames;
+            run_info.CurrentFrame = 0;
+            spriteSheetFramesWide = info.TotalFrames;
 
             info.UpdateSourceFrame();
-            SourceRectangle = info.sourceFrame;
+            SourceRectangle = info.SourceFrame;
 
             if (info == ball_info)
                 run_Anim_Count = 0;
@@ -474,14 +474,14 @@ namespace GP_Final
         {
             if (run_Anim_Count >= updates_Between_Run)
             {
-                run_info.currentFrame++;
+                run_info.CurrentFrame++;
                 run_Anim_Count = 0;
 
-                if (run_info.currentFrame > run_info.totalFrames - 1)
-                    run_info.currentFrame = 0;
+                if (run_info.CurrentFrame > run_info.TotalFrames - 1)
+                    run_info.CurrentFrame = 0;
 
                 run_info.UpdateSourceFrame();
-                SourceRectangle = run_info.sourceFrame;
+                SourceRectangle = run_info.SourceFrame;
             }
 
             else
@@ -495,19 +495,19 @@ namespace GP_Final
         {
             if (IsCyclingForward)
             {
-                if (ball_info.currentFrame == ball_info.totalFrames - 1)
+                if (ball_info.CurrentFrame == ball_info.TotalFrames - 1)
                     return;
 
                 if (ball_Anim_Count >= updates_Between_Ball)
                 {
-                    ball_info.currentFrame++;
+                    ball_info.CurrentFrame++;
                     ball_Anim_Count = 0;
 
-                    if (ball_info.currentFrame > ball_info.totalFrames - 1)
-                        ball_info.currentFrame = 0;
+                    if (ball_info.CurrentFrame > ball_info.TotalFrames - 1)
+                        ball_info.CurrentFrame = 0;
 
                     ball_info.UpdateSourceFrame();
-                    SourceRectangle = ball_info.sourceFrame;
+                    SourceRectangle = ball_info.SourceFrame;
                 }
 
                 else
@@ -519,23 +519,23 @@ namespace GP_Final
 
             else
             {
-                if (ball_info.currentFrame == 0)
+                if (ball_info.CurrentFrame == 0)
                 {
                     SwapSpriteSheet(run_sheet, run_info);
-                    ball_info.currentFrame = 0;
+                    ball_info.CurrentFrame = 0;
                     return;
                 }
 
                 if (ball_Anim_Count >= updates_Between_Ball)
                 {
-                    ball_info.currentFrame--;
+                    ball_info.CurrentFrame--;
                     ball_Anim_Count = 0;
 
-                    if (ball_info.currentFrame > ball_info.totalFrames - 1)
-                        ball_info.currentFrame = 0;
+                    if (ball_info.CurrentFrame > ball_info.TotalFrames - 1)
+                        ball_info.CurrentFrame = 0;
 
                     ball_info.UpdateSourceFrame();
-                    SourceRectangle = ball_info.sourceFrame;
+                    SourceRectangle = ball_info.SourceFrame;
                 }
 
                 else
@@ -548,12 +548,12 @@ namespace GP_Final
 
         private void CycleBurstAnim()
         {
-            if (burst_info.currentFrame == burst_info.totalFrames)
+            if (burst_info.CurrentFrame == burst_info.TotalFrames)
                 return;
 
             if (burst_Anim_Count >= updates_Between_Ball)
             {
-                burst_info.currentFrame++;
+                burst_info.CurrentFrame++;
                 burst_Anim_Count = 0;
 
                 burst_info.UpdateSourceFrame();           
@@ -568,10 +568,10 @@ namespace GP_Final
 
         private void CheckBurstAnimComplete()
         {
-            if (burst_info.currentFrame == 5)
+            if (burst_info.CurrentFrame == 5)
             {
                 isAnimatingBurst = false;
-                burst_info.currentFrame = 0;
+                burst_info.CurrentFrame = 0;
                 burst_Anim_Count = 0;
                 burst_info.UpdateSourceFrame();
             }

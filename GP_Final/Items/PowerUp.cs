@@ -4,10 +4,7 @@ namespace GP_Final
 {
     public abstract class PowerUp : Item
     {
-        public PowerUp(Game game) : base(game)
-        {
-
-        }
+        public PowerUp(Game game) : base(game){}
 
         protected void UpdatePowerUp(GameTime gameTime)
         {

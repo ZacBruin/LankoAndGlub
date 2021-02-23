@@ -36,8 +36,8 @@ namespace GP_Final
 
             SetTranformAndRect();
 
-            SourceRectangle = sheetInfo.sourceFrame;
-            spriteSheetFramesWide = sheetInfo.totalFrames;
+            SourceRectangle = sheetInfo.SourceFrame;
+            spriteSheetFramesWide = sheetInfo.TotalFrames;
         }
 
         protected override void LoadContent()
@@ -57,7 +57,7 @@ namespace GP_Final
 
         private void CycleAnim()
         {
-            if (sheetInfo.currentFrame == sheetInfo.totalFrames - 1)
+            if (sheetInfo.CurrentFrame == sheetInfo.TotalFrames - 1)
             {
                 FadeOut();
                 return;
@@ -65,11 +65,11 @@ namespace GP_Final
 
             if (pointAnimCount >= updatesBetweenFrames)
             {
-                sheetInfo.currentFrame++;
+                sheetInfo.CurrentFrame++;
                 pointAnimCount = 0;
 
                 sheetInfo.UpdateSourceFrame();
-                SourceRectangle = sheetInfo.sourceFrame;
+                SourceRectangle = sheetInfo.SourceFrame;
             }
 
             else

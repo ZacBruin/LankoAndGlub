@@ -42,7 +42,7 @@ namespace GP_Final
 
         public override void Update(GameTime gameTime)
         {
-            if (!Lanko_And_Glub.utility.GamePaused)
+            if (!Lanko_And_Glub.utility.IsGamePaused)
             {
                 Color transparent = new Color(0, 0, 0, 0);
 
@@ -440,9 +440,9 @@ namespace GP_Final
             {
                 i.Direction.Y *= -1;
 
-                if (i.center.Y < rect.Bottom)
+                if (i.Center.Y < rect.Bottom)
                     i.Location.Y -= (rect.Height + collisionSeparation);
-                else if (i.center.Y > rect.Top)
+                else if (i.Center.Y > rect.Top)
                     i.Location.Y += (rect.Height + collisionSeparation);
             }
 
@@ -450,9 +450,9 @@ namespace GP_Final
             {
                 i.Direction.X *= -1;
 
-                if (i.center.X < rect.Left)
+                if (i.Center.X < rect.Left)
                     i.Location.X -= (rect.Width + collisionSeparation);
-                else if (i.center.X > rect.Right)
+                else if (i.Center.X > rect.Right)
                     i.Location.X += (rect.Width + collisionSeparation);
 
                 if (i is Target)
