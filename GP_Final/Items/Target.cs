@@ -7,22 +7,25 @@ namespace GP_Final
     public abstract class Target : Item
     {
         public int pointValue;
-        protected int point_Anim_Count, updates_Between_Point;
-        private int numDeathFlickers, currentFlicker, timeBetweenFlickers;
+        protected int pointAnimCount, updatesBetweenPoint;
+
+        private int deathFlickers, 
+                    currentFlicker, 
+                    timePerFlicker;
 
         private Color flickerLow, flickerNorm;
         protected Texture2D spawningSpriteSheet, movementSpriteSheet;
 
-        SoundEffect GetDead;
+        SoundEffect batDeath;
 
         public Target(Game game) : base(game)
         {
             state = State.Spawning;
 
             currentFlicker = 0;
-            numDeathFlickers = 20;
-            timeBetweenFlickers = 0;
-            updates_Between_Point = 4;
+            deathFlickers = 20;
+            timePerFlicker = 0;
+            updatesBetweenPoint = 4;
 
             color = Color.White;
 
@@ -32,8 +35,7 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            GetDead = content.Load<SoundEffect>("SFX/BatHit");
-
+            batDeath = content.Load<SoundEffect>("SFX/BatHit");
             base.LoadContent();
         }
 
@@ -49,7 +51,7 @@ namespace GP_Final
 
         public void PlayHitSound()
         {
-            GetDead.Play(.4f, 0, 0);
+            batDeath.Play(.4f, 0, 0);
         }
 
         public bool DeathAnim()
@@ -66,9 +68,9 @@ namespace GP_Final
                     SourceRectangle = SheetInfo.SourceFrame;
                 }
 
-                if (currentFlicker != numDeathFlickers )
+                if (currentFlicker != deathFlickers )
                 {
-                    if (timeBetweenFlickers == 1)
+                    if (timePerFlicker == 1)
                     {
                         if (color == flickerNorm)
                             color = flickerLow;
@@ -77,11 +79,11 @@ namespace GP_Final
                             color = flickerNorm;
 
                         currentFlicker++;
-                        timeBetweenFlickers = 0;
+                        timePerFlicker = 0;
                     }
 
                     else
-                        timeBetweenFlickers++;
+                        timePerFlicker++;
 
                     return false;
                 }

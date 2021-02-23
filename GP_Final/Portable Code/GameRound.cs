@@ -2,7 +2,7 @@
 
 namespace GP_Final
 {
-    public class GameRound : Microsoft.Xna.Framework.GameComponent
+    public class GameRound : GameComponent
     {
         public float TimeRoundStarted, MaxRoundLength, CurrentRoundTime;
         public bool HasRoundJustStarted, RoundIsOver;
