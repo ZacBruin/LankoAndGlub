@@ -9,32 +9,41 @@ namespace GP_Final
 {
     public sealed class MonoGameLanko : DrawableSprite, ISubjectLanko
     {
+        public LevelBorder Border;
+        public MonoGameGlub Glub;
+
+        public float Ground, SpeedBoostViaPowerUp;
+        public Vector2 Center, AimDirection;
+
         internal InputController controller { get; private set; }
-        internal GameConsoleLanko gcLanko { get; private set; }
-        public LevelBorder border;
-        public MonoGameGlub glub;
+        internal GameConsoleLanko consoleLanko { get; private set; }
 
         private List<ILankoObserver> observers;
 
-        public Texture2D aim, crossHair;
+        private Texture2D 
+            aimDots, 
+            crossHair,
+            idleSheet, 
+            runSheet;
 
-        private Texture2D idle_sheet, run_sheet;
-        private SpriteSheetInfo idle_Info, run_Info, current_Info;
+        private SpriteSheetInfo 
+            idleInfo, 
+            runInfo, 
+            currentInfo;
 
-        private float aimScale, crossHairScale, gravity, jumpForce;
-        public float ground, speedMod;
+        private SoundEffect 
+            blueGemGet,
+            catchGlub,
+            landOnGround,
+            throwGlub;
 
-        public Vector2 center, aimDirection;
-        private SoundEffect blueGemGet, catchGlub, landOnGround;
-
-        private int idleAnimationCount, runAnimationCount, 
-            updates_Between_Idle, updates_Between_Run;
+        private int
+            idleAnimationUpdateCount,
+            runAnimationUpdateCount;
 
         private bool idleAnimCycled, canJumpAgain;
 
-        SoundEffect ThrowSound;
-
-        protected LankoState state;
+        private LankoState state;
         public LankoState State
         {
             get { return state; }
@@ -43,25 +52,22 @@ namespace GP_Final
             {
                 if (state != value)
                 {
-                    state = gcLanko.Pub_State = value;
+                    state = consoleLanko.Pub_State = value;
 
                     if (state == LankoState.Standing)
                     {
-                        SwapSpriteSheet(idle_sheet, idle_Info);
-                        Location.Y += Math.Abs(Hitbox.Bottom - border.Walls[2].LocationRect.Top);
+                        SwapSpriteSheet(idleSheet, idleInfo);
+                        Location.Y += Math.Abs(Hitbox.Bottom - Border.Walls[2].LocationRect.Top);
                         UpdateHitbox();
                     }
 
                     else
-                    {                        
-                        SwapSpriteSheet(run_sheet, run_Info);
-                    }
+                        SwapSpriteSheet(runSheet, runInfo);
                 }
             }
         }
 
-        protected bool hasJumped, hasGlub, isAiming;
-
+        private bool hasJumped;
         public bool HasJumped
         {
             get { return hasJumped; }
@@ -69,27 +75,28 @@ namespace GP_Final
             {
                 if (hasJumped != value)
                 {
-                    hasJumped = gcLanko.HasJumped = value;
+                    hasJumped = consoleLanko.HasJumped = value;
                     if (value == true)
                     {
                         if (state == LankoState.Standing)
-                            SwapSpriteSheet(run_sheet, run_Info);
+                            SwapSpriteSheet(runSheet, runInfo);
 
-                        run_Info.CurrentFrame = 2;
-                        run_Info.UpdateSourceFrame();
-                        SourceRectangle = run_Info.SourceFrame;
+                        runInfo.CurrentFrame = 2;
+                        runInfo.UpdateSourceFrame();
+                        SourceRectangle = runInfo.SourceFrame;
                     }
 
                     else if (state == LankoState.Standing)
                     {
-                        SwapSpriteSheet(idle_sheet, idle_Info);
+                        SwapSpriteSheet(idleSheet, idleInfo);
                     }
 
                 }
 
             }
         }
-      
+
+        private bool hasGlub;
         public bool HasGlub
         {
             get { return hasGlub; }
@@ -97,12 +104,13 @@ namespace GP_Final
             {
                 if (hasGlub != value)
                 {
-                    hasGlub = gcLanko.HasGlub = value;
+                    hasGlub = consoleLanko.HasGlub = value;
                     BoolNotify(HasGlub, "HasGlub");
                 }
             }
         }
 
+        private bool isAiming;
         public bool IsAiming
         {
             get { return isAiming; }
@@ -110,88 +118,114 @@ namespace GP_Final
             {
                 if (isAiming != value)
                 {
-                    isAiming = gcLanko.IsAiming = value;
+                    isAiming = consoleLanko.IsAiming = value;
                     BoolNotify(IsAiming, "IsAiming");
                 }
             }
         }
 
+        #region Consts
+        //Asset Names
+        const string THROW_GLUB_SFX = "SFX/GlubThrow";
+        const string CYAN_GEM_GET_SFX = "SFX/BlueGemGet";
+        const string CATCH_GLUB_SFX = "SFX/CatchGlub";
+        const string LANKO_LAND_SFX = "SFX/Land";
+
+        const string LANKO_IDLE_SPRITE_SHEET = "SpriteSheets/LankoIdle";
+        const string LANKO_RUN_SPRITE_SHEET = "SpriteSheets/LankoRun";
+
+        const string AIM_DOT_SPRITE = "Sprites/Aim";
+        const string CROSSHAIR_SPRITE = "Sprites/Crosshair";
+
+        //Numeric Values
+        const float LANKO_SPRITE_SCALE = .28f;
+        const float AIM_DOTS_SPRITE_SCALE = .5f;
+        const float CROSSHAIR_SPRITE_SCALE = .45f;
+
+        const float LANKO_BASE_SPEED = 300f;
+        const float GRAVITY = .25f;
+        const float LANKO_JUMP_FORCE = 2.8f;
+
+        const float START_SPEED_MODIFIER = 1f;
+        const float SPEED_BOOST_PER_POWERUP = .1f;
+
+        const int IDLE_SHEET_FRAMES = 3;
+        const int UPDATES_PER_IDLE_FRAME = 8;
+        const int RUN_SHEET_FRAMES = 5;
+        const int UPDATES_PER_RUN_FRAME = 6;
+
+        //SFX Volumes
+        const float CYAN_GEM_GET_SFX_VOL = .5f;
+        const float CATCH_GLUB_SFX_VOL = .4f;
+        const float THROW_GLUB_SFX_VOL = .3f;
+        const float LANKO_LAND_SFX_VOL = .3f;
+
+        //Controls
+        const Keys MOVE_LEFT = Keys.A;
+        const Keys MOVE_RIGHT = Keys.D;
+        const Keys JUMP = Keys.Space;
+
+        const MouseButton THROW_GLUB = MouseButton.Left;
+        #endregion
+
         public MonoGameLanko(Game game) : base (game)
         {
-            gcLanko = new GameConsoleLanko((GameConsole)game.Services.GetService<IGameConsole>());
+            consoleLanko = new GameConsoleLanko((GameConsole)game.Services.GetService<IGameConsole>());
      
-            border = new LevelBorder(game);
-            game.Components.Add(border);
+            Border = new LevelBorder(game);
+            game.Components.Add(Border);
 
-            glub = new MonoGameGlub(game);
-            glub.lanko = this;
-            game.Components.Add(glub);
+            Glub = new MonoGameGlub(game);
+            Glub.lanko = this;
+            game.Components.Add(Glub);
 
             observers = new List<ILankoObserver>();
-            Attach(glub);
+            Attach(Glub);
 
             controller = new InputController(game);
 
-            ThrowSound = content.Load<SoundEffect>("SFX/GlubThrow");
+            throwGlub = content.Load<SoundEffect>(THROW_GLUB_SFX);
         }
 
         protected override void LoadContent()
         {
-            idleAnimationCount = 0;
+            idleSheet = content.Load<Texture2D>(LANKO_IDLE_SPRITE_SHEET);
+            idleInfo = new SpriteSheetInfo(IDLE_SHEET_FRAMES, idleSheet.Width, idleSheet.Height, UPDATES_PER_IDLE_FRAME);
 
-            updates_Between_Idle = 8;
-            updates_Between_Run = 6;
+            runSheet = content.Load<Texture2D>(LANKO_RUN_SPRITE_SHEET);
+            runInfo = new SpriteSheetInfo(RUN_SHEET_FRAMES, runSheet.Width, runSheet.Height, UPDATES_PER_RUN_FRAME);
 
+            aimDots = content.Load<Texture2D>(AIM_DOT_SPRITE);
+            crossHair = content.Load<Texture2D>(CROSSHAIR_SPRITE);
 
-            idle_sheet = content.Load<Texture2D>("SpriteSheets/LankoIdle");
-            run_sheet = content.Load<Texture2D>("SpriteSheets/LankoRun");
+            blueGemGet = content.Load<SoundEffect>(CYAN_GEM_GET_SFX);
+            catchGlub = content.Load<SoundEffect>(CATCH_GLUB_SFX);
+            landOnGround = content.Load<SoundEffect>(LANKO_LAND_SFX);
 
-            blueGemGet = content.Load<SoundEffect>("SFX/BlueGemGet");
-            catchGlub = content.Load<SoundEffect>("SFX/CatchGlub");
-            landOnGround = content.Load<SoundEffect>("SFX/Land");
+            idleAnimationUpdateCount = 0;
+            spriteTexture = idleSheet;
+            currentInfo = idleInfo;
+            spriteSheetFramesWide = idleInfo.TotalFrames;
 
-            spriteTexture = idle_sheet;
+            Ground = Border.Walls[2].LocationRect.Top;
 
-            idle_Info = new SpriteSheetInfo(3, idle_sheet.Width, idle_sheet.Height, updates_Between_Idle);
-            run_Info = new SpriteSheetInfo(5, run_sheet.Width, run_sheet.Height, updates_Between_Run);
-
-            current_Info = idle_Info;
-
-            spriteSheetFramesWide = idle_Info.TotalFrames;
-
-            ground = border.Walls[2].LocationRect.Top;
-
-            aim = content.Load<Texture2D>("Sprites/Aim");
-            aimScale = .5f;        
-
-            crossHair = content.Load<Texture2D>("Sprites/Crosshair");
-            crossHairScale = .45f;            
-                       
-            Scale = .28f;
-            Speed = 300f;
-            speedMod = 1;
-
-            gravity = .25f;
-            jumpForce = 2.8f;
-
-            canJumpAgain = true;
-
+            Scale = LANKO_SPRITE_SCALE;
             UpdateHitbox();
-
+        
+            Speed = LANKO_BASE_SPEED;
+            SpeedBoostViaPowerUp = START_SPEED_MODIFIER;
             Direction = new Vector2(0, 0);
-            Location = new Vector2(border.Walls[2].LocationRect.Width/2, 
-                ground - Hitbox.Height);
-           
-            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
+            Location = new Vector2(Border.Walls[2].LocationRect.Width/2, Ground - Hitbox.Height);        
+            Center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
+            AimDirection = controller.MouseDirection - Center;
 
-            aimDirection = controller.MouseDirection - center;
-           
             HasJumped = false;
             HasGlub = true;
             idleAnimCycled = false;
+            canJumpAgain = true;
 
             SetTranformAndRect();
-            glub.SetStartLocationAndGround();          
+            Glub.SetStartLocationAndGround();
 
             base.LoadContent();   
         }
@@ -202,15 +236,16 @@ namespace GP_Final
 
             if (IsAiming)
             {
-                spriteBatch.Draw(aim, glub.center, null, Color.MonoGameOrange, (float)Math.Atan2(aimDirection.Y, 
-                    aimDirection.X) + (float)(Math.PI * .5f),
-                    new Vector2(aim.Width / 2, aim.Bounds.Bottom), aimScale, SpriteEffects.None, 0f);
+                Vector2 aimDotsCenter = new Vector2(aimDots.Width / 2, aimDots.Bounds.Bottom);
+                float aimDotsRotation = (float)Math.Atan2(AimDirection.Y, AimDirection.X) + (float)(Math.PI * .5f);
+
+                spriteBatch.Draw(aimDots, Glub.center, null, Color.MonoGameOrange, aimDotsRotation, aimDotsCenter, AIM_DOTS_SPRITE_SCALE, SpriteEffects.None, 0f);
             }
 
-            spriteBatch.Draw(crossHair, controller.MouseDirection, null, Color.White, 0f,
-                new Vector2(crossHair.Width / 2, crossHair.Height / 2), crossHairScale, SpriteEffects.None, 0f);
-                spriteBatch.End();
+            Vector2 crossHairCenter = new Vector2(crossHair.Width / 2, crossHair.Height / 2);
+            spriteBatch.Draw(crossHair, controller.MouseDirection, null, Color.White, 0f, crossHairCenter, CROSSHAIR_SPRITE_SCALE, SpriteEffects.None, 0f);
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 
@@ -241,37 +276,34 @@ namespace GP_Final
                     break;
             }
 
-            if(HasJumped == true)
-                Direction += new Vector2(0, gravity);
+            if (HasJumped == true)
+                Direction += new Vector2(0, GRAVITY);
 
-            if (glub.HasBounced)
+            if (Glub.HasBounced)
             {
-                switch(glub.State)
+                switch(Glub.State)
                 {
                     case GlubState.Thrown:
                     case GlubState.Falling:
                     case GlubState.Stranded:
                     case GlubState.SeekingLanko:
                     {
-                        if (Hitbox.Intersects(glub.Hitbox))
+                        if (Hitbox.Intersects(Glub.Hitbox))
                         {
-                            glub.GetCaughtByLanko();                                
+                            Glub.GetCaughtByLanko();                                
                             HasGlub = true;
-                            catchGlub.Play(.4f, 0f, 0f);
+                            catchGlub.Play(CATCH_GLUB_SFX_VOL, 0f, 0f);
                         }
-                    }
                         break;
-
+                    }
                     default:
                         break;
                 }
-
             }
 
-        #region Keyboard
-         
-        #region Walking
-            if (controller.Keys.IsKeyUp(Keys.A) && controller.Keys.IsKeyUp(Keys.D))
+            #region Keyboard        
+            #region Walking
+            if (controller.Keys.IsKeyUp(MOVE_LEFT) && controller.Keys.IsKeyUp(MOVE_RIGHT))
             {
                 if(HasJumped == false)
                 {
@@ -288,7 +320,7 @@ namespace GP_Final
                 }
             }
 
-            else if(controller.Keys.IsKeyDown(Keys.A))
+            else if(controller.Keys.IsKeyDown(MOVE_LEFT))
             {
                 SpriteEffects = SpriteEffects.None;
 
@@ -300,22 +332,16 @@ namespace GP_Final
                     Direction.X -= .8f;
             }
 
-            else if (controller.Keys.IsKeyDown(Keys.D))
+            else if (controller.Keys.IsKeyDown(MOVE_RIGHT))
             {
                 SpriteEffects = SpriteEffects.FlipHorizontally;
-
                 Direction.X = 0;
-
-                if (HasJumped == false)
-                    Direction.X += 1;
-                else
-                    Direction.X += .8f;
+                Direction.X += (HasJumped == false) ? 1 : .8f;
             }
-
-        #endregion
+            #endregion
 
             #region Jumping
-            if (controller.Keys.IsKeyDown(Keys.Space))
+            if (controller.Keys.IsKeyDown(JUMP))
             {
                 if (HasJumped)
                 {
@@ -327,38 +353,29 @@ namespace GP_Final
                 {
                     HasJumped = true;
                     Location.Y -= 5;
-                    Direction.Y -= jumpForce;
+                    Direction.Y -= LANKO_JUMP_FORCE;
 
-                    idleAnimationCount = 0;
-                    runAnimationCount = 0;
+                    idleAnimationUpdateCount = 0;
+                    runAnimationUpdateCount = 0;
                 }
             } 
 
-            if (HasJumped == true && controller.Keys.IsKeyUp(Keys.Space))
+            if (HasJumped == true && controller.Keys.IsKeyUp(JUMP))
             {
-
                 if (Direction.Y >= 0)
-                {
-                    if (Direction.Y <= 1)
-                        Direction.Y += .015f;
-
-                    else
-                        Direction.Y += .035f;
-                }
-                    
+                    Direction.Y += (Direction.Y <= 1) ? .015f : .035f;                  
             }
 
-            if (!HasJumped && controller.Keys.IsKeyUp(Keys.Space))
+            if (!HasJumped && controller.Keys.IsKeyUp(JUMP))
                 canJumpAgain = true;
 
             #endregion
             #endregion
 
             #region Mouse
-
-            if (controller.Mouse.LeftButton == ButtonState.Pressed && HasGlub)
+            if (controller.GetMouseButtonState(THROW_GLUB) == ButtonState.Pressed && HasGlub)
             {
-                switch (glub.State)
+                switch (Glub.State)
                 {
                     case GlubState.Held:
                     case GlubState.Still:
@@ -367,26 +384,25 @@ namespace GP_Final
                         break;
                 }
                  
-                aimDirection = controller.MouseDirection - glub.center;
+                AimDirection = controller.MouseDirection - Glub.center;
             }
 
-            if (controller.Mouse.LeftButton == ButtonState.Released && IsAiming)
+            if (controller.GetMouseButtonState(THROW_GLUB) == ButtonState.Released && IsAiming)
             {
                 IsAiming = false;
                 HasGlub = false;
-                ThrowSound.Play(.3f, 0, 0);
+                throwGlub.Play(THROW_GLUB_SFX_VOL, 0, 0);
             }
-
             #endregion
 
             if (Math.Abs(Direction.Length()) > 0)
             {
-                idleAnimationCount = 0;
+                idleAnimationUpdateCount = 0;
 
                 if (HasJumped == false)
                 {
                     State = LankoState.Walking;
-                    Location += (Vector2.Normalize(Direction) * (Speed * speedMod) * (float)timeElapsed);
+                    Location += (Vector2.Normalize(Direction) * (Speed * SpeedBoostViaPowerUp) * (float)timeElapsed);
                 }
 
                 else
@@ -398,163 +414,153 @@ namespace GP_Final
                     else if (Direction.X < -1f)
                         Direction.X = -1f;
 
-                    Location += ((Direction) * (Speed * speedMod) * (float)timeElapsed);
+                    Location += ((Direction) * (Speed * SpeedBoostViaPowerUp) * (float)timeElapsed);
                 }
 
-                center = new Vector2(Location.X + Hitbox.Width/2, Location.Y + Hitbox.Height/2);
-
+                Center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
                 UpdateHitbox();
             }
         }
 
         public void IncreaseSpeedMod()
         {
-            speedMod += .1f;
-            blueGemGet.Play(.5f, 0f, 0f);
+            SpeedBoostViaPowerUp += SPEED_BOOST_PER_POWERUP;
+            blueGemGet.Play(CYAN_GEM_GET_SFX_VOL, 0f, 0f);
         }
 
         public void ResetSpeedMod()
         {
-            speedMod = 1;
+            SpeedBoostViaPowerUp = START_SPEED_MODIFIER;
         }
 
         #region Animation Methods
-
         private void SwapSpriteSheet(Texture2D spriteSheet, SpriteSheetInfo info)
         {
             spriteTexture = spriteSheet;
 
-            idle_Info.CurrentFrame = 0;
+            idleInfo.CurrentFrame = 0;
             spriteSheetFramesWide = info.TotalFrames;
 
             info.UpdateSourceFrame();
             SourceRectangle = info.SourceFrame;
 
-            if (info == idle_Info)
-                runAnimationCount = 0;
-            else if (info == run_Info)
-                idleAnimationCount = 0;
+            if (info == idleInfo)
+                runAnimationUpdateCount = 0;
+            else if (info == runInfo)
+                idleAnimationUpdateCount = 0;
 
-            current_Info = info;
+            currentInfo = info;
 
             UpdateHitbox();
         }
 
         private void CycleRunAnim()
         {
-            if (runAnimationCount >= updates_Between_Run)
+            if (runAnimationUpdateCount >= UPDATES_PER_RUN_FRAME)
             {
-                run_Info.CurrentFrame++;
-                runAnimationCount = 0;
+                runInfo.CurrentFrame++;
+                runAnimationUpdateCount = 0;
 
-                if (run_Info.CurrentFrame > run_Info.TotalFrames - 1)
-                    run_Info.CurrentFrame = 0;
+                if (runInfo.CurrentFrame > runInfo.TotalFrames - 1)
+                    runInfo.CurrentFrame = 0;
 
-                run_Info.UpdateSourceFrame();
-                SourceRectangle = run_Info.SourceFrame;
+                runInfo.UpdateSourceFrame();
+                SourceRectangle = runInfo.SourceFrame;
             }
 
             else
             {
-                runAnimationCount++;
+                runAnimationUpdateCount++;
                 return;
             }
         }
 
         private void CycleIdleAnim()
         {
-            if(idleAnimationCount >= updates_Between_Idle)
+            if (idleAnimationUpdateCount >= UPDATES_PER_IDLE_FRAME)
             {
-                switch (idle_Info.CurrentFrame)
+                switch (idleInfo.CurrentFrame)
                 {
                     case 0:
-                        idle_Info.CurrentFrame++;
+                        idleInfo.CurrentFrame++;
                         idleAnimCycled = false;
                         break;
 
                     case 1:
                         if(idleAnimCycled)
-                            idle_Info.CurrentFrame--;
+                            idleInfo.CurrentFrame--;
                         else
-                            idle_Info.CurrentFrame++;
+                            idleInfo.CurrentFrame++;
                         break;
 
                     case 2:
-                        idle_Info.CurrentFrame--;
+                        idleInfo.CurrentFrame--;
                         idleAnimCycled = true;
                         break;
                 }
 
-                idleAnimationCount = 0;
+                idleAnimationUpdateCount = 0;
 
-                idle_Info.UpdateSourceFrame();
-                SourceRectangle = idle_Info.SourceFrame;
+                idleInfo.UpdateSourceFrame();
+                SourceRectangle = idleInfo.SourceFrame;
             }
 
             else
-            {
-                idleAnimationCount++;
-                return;
-            }
+                idleAnimationUpdateCount++;
         }
-
         #endregion
 
         private void UpdateHitbox()
         {
             locationRect.Location = Location.ToPoint();
 
-            float scaledHeight = current_Info.SourceFrame.Height * scale;
-            float scaledWidth = current_Info.SourceFrame.Width * scale;
+            float scaledHeight = currentInfo.SourceFrame.Height * scale;
+            float scaledWidth = currentInfo.SourceFrame.Width * scale;
 
-            Hitbox = new Rectangle(LocationRect.X, LocationRect.Y,
-                (int)scaledWidth, (int)scaledHeight);
+            Hitbox = new Rectangle(LocationRect.X, LocationRect.Y, (int)scaledWidth, (int)scaledHeight);
         }
 
         private void LevelBorderCollision()
         {
-            foreach(Wall w in border.Walls)
+            foreach(Wall w in Border.Walls)
 
             if(Hitbox.Intersects(w.LocationRect))
             {
                 Rectangle rect = Intersection(Hitbox, w.LocationRect);
                 if (rect.Height < rect.Width)
                 {
-                    if (rect.Top > center.Y)
+                    if (rect.Top > Center.Y)
                     {
-                        if (HasJumped) { landOnGround.Play(.3f, 0, 0); }
+                        if (HasJumped)
+                            landOnGround.Play(LANKO_LAND_SFX_VOL, 0, 0);
 
-                        Location.Y -= (float)rect.Height;
+                        Location.Y -= rect.Height;
                         HasJumped = false;
-                        Location.Y = ground - Hitbox.Height;
+                        Location.Y = Ground - Hitbox.Height;
                         Direction.Y = 0;
                         
-
                         if(controller.Keys.IsKeyDown(Keys.Space))
                             canJumpAgain = false;
                     }
 
-                    if (rect.Bottom < center.Y)
-                        Location.Y += (float)rect.Height;
+                    if (rect.Bottom < Center.Y)
+                        Location.Y += rect.Height;
                 }
 
                 else if (rect.Height > rect.Width)
                 {
-                    if (rect.Right > center.X)
-                    {
-                        Location.X -= (float)rect.Width;
-                    }
+                    if (rect.Right > Center.X)
+                        Location.X -= rect.Width;
 
-                    if (rect.Left < center.X)
-                        Location.X += (float)rect.Width;
+                    if (rect.Left < Center.X)
+                        Location.X += rect.Width;
                 }
 
                 UpdateHitbox();
             }
         }
 
-        #region Observer Pattern Methods
-
+        #region Observer Pattern Method
         public List<ILankoObserver> Observers
         {
             get { return observers; }

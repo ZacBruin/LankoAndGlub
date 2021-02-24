@@ -6,26 +6,27 @@ namespace GP_Final
 {
     public abstract class Target : Item
     {
-        public int pointValue;
-        protected int pointAnimCount, updatesBetweenPoint;
+        public int PointValue;
+        protected int pointAnimCount, updatesPerPointFrame;
 
-        private int deathFlickers, 
-                    currentFlicker, 
+        private int deathFlickerFrames, 
+                    currentFlickerFrame, 
                     timePerFlicker;
 
         private Color flickerLow, flickerNorm;
         protected Texture2D spawningSpriteSheet, movementSpriteSheet;
 
-        SoundEffect batDeath;
+        private SoundEffect batDeath;
+        private const string batDeathSFX = "SFX/BatHit";
 
         public Target(Game game) : base(game)
         {
             state = State.Spawning;
 
-            currentFlicker = 0;
-            deathFlickers = 20;
+            currentFlickerFrame = 0;
+            deathFlickerFrames = 20;
             timePerFlicker = 0;
-            updatesBetweenPoint = 4;
+            updatesPerPointFrame = 4;
 
             color = Color.White;
 
@@ -35,7 +36,7 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            batDeath = content.Load<SoundEffect>("SFX/BatHit");
+            batDeath = content.Load<SoundEffect>(batDeathSFX);
             base.LoadContent();
         }
 
@@ -68,7 +69,7 @@ namespace GP_Final
                     SourceRectangle = SheetInfo.SourceFrame;
                 }
 
-                if (currentFlicker != deathFlickers )
+                if (currentFlickerFrame != deathFlickerFrames )
                 {
                     if (timePerFlicker == 1)
                     {
@@ -78,7 +79,7 @@ namespace GP_Final
                         else if (color == flickerLow)
                             color = flickerNorm;
 
-                        currentFlicker++;
+                        currentFlickerFrame++;
                         timePerFlicker = 0;
                     }
 

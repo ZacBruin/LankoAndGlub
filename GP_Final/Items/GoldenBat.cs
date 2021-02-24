@@ -33,7 +33,7 @@ namespace GP_Final
         public GoldenBat(Game game) : base(game)
         {
             MaxTimeOnScreen = maxTimeOnScreen;
-            pointValue = pointVal;
+            PointValue = pointVal;
             Speed = startingSpeed;
 
             timeBetweenChecks = .1f;

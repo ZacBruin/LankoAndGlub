@@ -4,6 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GP_Final
 {
+    public enum MouseButton
+    {
+        Left,
+        Right
+    };
+
     class InputController
     {
         InputHandler input;
@@ -13,7 +19,7 @@ namespace GP_Final
             private set;
         }
 
-        public MouseState Mouse;
+        private MouseState Mouse;
         public KeyboardState Keys;
 
         public InputController(Game game)
@@ -22,6 +28,21 @@ namespace GP_Final
 
             if (input == null)
                 throw new Exception("Controller has no input. Add Input Handler as a service first");
+        }
+
+        public ButtonState GetMouseButtonState(MouseButton button)
+        {
+            switch (button)
+            {
+                case MouseButton.Left:
+                    return Mouse.LeftButton;
+
+                case MouseButton.Right:
+                    return Mouse.RightButton;
+
+                default:
+                    return ButtonState.Released;
+            }
         }
 
         public void Update()

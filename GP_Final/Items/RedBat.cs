@@ -17,7 +17,7 @@ namespace GP_Final
         public RedBat(Game game) : base(game)
         {
             MaxTimeOnScreen = maxTimeOnScreen;
-            pointValue = pointVal;
+            PointValue = pointVal;
             Speed = speed;
             updatesPerFrame = 6;
         }

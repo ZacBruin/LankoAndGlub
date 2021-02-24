@@ -61,9 +61,9 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            itemManager.border = roundManager.border = lanko.border;
+            itemManager.border = roundManager.border = lanko.Border;
             itemManager.lanko = lanko;
-            itemManager.glub = lanko.glub;
+            itemManager.glub = lanko.Glub;
             itemManager.round = roundManager.round;
 
             roundManager.FirstTimeSetup();
@@ -113,7 +113,7 @@ namespace GP_Final
             
             spriteBatch.Begin();
             itemManager.Draw(spriteBatch);
-            lanko.glub.DrawMarkers(spriteBatch);
+            lanko.Glub.DrawMarkers(spriteBatch);
             spriteBatch.End();
         }
     }

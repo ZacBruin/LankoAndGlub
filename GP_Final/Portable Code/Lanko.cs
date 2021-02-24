@@ -3,7 +3,10 @@
 namespace GP_Final
 {
     public enum LankoState 
-    { Standing, Walking };
+    {
+        Standing,
+        Walking
+    };
 
     public class Lanko 
     {

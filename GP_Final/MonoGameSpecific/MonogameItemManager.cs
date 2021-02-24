@@ -193,7 +193,7 @@ namespace GP_Final
 
                                 t.PlayHitSound();
 
-                                round.Points += t.pointValue;
+                                round.Points += t.PointValue;
 
                                 if (glub.HasStrongBuff == false)
                                     glub.ThrownToSeeking();

@@ -28,7 +28,6 @@ namespace GP_Final
                        isDespawning;
 
         protected int animationCount;
-
         protected int updatesPerFrame;
 
         public Item (Game game) : base(game)

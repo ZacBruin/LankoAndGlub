@@ -114,7 +114,7 @@ namespace GP_Final
             spriteTexture = run_sheet;
             spriteSheetFramesWide = run_info.TotalFrames;
 
-            border = lanko.border;
+            border = lanko.Border;
 
             maxBounces = 3;
             maxBouncesAfterFalling = 6;
@@ -187,13 +187,13 @@ namespace GP_Final
             switch (State)
             {
                 case GlubState.Following:
-                    if (center.X - lanko.center.X > 0)
+                    if (center.X - lanko.Center.X > 0)
                     {
                         Direction = new Vector2(-1, 0);
                         SpriteEffects = SpriteEffects.FlipHorizontally;
                     }
 
-                    else if (center.X - lanko.center.X < 0)
+                    else if (center.X - lanko.Center.X < 0)
                     {
                         Direction = new Vector2(1, 0);
                         SpriteEffects = SpriteEffects.None;
@@ -305,7 +305,7 @@ namespace GP_Final
 
         private void CheckIfFollowingLanko()
         {
-            distanceFromLanko = Math.Abs(center.X - lanko.center.X);
+            distanceFromLanko = Math.Abs(center.X - lanko.Center.X);
 
             if (distanceFromLanko >= 50)
                 State = GlubState.Following;
@@ -369,7 +369,7 @@ namespace GP_Final
 
         Vector2 SeekLanko()
         {
-            Vector2 desiredDirection = (Vector2.Normalize(lanko.center - Location));
+            Vector2 desiredDirection = (Vector2.Normalize(lanko.Center - Location));
             return (desiredDirection);
         }
 
@@ -583,7 +583,7 @@ namespace GP_Final
         //HACK: Didn't want to deal with the screwy call orders. Called in Lanko's LoadContent()
         public void SetStartLocationAndGround()
         {
-            ground = lanko.ground;
+            ground = lanko.Ground;
 
             Location =
                   new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
@@ -627,7 +627,7 @@ namespace GP_Final
                         State = GlubState.Thrown;
                         HasBounced = false;
                         Speed = airSpeed;
-                        Direction = lanko.aimDirection;
+                        Direction = lanko.AimDirection;
                     }
 
                     break;
