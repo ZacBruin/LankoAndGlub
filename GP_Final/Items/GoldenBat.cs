@@ -11,30 +11,34 @@ namespace GP_Final
         Coroutine coroutines;
         Vector2 newDirection;
 
-        private int directionChanges, 
-                    maxDirectionChanges;
+        private int directionChanges, maxDirectionChanges;
 
-        private float lastTimeDirectionChanged, 
-                      timeRequiredBeforeDirectionChange, 
-                      timeBetweenChecks;
+        private float 
+            lastTimeDirectionChanged, 
+            timeRequiredBeforeDirectionChange, 
+            timeBetweenChecks;
 
-        private const string moveSpriteSheet = "SpriteSheets/GoldBat";
-        private const string spawnSpriteSheet = "SpriteSheets/GoldBatSpawn";
+        #region Consts
+        //Assets
+        private const string MOVING_SPRITE_SHEET = "SpriteSheets/GoldBat";
+        private const string SPAWNING_SPRITE_SHEET = "SpriteSheets/GoldBatSpawn";
 
-        private const int spriteSheetFrames = 5;
-        private const int maxTimeOnScreen = 6;
-        private const int pointVal = 1;
+        //Numbers
+        private const int SPRITE_SHEET_FRAMES = 5;
+        private const int MAX_SECONDS_ON_SCREEN = 6;
+        private const int POINTS = 3;
 
-        private const float startingSpeed = 250;
-        private const float minimumSpeed = 100;
-        private const float maximumSpeed = 250;
-        private const float speedCrement = 2;
+        private const float BASE_SPEED = 250;
+        private const float LOWEST_SPEED = 100;
+        private const float HIGHEST_SPEED = 250;
+        private const float SPEED_CREMENT = 2;
+        #endregion
 
         public GoldenBat(Game game) : base(game)
         {
-            MaxTimeOnScreen = maxTimeOnScreen;
-            PointValue = pointVal;
-            Speed = startingSpeed;
+            MaxTimeOnScreen = MAX_SECONDS_ON_SCREEN;
+            PointValue = POINTS;
+            Speed = BASE_SPEED;
 
             timeBetweenChecks = .1f;
             timeRequiredBeforeDirectionChange = 1.0f;
@@ -45,11 +49,11 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            movementSpriteSheet = content.Load<Texture2D>(moveSpriteSheet);
-            spawningSpriteSheet = content.Load<Texture2D>(spawnSpriteSheet);
+            movementSpriteSheet = content.Load<Texture2D>(MOVING_SPRITE_SHEET);
+            spawningSpriteSheet = content.Load<Texture2D>(SPAWNING_SPRITE_SHEET);
 
             spriteTexture = spawningSpriteSheet;
-            SheetInfo = new SpriteSheetInfo(spriteSheetFrames, spriteTexture.Width, spriteTexture.Height, updatesPerFrame);
+            SheetInfo = new SpriteSheetInfo(SPRITE_SHEET_FRAMES, spriteTexture.Width, spriteTexture.Height, updatesPerFrame);
 
             SourceRectangle = SheetInfo.SourceFrame;
             spriteSheetFramesWide = SheetInfo.TotalFrames;
@@ -146,15 +150,15 @@ namespace GP_Final
             switch (state)
             {
                 case State.SpeedDown:
-                    if (Speed > minimumSpeed)
-                        Speed -= speedCrement;
+                    if (Speed > LOWEST_SPEED)
+                        Speed -= SPEED_CREMENT;
                     else
                         ChangeDirection(totalGameTime);
                     break;
 
                 case State.SpeedUp:
-                    if (Speed < maximumSpeed)
-                        Speed += speedCrement;
+                    if (Speed < HIGHEST_SPEED)
+                        Speed += SPEED_CREMENT;
                     else
                         state = State.Moving;
                     break;

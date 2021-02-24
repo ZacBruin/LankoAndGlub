@@ -12,33 +12,37 @@ namespace GP_Final
         private Texture2D broken, not_broken;
         private SoundEffect emeraldGet, emeraldBreak;
 
-        private const float speed = 150;
-        private const float maxTimeOnScreen = 10;
-        private const int numSheetFrames = 4;
-        private const float getVolume = .3f;
-        private const float breakVolume = .2f;
+        #region Consts
+        //Assets
+        private const string NOT_BROKEN_SPRITE_SHEET = "SpriteSheets/GreenGem";
+        private const string BROKEN_SPRITE_SHEET = "SpriteSheets/GreenGemBroken";
+        private const string GET_SFX = "SFX/PowerupGet";
+        private const string BREAK_SFX = "SFX/PowerupBreak";
 
-        private const string notBrokenSpriteSheet = "SpriteSheets/GreenGem";
-        private const string brokenSpriteSheet = "SpriteSheets/GreenGemBroken";
-        private const string getSFX = "SFX/PowerupGet";
-        private const string breakSFX = "SFX/PowerupBreak";
+        //Numbers
+        private const float SPEED = 150;
+        private const float MAX_SECONDS_ON_SCREEN = 10;
+        private const int SPRITE_SHEET_FRAMES = 4;
+        private const float GET_SFX_VOL = .3f;
+        private const float BREAK_SFX_VOL = .2f;
+        #endregion
 
         public GreenGem(Game game) : base(game)
         {
-            MaxTimeOnScreen = maxTimeOnScreen;
-            Speed = speed;
+            MaxTimeOnScreen = MAX_SECONDS_ON_SCREEN;
+            Speed = SPEED;
         }
 
         protected override void LoadContent()
         {
-            not_broken = content.Load<Texture2D>(notBrokenSpriteSheet);
-            broken = content.Load<Texture2D>(brokenSpriteSheet);
+            not_broken = content.Load<Texture2D>(NOT_BROKEN_SPRITE_SHEET);
+            broken = content.Load<Texture2D>(BROKEN_SPRITE_SHEET);
 
-            emeraldGet = content.Load<SoundEffect>(getSFX);
-            emeraldBreak = content.Load<SoundEffect>(breakSFX);
+            emeraldGet = content.Load<SoundEffect>(GET_SFX);
+            emeraldBreak = content.Load<SoundEffect>(BREAK_SFX);
 
-            SheetInfo = new SpriteSheetInfo(numSheetFrames, not_broken.Width, not_broken.Height, updatesPerFrame);
-            sheetInfo_Broken = new SpriteSheetInfo(numSheetFrames, broken.Width, broken.Height, updatesPerFrame);
+            SheetInfo = new SpriteSheetInfo(SPRITE_SHEET_FRAMES, not_broken.Width, not_broken.Height, updatesPerFrame);
+            sheetInfo_Broken = new SpriteSheetInfo(SPRITE_SHEET_FRAMES, broken.Width, broken.Height, updatesPerFrame);
 
             spriteTexture = not_broken;
 
@@ -65,13 +69,13 @@ namespace GP_Final
         {
             if (isDamaged)
             {
-                emeraldGet.Play(getVolume, 0, 0);
+                emeraldGet.Play(GET_SFX_VOL, 0, 0);
                 return true;
             }
 
             else
             {
-                emeraldBreak.Play(breakVolume, 0, 0);
+                emeraldBreak.Play(BREAK_SFX_VOL, 0, 0);
                 isDamaged = true;
                 animationCount = 0;
                 spriteTexture = broken;

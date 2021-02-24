@@ -21,7 +21,7 @@ namespace GP_Final
         public float LengthGamePaused;
         public MonogameRoundManager roundManager;
 
-        private const Keys pauseKey = Keys.P;
+        private const Keys PAUSE_KEY = Keys.P;
 
         //This is essentially a way to track if the pauseKey has been pressed
         private bool canTogglePause;
@@ -43,10 +43,10 @@ namespace GP_Final
             if (IsGamePaused)
                 LengthGamePaused += (float)gameTime.ElapsedGameTime.Milliseconds / 1000;
 
-            if (Keyboard.GetState().IsKeyDown(pauseKey) && canTogglePause)
+            if (Keyboard.GetState().IsKeyDown(PAUSE_KEY) && canTogglePause)
                 AttemptTogglePause();
 
-            if (Keyboard.GetState().IsKeyUp(pauseKey) && !canTogglePause)
+            if (Keyboard.GetState().IsKeyUp(PAUSE_KEY) && !canTogglePause)
                 canTogglePause = true;
         }
 

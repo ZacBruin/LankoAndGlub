@@ -23,15 +23,18 @@ namespace GP_Final
 
         SoundEffect NewHigh, EndRound;
 
-        public enum MusicState { RoundTrack, RoundToWait, WaitToRound, WaitTrack}
+        public enum MusicState
+        {
+            RoundTrack,
+            RoundToWait,
+            WaitToRound,
+            WaitTrack
+        };
         public MusicState musicState = MusicState.RoundTrack;
 
         public int PlayerScore
         {
-            get
-            {
-                return round.Points;
-            }
+            get { return round.Points; }
         }
         private int highScore;
 

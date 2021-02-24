@@ -9,15 +9,18 @@ namespace GP_Final
         public int PointValue;
         protected int pointAnimCount, updatesPerPointFrame;
 
-        private int deathFlickerFrames, 
-                    currentFlickerFrame, 
-                    timePerFlicker;
+        private int 
+            deathFlickerFrames,                    
+            currentFlickerFrame,                    
+            timePerFlicker;
 
         private Color flickerLow, flickerNorm;
         protected Texture2D spawningSpriteSheet, movementSpriteSheet;
 
         private SoundEffect batDeath;
-        private const string batDeathSFX = "SFX/BatHit";
+
+        private const string BAT_DEATH_SFX = "SFX/BatHit";
+        private const float BAT_DEATH_SFX_VOL = .4f;
 
         public Target(Game game) : base(game)
         {
@@ -36,7 +39,7 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            batDeath = content.Load<SoundEffect>(batDeathSFX);
+            batDeath = content.Load<SoundEffect>(BAT_DEATH_SFX);
             base.LoadContent();
         }
 
@@ -52,7 +55,7 @@ namespace GP_Final
 
         public void PlayHitSound()
         {
-            batDeath.Play(.4f, 0, 0);
+            batDeath.Play(BAT_DEATH_SFX_VOL, 0, 0);
         }
 
         public bool DeathAnim()

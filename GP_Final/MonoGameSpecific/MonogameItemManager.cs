@@ -7,36 +7,29 @@ namespace GP_Final
 {
     public sealed class MonogameItemManager : ItemManager
     {
-        List<Target> TargetsToDelete;
-        List<PowerUp> PowerUpsToDelete;
-        List<PointSprite> PointSpritesToDelete;
-
-        private Random rand;
-
         public LevelBorder border;
         public MonoGameGlub glub;
         public MonoGameLanko lanko;
         public GameRound round;
 
-        public float TimeBetweenTargetSpawns, 
-                     TimeTargetSpawned, 
-                     TimeBetweenPowerUpSpawns, 
-                     TimePowerUpSpawned;
+        public float TimeTargetSpawned, TimePowerUpSpawned;
 
-        private int maxTargets, maxPowerUps;
+        private List<Target> TargetsToDelete;
+        private List<PowerUp> PowerUpsToDelete;
+        private List<PointSprite> PointSpritesToDelete;
+
+        private Random rand;
+
+        private const float TIME_PER_TARGET_SPAWN = .65f;
+        private const float TIME_PER_POWERUP_SPAWN = 2;
+        private const int MAX_TARGETS = 12;
+        private const int MAX_POWERUPS = 2;
 
         public MonogameItemManager(Game game) : base(game)
         {
             TargetsToDelete = new List<Target>();
             PowerUpsToDelete = new List<PowerUp>();
             PointSpritesToDelete = new List<PointSprite>();
-
-            maxTargets = 12;
-            maxPowerUps = 2;
-
-            TimeBetweenTargetSpawns = .65f;
-            TimeBetweenPowerUpSpawns = 5f;
-
             rand = new Random();
         }
 
@@ -361,9 +354,9 @@ namespace GP_Final
         private void generateItem(GameTime gametime)
         {
             if (Targets.Count == 0 ||
-                (gametime.TotalGameTime.TotalMilliseconds / 1000 - TimeTargetSpawned > TimeBetweenTargetSpawns))
+                (gametime.TotalGameTime.TotalMilliseconds / 1000 - TimeTargetSpawned > TIME_PER_TARGET_SPAWN))
             {
-                if (Targets.Count < maxTargets)
+                if (Targets.Count < MAX_TARGETS)
                 {
                     int odds = rand.Next(0, 50);
 
@@ -389,9 +382,9 @@ namespace GP_Final
 
             if (round.CurrentRoundTime > 5)
             {
-                if ((gametime.TotalGameTime.TotalMilliseconds / 1000 - TimePowerUpSpawned > TimeBetweenPowerUpSpawns))
+                if ((gametime.TotalGameTime.TotalMilliseconds / 1000 - TimePowerUpSpawned > TIME_PER_POWERUP_SPAWN))
                 {
-                    if (PowerUps.Count < maxPowerUps)
+                    if (PowerUps.Count < MAX_POWERUPS)
                     {
                         int odds = rand.Next(60, 90);
 

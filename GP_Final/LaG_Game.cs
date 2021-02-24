@@ -10,9 +10,6 @@ namespace GP_Final
         public static Util utility;
       
         GraphicsDeviceManager graphics;
-        const int resolutionWidth = 1280;
-        const int resolutionHeight = 720;
-
         SpriteBatch spriteBatch;
         Color borderColor;
 
@@ -22,14 +19,17 @@ namespace GP_Final
         MonoGameLanko lanko;
         MonogameItemManager itemManager;
         MonogameRoundManager roundManager;
-       
+
+        const int GAME_RES_WIDTH = 1280;
+        const int GAME_RES_HEIGHT = 720;
+
         public Lanko_And_Glub() : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            graphics.PreferredBackBufferWidth = resolutionWidth;
-            graphics.PreferredBackBufferHeight = resolutionHeight;
+            graphics.PreferredBackBufferWidth = GAME_RES_WIDTH;
+            graphics.PreferredBackBufferHeight = GAME_RES_HEIGHT;
             graphics.HardwareModeSwitch = false;
             graphics.IsFullScreen = true;
 
