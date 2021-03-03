@@ -34,7 +34,7 @@ namespace GP_Final
         {
             firstUpdate = true;
             scale = .25f;
-            Direction = new Vector2(0, 0);
+            Direction = Vector2.Zero;
             updatesPerFrame = 7;
             color = new Color(0, 0, 0, 0);
             hasSpawned = false;

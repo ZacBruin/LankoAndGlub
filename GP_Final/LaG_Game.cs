@@ -61,10 +61,10 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            itemManager.border = roundManager.border = lanko.Border;
-            itemManager.lanko = lanko;
-            itemManager.glub = lanko.Glub;
-            itemManager.round = roundManager.round;
+            itemManager.Border = roundManager.Border = lanko.Border;
+            itemManager.Lanko = lanko;
+            itemManager.Glub = lanko.Glub;
+            itemManager.Round = roundManager.Round;
 
             roundManager.FirstTimeSetup();
             utility.roundManager = roundManager;
@@ -94,12 +94,12 @@ namespace GP_Final
 
         private void StartNewRound()
         {
-            if (itemManager.round.RoundIsOver)
+            if (itemManager.Round.RoundIsOver)
             {
                 if (roundManager.FirstRoundStartHasStarted == true)
                 {
                     utility.LengthGamePaused = 0;
-                    itemManager.round.RoundIsOver = false;
+                    itemManager.Round.RoundIsOver = false;
                     roundManager.HasStartedRound = true;
                 }
             }

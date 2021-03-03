@@ -4,51 +4,54 @@ namespace GP_Final
 {
     public class GameRound : GameComponent
     {
-        public float TimeRoundStarted, MaxRoundLength, CurrentRoundTime;
-        public bool HasRoundJustStarted, RoundIsOver;
-
+        public float CurrentRoundTime { get; private set; }
+        public bool RoundIsOver;
         public int Points;
+
+        private bool roundHasStarted;
+        private float timeRoundStarted;
+
+        private const float maxRoundLength = 50;
+        public float MaxRoundLength
+        {
+            get {return maxRoundLength;}
+        }
 
         public GameRound(Game game) : base(game)
         {
-            MaxRoundLength = 50;
             RoundIsOver = true;
-            HasRoundJustStarted = true;
+            roundHasStarted = true;
         }
 
         public override void Update(GameTime gameTime)
         {
+            float totalGameTime = (float)gameTime.TotalGameTime.TotalMilliseconds / 1000;
+
             if (!Lanko_And_Glub.utility.IsGamePaused)
             {
                 if (RoundIsOver == false)
                 {
-                    if (HasRoundJustStarted)
+                    if (roundHasStarted)
                     {
-                        HasRoundJustStarted = false;
-                        TimeRoundStarted = ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000);
+                        roundHasStarted = false;
+                        timeRoundStarted = totalGameTime;
                     }
 
                     else
                     {
-                        CurrentRoundTime =
-                            ((float)gameTime.TotalGameTime.TotalMilliseconds / 1000) - TimeRoundStarted - Lanko_And_Glub.utility.LengthGamePaused/2f;
+                        CurrentRoundTime = totalGameTime - timeRoundStarted - Lanko_And_Glub.utility.LengthGamePaused/2f;
 
-                        if (CurrentRoundTime >= MaxRoundLength)
-                        {
+                        if (CurrentRoundTime >= maxRoundLength)
                             RoundIsOver = true;
-                        }
-
-
                     }
                 }
-
                 base.Update(gameTime);
             }
         }
 
         public void ResetRound()
         {
-            HasRoundJustStarted = true;
+            roundHasStarted = true;
             Lanko_And_Glub.utility.LengthGamePaused = 0;
             Points = 0;
         }

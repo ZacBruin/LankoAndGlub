@@ -132,7 +132,7 @@ namespace GP_Final
 
             UpdateHitbox();
                 
-            Direction = new Vector2(0, 0);
+            Direction = Vector2.Zero;
 
             center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
 
@@ -208,7 +208,7 @@ namespace GP_Final
                     run_info.UpdateSourceFrame();
                     SourceRectangle = run_info.SourceFrame;
                     
-                    Direction = new Vector2(0, 0);
+                    Direction = Vector2.Zero;
                     CheckIfFollowingLanko();
                     break;
 
@@ -249,7 +249,7 @@ namespace GP_Final
                     {
                         State = GlubState.Stranded;
                         Location.Y = ground - (spriteTexture.Height * scale);
-                        Direction = new Vector2(0, 0);
+                        Direction = Vector2.Zero;
                         numBouncesAfterFalling = 0;
                     }
 
@@ -403,7 +403,7 @@ namespace GP_Final
             cached_Location = new Vector2(LocationRect.X, LocationRect.Y);
             isAnimatingBurst = true;
             Speed = groundSpeed;
-            Direction = new Vector2(0, 0);
+            Direction = Vector2.Zero;
             HasBounced = false;
 
             if (lanko.HasJumped)

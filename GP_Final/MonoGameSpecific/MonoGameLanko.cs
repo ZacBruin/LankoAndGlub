@@ -214,7 +214,7 @@ namespace GP_Final
         
             Speed = LANKO_BASE_SPEED;
             SpeedBoostViaPowerUp = START_SPEED_MODIFIER;
-            Direction = new Vector2(0, 0);
+            Direction = Vector2.Zero;
             Location = new Vector2(Border.Walls[2].LocationRect.Width/2, Ground - Hitbox.Height);        
             Center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
             AimDirection = controller.MouseDirection - Center;
@@ -308,7 +308,7 @@ namespace GP_Final
                 if(HasJumped == false)
                 {
                     State = LankoState.Standing;
-                    Direction = new Vector2(0, 0);
+                    Direction = Vector2.Zero;
                 }
 
                 else
