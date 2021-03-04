@@ -12,6 +12,18 @@ namespace GP_Final
         public MonoGameLanko Lanko;
         public GameRound Round;
 
+        private enum EnemyType
+        {
+            RedBat,
+            GoldBat
+        }
+
+        private enum PowerUpType
+        {
+            CyanGem,
+            GreenGem
+        }
+
         private float timeTargetSpawned, timePowerUpSpawned;
 
         private List<Target> TargetsToDelete;
@@ -20,10 +32,22 @@ namespace GP_Final
 
         private Random rand;
 
+        #region Consts
         private const float TIME_PER_TARGET_SPAWN = .65f;
         private const float TIME_PER_POWERUP_SPAWN = 2;
         private const int MAX_TARGETS = 12;
         private const int MAX_POWERUPS = 2;
+        private const float ENEMY_DEATH_SPEED = 10;
+
+        private const int ITEM_MIN_X_DIRECTION = -100;
+        private const int ITEM_MAX_X_DIRECTION = 100;
+
+        private const int ENEMY_MIN_Y_DIRECTION = -20;
+        private const int ENEMY_MAX_Y_DIRECTION = 20;
+
+        private const int GREENGEM_MIN_Y_DIRECTION = -30;
+        private const int GREENGEM_MAX_Y_DIRECTION = 30;
+        #endregion
 
         public MonogameItemManager(Game game) : base(game)
         {
@@ -33,187 +57,222 @@ namespace GP_Final
             rand = new Random();
         }
 
+        #region Updates
         public override void Update(GameTime gameTime)
         {
+            Color transparent = new Color(0, 0, 0, 0);
+
             if (!Lanko_And_Glub.utility.IsGamePaused)
             {
-                Color transparent = new Color(0, 0, 0, 0);
-
                 foreach (PowerUp p in PowerUps)
                     if (p.color == transparent)
                         p.color = Color.White;
 
-                foreach (Target t in Targets)
+                foreach (Target t in Enemies)
                     if (t.color == transparent)
                         t.color = Color.White;
 
                 updateItemManager(gameTime);
+                updatePowerup(gameTime);
+                updateEnemies(gameTime);
+                updatePointSprites(gameTime);
+
                 base.Update(gameTime);
             }
 
+            //hide on-screen sprites when paused
             else
             {
                 foreach (PowerUp p in PowerUps)
-                    p.color = new Color(0, 0, 0, 0);
-                foreach (Target t in Targets)
-                    t.color = new Color(0, 0, 0, 0);
+                    p.color = transparent;
+                foreach (Target t in Enemies)
+                    t.color = transparent;
             }
-        }
+        }      
 
-        #region Updates
+        #region PowerUps
         private void updatePowerup(GameTime gameTime)
         {
             foreach (PowerUp p in PowerUps)
             {
-                switch (p.state)
+                ManagePowerUpState(p);
+
+                if (PowerUpShouldDespawn(p))
+                    p.state = Item.State.DeSpawning;
+
+                else if (p is GreenGem && Glub.State == GlubState.Thrown && Glub.Hitbox.Intersects(p.Hitbox))
+                    HandleGreenGemHit(p, gameTime);
+
+                else if (p is CyanGem && Lanko.Hitbox.Intersects(p.Hitbox))
                 {
-                    case Item.State.Spawning:
-                        if (p.SpawnAnimation())
-                            p.state = Target.State.Moving;
-                        break;
-
-                    case Item.State.DeSpawning:
-                        if (p.DespawnAnimation())
-                            PowerUpsToDelete.Add(p);
-                        break;
-                }
-
-
-                if (p.MaxTimeOnScreen < p.CurrentTimeOnScreen || Round.RoundIsOver)
-                {
-                    if (p.state == Item.State.Moving)
-                        p.state = Item.State.DeSpawning;
-                }
-
-                else if (p is GreenGem)
-                {
-                    if (Glub.State == GlubState.Thrown && Glub.Hitbox.Intersects(p.Hitbox))
-                    {
-                        if (Glub.HasStrongBuff == false)
-                            Glub.ThrownToSeeking();
-
-                        if (p.CheckDamage())
-                        {
-                            Glub.GetBuffed(gameTime);
-                            PowerUpsToDelete.Add(p);
-                        }
-
-                        Glub.HasBounced = true;
-                    }
-                }
-
-                else if (p is CyanGem)
-                {
-                    if (Lanko.Hitbox.Intersects(p.Hitbox))
-                    {
-                        PowerUpsToDelete.Add(p);
-                        Lanko.IncreaseSpeedMod();
-                    }
+                    PowerUpsToDelete.Add(p);
+                    Lanko.IncreaseSpeedMod();
                 }
 
                 checkCollision(p);
             }
 
-            foreach (Target t in TargetsToDelete)
-                Targets.Remove(t);
-
             foreach (PowerUp p in PowerUpsToDelete)
                 PowerUps.Remove(p);
 
-            foreach (PointSprite ps in PointSpritesToDelete)
-                Points.Remove(ps);
-
-            TargetsToDelete.Clear();
             PowerUpsToDelete.Clear();
-            PointSpritesToDelete.Clear();
         }
 
-        private void updateTarget(GameTime gameTime)
+        private void ManagePowerUpState(PowerUp p)
         {
-            foreach (Target t in Targets)
+            switch (p.state)
             {
-                switch (t.state)
-                {
-                    case Target.State.Spawning:
-                        if (t.SpawnAnimation())
-                            t.state = Target.State.Moving;
-                        break;
+                case Item.State.Spawning:
+                    if (p.SpawnAnimation())
+                        p.state = Item.State.Moving;
+                    break;
 
-                    case Target.State.DeSpawning:
-                        if (t.DespawnAnimation())
-                            TargetsToDelete.Add(t);
-                        break;
+                case Item.State.DeSpawning:
+                    if (p.DespawnAnimation())
+                        PowerUpsToDelete.Add(p);
+                    break;
+            }
+        }
 
-                    case Target.State.Dying:
-                        if (t.DeathAnim())
-                            TargetsToDelete.Add(t);
-                        break;
-                }
+        private bool PowerUpShouldDespawn(PowerUp p)
+        {
+            return p.MaxTimeOnScreen < p.CurrentTimeOnScreen || Round.RoundIsOver && p.state == Item.State.Moving;
+        }
 
-                if (t.MaxTimeOnScreen < t.CurrentTimeOnScreen || Round.RoundIsOver)
-                {
-                    switch (t.state)
-                    {
-                        case Target.State.Moving:
-                        case Target.State.SpeedDown:
-                        case Target.State.SpeedUp:
-                            t.state = Target.State.DeSpawning;
-                            break;
-                    }
-                }
+        //TODO: Glub should be managing his own state
+        private void HandleGreenGemHit(PowerUp gem, GameTime gameTime)
+        {
+            if (Glub.HasStrongBuff == false)
+                Glub.ThrownToSeeking();
 
+            if (gem.CheckDamage())
+            {
+                Glub.GetBuffed(gameTime);
+                PowerUpsToDelete.Add(gem);
+            }
+
+            Glub.HasBounced = true;
+        }
+        #endregion
+
+        #region Enemies
+        private void updateEnemies(GameTime gameTime)
+        {
+            foreach (Target t in Enemies)
+            {
+                if (EnemyShouldDespawn(t))
+                    t.state = Item.State.DeSpawning;
+                
                 else
                 {
-                    if (Glub.State == GlubState.Thrown && Glub.Hitbox.Intersects(t.Hitbox))
-                    {
-                        PointSprite ps;
-                        switch (t.state)
-                        {
-                            case Target.State.Moving:
-                            case Target.State.SpeedDown:
-                            case Target.State.SpeedUp:
-                            case Target.State.DeSpawning:
-                                if(t is RedBat)
-                                    ps = new PointSprite(Game, true);
-                                else
-                                    ps = new PointSprite(Game, false);
+                    ManageEnemyState(t);
 
-                                ps.Initialize();
-                                ps.Location = new Vector2(t.LocationRect.X + 25, t.LocationRect.Y - 10);
-                                ps.SetStartPos();
-
-                                AddPointSprite(ps);
-
-                                t.PlayHitSound();
-
-                                Round.Points += t.PointValue;
-
-                                if (Glub.HasStrongBuff == false)
-                                    Glub.ThrownToSeeking();
-
-                                Glub.HasBounced = true;
-                                t.state = Target.State.Dying;
-                                t.Speed = 10;
-                                t.color = new Color(230, 230, 230, 230);
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
+                    if (DidGlubHitEnemy(t))
+                        OnEnemyDeath(t);
                 }
 
                 checkCollision(t);
             }
+
+            foreach (Target t in TargetsToDelete)
+                Enemies.Remove(t);
+
+            TargetsToDelete.Clear();
         }
+
+        private void ManageEnemyState(Target t)
+        {
+            switch (t.state)
+            {
+                case Item.State.Spawning:
+                    if (t.SpawnAnimation())
+                        t.state = Item.State.Moving;
+                    break;
+
+                case Item.State.DeSpawning:
+                    if (t.DespawnAnimation())
+                        TargetsToDelete.Add(t);
+                    break;
+
+                case Item.State.Dying:
+                    if (t.DeathAnim())
+                        TargetsToDelete.Add(t);
+                    break;
+            }
+        }
+
+        private bool EnemyShouldDespawn(Target t)
+        {
+            if (t.MaxTimeOnScreen < t.CurrentTimeOnScreen || Round.RoundIsOver)
+                switch (t.state)
+                {
+                    case Item.State.Moving:
+                    case Item.State.SpeedDown:
+                    case Item.State.SpeedUp:
+                        return true;
+                }
+            return false;
+        }
+
+        private bool DidGlubHitEnemy(Target t)
+        {
+            if (Glub.State == GlubState.Thrown && Glub.Hitbox.Intersects(t.Hitbox))
+                switch (t.state)
+                {
+                    case Item.State.Moving:
+                    case Item.State.SpeedDown:
+                    case Item.State.SpeedUp:
+                    case Item.State.DeSpawning:
+                        return true;
+                }
+            return false;
+        }
+
+        private void OnEnemyDeath(Target t)
+        {
+            SpawnPointSprite(t);
+            t.PlayHitSound();
+
+            Round.Points += t.PointValue;
+
+            //Glub should be managing this, not the Item Manager
+            if (Glub.HasStrongBuff == false)
+                Glub.ThrownToSeeking();
+
+            Glub.HasBounced = true;
+
+            t.state = Item.State.Dying;
+            t.Speed = ENEMY_DEATH_SPEED;
+            t.color = new Color(230, 230, 230, 230);
+        }
+
+        private void SpawnPointSprite(Target t)
+        {
+            PointSprite ps;
+
+            ps = (t is RedBat) ? new PointSprite(Game, true) : new PointSprite(Game, false);
+
+            ps.Initialize();
+            ps.Location = new Vector2(t.LocationRect.X + 25, t.LocationRect.Y - 10);
+            ps.SetStartPos();
+
+            AddPointSprite(ps);
+        }
+        #endregion
 
         private void updatePointSprites(GameTime gameTime)
         {
             foreach(PointSprite ps in Points)
             {
                 ps.Update(gameTime);
-                if (ps.color.A < 10) { PointSpritesToDelete.Add(ps); }
+                if (ps.color.A < 10)
+                    PointSpritesToDelete.Add(ps);
             }
+
+            foreach (PointSprite ps in PointSpritesToDelete)
+                Points.Remove(ps);
+
+            PointSpritesToDelete.Clear();
         }
 
         private void updateItemManager(GameTime gameTime)
@@ -226,10 +285,6 @@ namespace GP_Final
                 Lanko.ResetSpeedMod();
                 Glub.HasStrongBuff = false;
             }
-
-            updatePowerup(gameTime);
-            updateTarget(gameTime);
-            updatePointSprites(gameTime);
         }
         #endregion
 
@@ -238,39 +293,36 @@ namespace GP_Final
         {
             int spawnEdgeBuffer = 5;
 
-            if (i is RedBat)
+            int verticalPositionMinimum = 0;
+            int verticalPositionMaximum = 0;
+
+            if (i is Target)
             {
-                i.Location = new Vector2(rand.Next((Border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (Border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                    rand.Next((Border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
-                    (Border.Walls[0].LocationRect.Bottom + 400)));
+                verticalPositionMinimum = Border.TopRect.Bottom + spawnEdgeBuffer;
+
+                if (i is RedBat)
+                    verticalPositionMaximum = Border.TopRect.Bottom + 400;
+                else if (i is GoldenBat)
+                    verticalPositionMaximum = Border.TopRect.Bottom + 150;
             }
 
-            else if (i is GoldenBat)
+            else if (i is PowerUp)
             {
-                i.Location = new Vector2(rand.Next((Border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (Border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                    rand.Next((Border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
-                    Border.Walls[0].LocationRect.Bottom + 150));
+                if (i is CyanGem)
+                {
+                    verticalPositionMinimum = Border.TopRect.Bottom + 300;
+                    verticalPositionMaximum = Border.BottomRect.Top - 50;
+                }
+                else if (i is GreenGem)
+                {
+                    verticalPositionMinimum = Border.TopRect.Bottom + spawnEdgeBuffer;
+                    verticalPositionMaximum = Border.TopRect.Bottom + 400;
+                }
             }
 
-            else if (i is CyanGem)
-            {
-
-
-                i.Location = new Vector2(rand.Next((Border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (Border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                     rand.Next((Border.Walls[0].LocationRect.Bottom + 300),
-                     Border.Walls[2].LocationRect.Top - 50));
-            }
-
-            else if (i is GreenGem)
-            {
-                i.Location = new Vector2(rand.Next((Border.Walls[3].LocationRect.Right + spawnEdgeBuffer),
-                    (Border.Walls[1].LocationRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
-                    rand.Next((Border.Walls[0].LocationRect.Bottom + spawnEdgeBuffer),
-                    Border.Walls[0].LocationRect.Bottom + 400));
-            }
+            i.Location = new Vector2(
+                rand.Next(Border.LeftRect.Right + spawnEdgeBuffer, (Border.RightRect.Left - i.Hitbox.Width - spawnEdgeBuffer)),
+                rand.Next(verticalPositionMinimum, verticalPositionMaximum));
 
             i.SetTranformAndRect();
             i.UpdateHitbox();
@@ -278,17 +330,13 @@ namespace GP_Final
 
         private bool checkForOverlap(Item i)
         {
-            foreach (Target targ in Targets)
-            {
+            foreach (Target targ in Enemies)
                 if(i.Hitbox.Intersects(targ.Hitbox))
                     return true;
-            }
 
             foreach (PowerUp pow in PowerUps)
-            {
                 if(i.Hitbox.Intersects(pow.Hitbox))
                     return true;
-            }
 
             if(i.Hitbox.Intersects(Lanko.LocationRect) || i.Hitbox.Intersects(Glub.Hitbox))
                 return true;
@@ -296,22 +344,32 @@ namespace GP_Final
             return false;
         }
 
-        private void spawnTarget(bool IsBasicTarget)
+        private void spawnTarget(EnemyType enemy)
         {
             Target targ;
 
-            if(IsBasicTarget) targ = new RedBat(Game);    
-            else targ = new GoldenBat(Game);
+            switch (enemy)
+            {
+                case EnemyType.RedBat:
+                    targ = new RedBat(Game);
+                    break;
+                case EnemyType.GoldBat:
+                    targ = new GoldenBat(Game);
+                    break;
+                default:
+                    return;
+            }
 
             targ.Initialize();
             positionItem(targ);
 
-            while (checkForOverlap(targ)) { positionItem(targ); }
+            while (checkForOverlap(targ))
+                positionItem(targ);
 
             do
             {                
-                targ.Direction.X = rand.Next(-100, 100);
-                targ.Direction.Y = rand.Next(-20, 20);
+                targ.Direction.X = rand.Next(ITEM_MIN_X_DIRECTION, ITEM_MAX_X_DIRECTION);
+                targ.Direction.Y = rand.Next(ENEMY_MIN_Y_DIRECTION, ENEMY_MAX_Y_DIRECTION);
             }
             while (Math.Abs(targ.Direction.Y) > Math.Abs(targ.Direction.X));
 
@@ -321,96 +379,92 @@ namespace GP_Final
             AddTarget(targ);
         }
 
-        private void spawnPowerUp(bool IsTriangle)
+        private void spawnPowerUp(PowerUpType powerup)
         {
-            if (IsTriangle)
+            PowerUp pow;
+            switch(powerup)
             {
-                GreenGem tp = new GreenGem(Game);
-                tp.Initialize();
-                positionItem(tp);
-
-                while (checkForOverlap(tp))
-                {
-                    positionItem(tp);
-                }
-
-                tp.Direction = new Vector2(rand.Next(-100, 100), rand.Next(-30, 30));
-                AddPowerUp(tp);
+                case PowerUpType.CyanGem:
+                    pow = new CyanGem(Game);
+                    break;
+                case PowerUpType.GreenGem:
+                    pow = new GreenGem(Game);
+                    break;
+                default:
+                    return;
             }
 
-            else
-            {
-                CyanGem dp = new CyanGem(Game);
-                dp.Initialize();
-                positionItem(dp);
+            pow.Initialize();
+            positionItem(pow);
 
-                while (checkForOverlap(dp))
-                {
-                    positionItem(dp);
-                }
+            while (checkForOverlap(pow))
+                positionItem(pow);
 
-                AddPowerUp(dp);
-            }
+            if(pow is GreenGem)
+                pow.Direction = new Vector2(
+                    rand.Next(ITEM_MIN_X_DIRECTION, ITEM_MAX_X_DIRECTION), 
+                    rand.Next(GREENGEM_MIN_Y_DIRECTION, GREENGEM_MAX_Y_DIRECTION));
+
+            AddPowerUp(pow);
         }
 
         private void generateItem(GameTime gametime)
         {
-            if (Targets.Count == 0 ||
-                (gametime.TotalGameTime.TotalMilliseconds / 1000 - timeTargetSpawned > TIME_PER_TARGET_SPAWN))
+            double currentGameTime = gametime.TotalGameTime.TotalMilliseconds / 1000;
+
+            //if we don't have enemies OR we exceed the time between enemy spawns AND we're below the maximum enemy limit
+            if (Enemies.Count == 0 || (currentGameTime - timeTargetSpawned > TIME_PER_TARGET_SPAWN) && Enemies.Count < MAX_TARGETS)
+                TrySpawnEnemy(currentGameTime);
+            
+            //basically the same rules but we wait until 5 seconds into a round to try and spawn any powerups
+            if (Round.CurrentRoundTime > 5 && (currentGameTime - timePowerUpSpawned > TIME_PER_POWERUP_SPAWN) && PowerUps.Count < MAX_POWERUPS)
+                TrySpawnPowerUp(currentGameTime);
+        }
+
+        private void TrySpawnEnemy(double currentGameTime)
+        {
+            int odds = rand.Next(0, 50);
+
+            switch (odds)
             {
-                if (Targets.Count < MAX_TARGETS)
-                {
-                    int odds = rand.Next(0, 50);
+                case 1:
+                case 44:
+                case 19:
+                    spawnTarget(EnemyType.RedBat);
+                    timeTargetSpawned = (float)currentGameTime;
+                    break;
 
-                    switch (odds)
-                    {
-                        case 1:
-                        case 44:
-                        case 19:
-                            spawnTarget(true);
-                            timeTargetSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
-                            break;
+                case 14:
+                    spawnTarget(EnemyType.GoldBat);
+                    timeTargetSpawned = (float)currentGameTime;
+                    break;
 
-                        case 14:
-                            spawnTarget(false);
-                            timeTargetSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
+                default:
+                    break;
             }
+        }
 
-            if (Round.CurrentRoundTime > 5)
+        private void TrySpawnPowerUp(double currentGameTime)
+        {
+            int odds = rand.Next(60, 90);
+
+            switch (odds)
             {
-                if ((gametime.TotalGameTime.TotalMilliseconds / 1000 - timePowerUpSpawned > TIME_PER_POWERUP_SPAWN))
-                {
-                    if (PowerUps.Count < MAX_POWERUPS)
-                    {
-                        int odds = rand.Next(60, 90);
+                case 62:
+                case 87:
+                case 84:
+                    spawnPowerUp(PowerUpType.CyanGem);
+                    timePowerUpSpawned = (float)currentGameTime;
+                    break;
 
-                        switch (odds)
-                        {
-                            case 62:
-                            case 87:
-                            case 84:
-                                spawnPowerUp(false);
-                                timePowerUpSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
-                                break;
+                case 71:
+                    spawnPowerUp(PowerUpType.GreenGem);
+                    timePowerUpSpawned = (float)currentGameTime;
+                    break;
 
-                            case 71:
-                                spawnPowerUp(true);
-                                timePowerUpSpawned = (float)gametime.TotalGameTime.TotalMilliseconds / 1000;
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                }
+                default:
+                    break;
             }
-
         }
         #endregion
 
@@ -431,6 +485,7 @@ namespace GP_Final
         {
             Rectangle rect = i.Intersection(i.Hitbox, o.LocationRect);
 
+            //vertical collision bounce
             if (rect.Height < rect.Width)
             {
                 i.Direction.Y *= -1;
@@ -441,6 +496,7 @@ namespace GP_Final
                     i.Location.Y += (rect.Height + collisionSeparation);
             }
 
+            //horizontal collision bounce
             else if (rect.Height > rect.Width)
             {
                 i.Direction.X *= -1;
@@ -450,12 +506,12 @@ namespace GP_Final
                 else if (i.Center.X > rect.Right)
                     i.Location.X += (rect.Width + collisionSeparation);
 
+                //flip sprite when horizontal direction changes
                 if (i is Target)
                 {
-                    if (i.SpriteEffects == SpriteEffects.None)
-                        i.SpriteEffects = SpriteEffects.FlipHorizontally;
-                    else
-                        i.SpriteEffects = SpriteEffects.None;
+                    i.SpriteEffects = (i.SpriteEffects == SpriteEffects.None)
+                        ? SpriteEffects.FlipHorizontally
+                        : SpriteEffects.None;
                 }
             }
 

@@ -57,7 +57,7 @@ namespace GP_Final
                     if (state == LankoState.Standing)
                     {
                         SwapSpriteSheet(idleSheet, idleInfo);
-                        Location.Y += Math.Abs(Hitbox.Bottom - Border.Walls[2].LocationRect.Top);
+                        Location.Y += Math.Abs(Hitbox.Bottom - Border.BottomRect.Top);
                         UpdateHitbox();
                     }
 
@@ -207,7 +207,7 @@ namespace GP_Final
             currentInfo = idleInfo;
             spriteSheetFramesWide = idleInfo.TotalFrames;
 
-            Ground = Border.Walls[2].LocationRect.Top;
+            Ground = Border.BottomRect.Top;
 
             Scale = LANKO_SPRITE_SCALE;
             UpdateHitbox();
@@ -215,7 +215,7 @@ namespace GP_Final
             Speed = LANKO_BASE_SPEED;
             SpeedBoostViaPowerUp = START_SPEED_MODIFIER;
             Direction = Vector2.Zero;
-            Location = new Vector2(Border.Walls[2].LocationRect.Width/2, Ground - Hitbox.Height);        
+            Location = new Vector2(Border.BottomRect.Width/2, Ground - Hitbox.Height);        
             Center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
             AimDirection = controller.MouseDirection - Center;
 

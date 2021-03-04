@@ -177,7 +177,7 @@ namespace GP_Final
         {
             float fontSize = fontScale / 2.6f;
             float horizPosition = midpointRight - 90;
-            float topBorderWall = Border.Walls[0].LocationRect.Top;
+            float topBorderWall = Border.TopRect.Top;
             Color textColor = Color.Purple;
 
             spriteBatch.DrawString(font, "Programming:", 
@@ -207,17 +207,17 @@ namespace GP_Final
             if (Round.RoundIsOver && firstRoundOver)
             {
                 spriteBatch.DrawString(font, "Start Round:",
-                    new Vector2(midpointRight - 100, Border.Walls[2].LocationRect.Top - 95), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
+                    new Vector2(midpointRight - 100, Border.BottomRect.Top - 95), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
 
                 spriteBatch.DrawString(font, "Right Click",
-                    new Vector2(midpointRight - 100, Border.Walls[2].LocationRect.Top - 75), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
+                    new Vector2(midpointRight - 100, Border.BottomRect.Top - 75), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
             }
 
             spriteBatch.DrawString(font, "P: Instructions",
-                new Vector2(midpointRight - 145, Border.Walls[0].LocationRect.Top + 660), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
+                new Vector2(midpointRight - 145, Border.TopRect.Top + 660), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
 
             spriteBatch.DrawString(font, "ESC: Close Game",
-                new Vector2(midpointRight - 145, Border.Walls[0].LocationRect.Top + 685), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
+                new Vector2(midpointRight - 145, Border.TopRect.Top + 685), fontColor, 0f, Vector2.Zero, instructionsFontScale, SpriteEffects.None, 0f);
         }
 
         private void DrawTimer()
@@ -242,13 +242,13 @@ namespace GP_Final
                 offset = scoreLength == 1 ? 100 : 110;
 
                 spriteBatch.DrawString(font, "SCORE: " + PlayerScore.ToString(),
-                    new Vector2(midpointRight - offset, Border.Walls[2].LocationRect.Top - 595), fontColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0f);
+                    new Vector2(midpointRight - offset, Border.BottomRect.Top - 595), fontColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0f);
             }
 
             if (HighScore != 0 && firstRoundOver)
             {
                 spriteBatch.DrawString(font, "High: " + HighScore.ToString(),
-                    new Vector2(midpointRight - 67, Border.Walls[2].LocationRect.Top - 420), fontColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0f);
+                    new Vector2(midpointRight - 67, Border.BottomRect.Top - 420), fontColor, 0f, Vector2.Zero, fontSize, SpriteEffects.None, 0f);
             }
         }
 
@@ -271,12 +271,12 @@ namespace GP_Final
         {
             float leftEdgeOfScreen = Game.GraphicsDevice.Viewport.Bounds.Left;
             float rightEdgeOfScreen = Game.GraphicsDevice.Viewport.Bounds.Right;
-            float rightEdgeOfRightBorder = Border.Walls[1].LocationRect.Right;
+            float rightEdgeOfRightBorder = Border.RightRect.Right;
 
-            midpointLeft = ((Border.Walls[3].LocationRect.Left - leftEdgeOfScreen) / 2) + leftEdgeOfScreen;
+            midpointLeft = ((Border.LeftRect.Left - leftEdgeOfScreen) / 2) + leftEdgeOfScreen;
             midpointRight = ((rightEdgeOfScreen - rightEdgeOfRightBorder) / 2) + rightEdgeOfRightBorder;
 
-            Location = new Vector2(Border.Walls[3].LocationRect.Right + 115, Border.Walls[0].LocationRect.Bottom);
+            Location = new Vector2(Border.LeftRect.Right + 115, Border.TopRect.Bottom);
         }
 
         private void StartFirstRound()

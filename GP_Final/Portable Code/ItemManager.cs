@@ -21,21 +21,21 @@ namespace GP_Final
 
     public class ItemManager : GameComponent
     {
-        private List<Target> targets;
+        private List<Target> enemies;
         private List<PowerUp> powerUps;
         private List<PointSprite> pointSprites;
 
         public ItemManager(Game game) : base(game)
         {
-            targets = new List<Target>();
+            enemies = new List<Target>();
             powerUps = new List<PowerUp>();
             pointSprites = new List<PointSprite>();
         }
 
-        public List<Target> Targets
+        public List<Target> Enemies
         {
-            get { return targets; }
-            set { targets = value; }
+            get { return enemies; }
+            set { enemies = value; }
         }
 
         public List<PowerUp> PowerUps
@@ -50,17 +50,17 @@ namespace GP_Final
             set { pointSprites = value; }
         }
 
-        public void AddTarget(Target t) {targets.Add(t);}
+        public void AddTarget(Target t) {enemies.Add(t);}
         public void AddPowerUp(PowerUp p) {powerUps.Add(p);}
         public void AddPointSprite(PointSprite ps) {pointSprites.Add(ps);}
 
-        public void RemoveTarget(Target t) {targets.Remove(t);}
+        public void RemoveTarget(Target t) {enemies.Remove(t);}
         public void RemovePowerUp(PowerUp p) {powerUps.Remove(p);}
         public void RemovePointSprite(PointSprite ps) {pointSprites.Remove(ps);}
 
         public override void Update(GameTime gameTime)
         {
-            foreach (Target t in Targets) {t.Update(gameTime);}
+            foreach (Target t in Enemies) {t.Update(gameTime);}
             foreach (PowerUp p in PowerUps) {p.Update(gameTime);}
             foreach (PointSprite ps in Points) {ps.Update(gameTime);}
 
@@ -69,7 +69,7 @@ namespace GP_Final
 
         public void Draw(SpriteBatch sb)
         {
-            foreach (Target t in Targets)
+            foreach (Target t in Enemies)
             {
                 t.DrawMarkers(sb);
                 t.Draw(sb);

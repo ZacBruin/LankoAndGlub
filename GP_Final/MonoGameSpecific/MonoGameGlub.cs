@@ -25,6 +25,7 @@ namespace GP_Final
 
         public bool HasBounced;
         private bool isAnimatingBurst;
+
         public int numBounces, numBouncesAfterFalling, maxBounces, maxBouncesAfterFalling,
             run_Anim_Count, updates_Between_Run, ball_Anim_Count, updates_Between_Ball, 
             burst_Anim_Count, updates_Between_Burst;
@@ -47,9 +48,7 @@ namespace GP_Final
                     }
 
                     else
-                    {
                         SwapSpriteSheet(ball_sheet, ball_info);
-                    }
                 }
             }
         }
@@ -123,9 +122,9 @@ namespace GP_Final
 
             Scale = .13f;
             burst_scale = .18f;
-            groundSpeed = 200f;
-            airSpeed = 750f;
-            seekSpeed = 500f;
+            groundSpeed = 200;
+            airSpeed = 750;
+            seekSpeed = 500;
             buffSpeed = 900;
 
             Speed = groundSpeed;
@@ -338,9 +337,7 @@ namespace GP_Final
                             Direction.Y *= -1;
 
                             if (State == GlubState.Falling)
-                            {
                                 Direction.Y = Direction.Y / 1.5f;
-                            }
 
                             if (rect.Top < center.Y)
                                 Location.Y += (float)rect.Height;
@@ -367,7 +364,7 @@ namespace GP_Final
             }
         }
 
-        Vector2 SeekLanko()
+        private Vector2 SeekLanko()
         {
             Vector2 desiredDirection = (Vector2.Normalize(lanko.Center - Location));
             return (desiredDirection);
@@ -435,18 +432,12 @@ namespace GP_Final
         private void MakeShimmer()
         {
             if(updatesBetweenFlicker > 0)
-            {
                 updatesBetweenFlicker--;
-            }
 
             else
             {
                 updatesBetweenFlicker = 2;
-
-                if (color == Color.White)
-                    color = Color.LightGreen;
-                else
-                    color = Color.White;
+                color = (color == Color.White) ? Color.LightGreen : Color.White;
             }
         }
 
@@ -466,7 +457,6 @@ namespace GP_Final
                 ball_Anim_Count = 0;
 
             current_info = info;
-
             UpdateHitbox();
         }
 
@@ -539,10 +529,7 @@ namespace GP_Final
                 }
 
                 else
-                {
                     ball_Anim_Count++;
-                    return;
-                }
             }
         }
 
@@ -560,10 +547,7 @@ namespace GP_Final
             }
 
             else
-            {
                 burst_Anim_Count++;
-                return;
-            }
         }
 
         private void CheckBurstAnimComplete()
@@ -584,22 +568,19 @@ namespace GP_Final
         public void SetStartLocationAndGround()
         {
             ground = lanko.Ground;
-
-            Location =
-                  new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
+            Location = new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
 
             SetTranformAndRect();
-
             center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
         }
 
         //HACK: Sometimes Glub gets out of the borders
         private void SaveGlubFromDeath()
         {
-            if (center.X < border.Walls[3].LocationRect.Left ||
-                center.X > border.Walls[1].LocationRect.Right ||
-                center.Y < border.Walls[0].LocationRect.Top ||
-                center.Y > border.Walls[2].LocationRect.Bottom)
+            if (center.X < border.LeftRect.Left ||
+                center.X > border.RightRect.Right ||
+                center.Y < border.TopRect.Top ||
+                center.Y > border.BottomRect.Bottom)
             {
                 GetCaughtByLanko();
                 lanko.HasGlub = true;

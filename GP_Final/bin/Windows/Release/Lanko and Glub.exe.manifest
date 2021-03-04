@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lanko and Glub.exe" size="209920">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Lanko and Glub.exe" size="210432">
       <assemblyIdentity name="Lanko and Glub" version="3.3.0.1985" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>pZa3D3p3FcU95oy2meGdCFseJp/lRL4pHTgyPjmCng8=</dsig:DigestValue>
+        <dsig:DigestValue>tFH/wUJjim7mosVaQZdi3tWQ1Jm9GJzk6OyqYrsrNa8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
