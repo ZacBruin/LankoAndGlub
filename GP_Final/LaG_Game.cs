@@ -9,19 +9,19 @@ namespace GP_Final
     {
         public static Util utility;
       
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Color borderColor;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private Color borderColor;
 
-        GameConsole console;
-        InputHandler input;
+        private GameConsole console;
+        private InputHandler input;
 
-        MonoGameLanko lanko;
-        MonogameItemManager itemManager;
-        MonogameRoundManager roundManager;
+        private MonoGameLanko lanko;
+        private MonogameItemManager itemManager;
+        private MonogameRoundManager roundManager;
 
-        const int GAME_RES_WIDTH = 1280;
-        const int GAME_RES_HEIGHT = 720;
+        private const int GAME_RES_WIDTH = 1280;
+        private const int GAME_RES_HEIGHT = 720;
 
         public Lanko_And_Glub() : base()
         {

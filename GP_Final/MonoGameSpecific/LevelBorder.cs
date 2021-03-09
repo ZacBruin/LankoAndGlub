@@ -18,6 +18,8 @@ namespace GP_Final
         private Texture2D background;
 
         private const float BACKGROUND_SPRITE_SCALE = .563f;
+        private const string BACKGROUND_SPRITE = "Sprites/Background";
+        private const string INNER_BORDER_SPRITE = "Sprites/BorderInside";
 
         public LevelBorder(Game game) : base(game)
         {
@@ -49,8 +51,8 @@ namespace GP_Final
                 w.SetTranformAndRect();
             }
 
-            spriteTexture = content.Load<Texture2D>("Sprites/BorderInside");
-            background = content.Load<Texture2D>("Sprites/Background");
+            spriteTexture = content.Load<Texture2D>(INNER_BORDER_SPRITE);
+            background = content.Load<Texture2D>(BACKGROUND_SPRITE);
 
             Location = new Vector2(LeftRect.Right, TopRect.Bottom);
 
