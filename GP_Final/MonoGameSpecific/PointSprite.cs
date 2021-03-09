@@ -5,33 +5,46 @@ namespace GP_Final
 {
     public class PointSprite : DrawableSprite
     {
-        public int updatesBetweenFrames;
-        public int pointAnimCount;
-        private bool IsMovingDown;
-        private int updatesBeforeMove = 5;
+        private int pointAnimCount, updatesBeforeMove;
+
+        private bool isMovingDown;
 
         private Texture2D pointSpriteSheet;
         private SpriteSheetInfo sheetInfo;
         private Vector2 startingPos;
+
+        #region Consts
+        //Assets
+        private const string RED_BAT_POINT_SHEET = "SpriteSheets/RedBatPoints";
+        private const string GOLD_BAT_POINT_SHEET = "SpriteSheets/GoldBatPoints";
+
+        //Numbers
+        private const float SPRITE_SCALE = .21f;
+        private const int UPDATES_PER_FRAME = 9;
+        private const int FRAMES_IN_SHEET = 6;
+        private const int UPDATES_BETWEEN_BOUNCES = 7;
+        private const int POINTS_BOUNCE_MOVEMENT_AMOUNT = 4;
+        #endregion
 
         public PointSprite (Game game, bool IsOne) : base(game)
         {
             if(IsOne) 
             {
                 color = new Color(255, 140, 140);
-                pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/RedBatPoints"); 
+                pointSpriteSheet = content.Load<Texture2D>(RED_BAT_POINT_SHEET); 
             }
 
             else 
             {
                 color = new Color(245, 215, 81);
-                pointSpriteSheet = content.Load<Texture2D>("SpriteSheets/GoldBatPoints"); 
+                pointSpriteSheet = content.Load<Texture2D>(GOLD_BAT_POINT_SHEET); 
             }
 
-            Scale = .21f;
-            updatesBetweenFrames = 9;
+            updatesBeforeMove = 5;
 
-            sheetInfo = new SpriteSheetInfo(6, pointSpriteSheet.Width, pointSpriteSheet.Height, updatesBetweenFrames);
+            Scale = SPRITE_SCALE;
+
+            sheetInfo = new SpriteSheetInfo(FRAMES_IN_SHEET, pointSpriteSheet.Width, pointSpriteSheet.Height, UPDATES_PER_FRAME);
             spriteTexture = pointSpriteSheet;
 
             SetTranformAndRect();
@@ -49,8 +62,13 @@ namespace GP_Final
         {
             CycleAnim();
 
-            if (updatesBeforeMove <= 0) { Bounce(4); updatesBeforeMove = 7; }
-            else updatesBeforeMove--;
+            if (updatesBeforeMove <= 0)
+            {
+                MakePointsBounce();
+                updatesBeforeMove = UPDATES_BETWEEN_BOUNCES;
+            }
+            else
+                updatesBeforeMove--;
 
             base.Update(gameTime);
         }
@@ -63,7 +81,7 @@ namespace GP_Final
                 return;
             }              
 
-            if (pointAnimCount >= updatesBetweenFrames)
+            if (pointAnimCount >= UPDATES_PER_FRAME)
             {
                 sheetInfo.CurrentFrame++;
                 pointAnimCount = 0;
@@ -73,15 +91,12 @@ namespace GP_Final
             }
 
             else
-            {
                 pointAnimCount++;
-                return;
-            }
         }
 
         public void SetStartPos()
         {
-            if(startingPos == new Vector2(0,0)) 
+            if(startingPos == Vector2.Zero) 
                 startingPos = Location;
         }
 
@@ -107,22 +122,24 @@ namespace GP_Final
             }
         }
 
-        private void Bounce(int MovementAmt)
+        private void MakePointsBounce()
         {
-            if(IsMovingDown)
-            {
-                Location.Y += MovementAmt;
+            int movementAmount = POINTS_BOUNCE_MOVEMENT_AMOUNT;
 
-                if (Location.Y == startingPos.Y + MovementAmt)
-                    IsMovingDown = false;
+            if (isMovingDown)
+            {
+                Location.Y += movementAmount;
+
+                if (Location.Y == startingPos.Y + movementAmount)
+                    isMovingDown = false;
             }
 
-            else if (!IsMovingDown)
+            else if (!isMovingDown)
             {
-                Location.Y -= MovementAmt;
+                Location.Y -= movementAmount;
 
-                if (Location.Y == startingPos.Y - MovementAmt)
-                    IsMovingDown = true;
+                if (Location.Y == startingPos.Y - movementAmount)
+                    isMovingDown = true;
             }
         }
 

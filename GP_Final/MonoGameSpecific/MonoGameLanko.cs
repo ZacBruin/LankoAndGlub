@@ -176,7 +176,7 @@ namespace GP_Final
             game.Components.Add(Border);
 
             Glub = new MonoGameGlub(game);
-            Glub.lanko = this;
+            Glub.Lanko = this;
             game.Components.Add(Glub);
 
             observers = new List<ILankoObserver>();
@@ -239,7 +239,7 @@ namespace GP_Final
                 Vector2 aimDotsCenter = new Vector2(aimDots.Width / 2, aimDots.Bounds.Bottom);
                 float aimDotsRotation = (float)Math.Atan2(AimDirection.Y, AimDirection.X) + (float)(Math.PI * .5f);
 
-                spriteBatch.Draw(aimDots, Glub.center, null, Color.MonoGameOrange, aimDotsRotation, aimDotsCenter, AIM_DOTS_SPRITE_SCALE, SpriteEffects.None, 0f);
+                spriteBatch.Draw(aimDots, Glub.Center, null, Color.MonoGameOrange, aimDotsRotation, aimDotsCenter, AIM_DOTS_SPRITE_SCALE, SpriteEffects.None, 0f);
             }
 
             Vector2 crossHairCenter = new Vector2(crossHair.Width / 2, crossHair.Height / 2);
@@ -384,7 +384,7 @@ namespace GP_Final
                         break;
                 }
                  
-                AimDirection = controller.MouseDirection - Glub.center;
+                AimDirection = controller.MouseDirection - Glub.Center;
             }
 
             if (controller.GetMouseButtonState(THROW_GLUB) == ButtonState.Released && IsAiming)

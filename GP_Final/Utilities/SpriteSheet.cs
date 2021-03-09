@@ -4,19 +4,19 @@ namespace GP_Final
 {
     public class SpriteSheetInfo
     {
-        public int CurrentFrame, 
-                   TotalFrames, 
-                   FrameHeight, 
-                   FrameWidth, 
-                   UpdatesPerFrame;
-
+        public int CurrentFrame;
         public Rectangle SourceFrame;
+
+        public int UpdatesPerFrame { get; }
+        public int TotalFrames { get; }
+
+        private int frameHeight, frameWidth;
 
         public SpriteSheetInfo(int totalFrames, int sheetWidth, int sheetHeight, int updates)
         {
             TotalFrames = totalFrames;
-            FrameWidth = sheetWidth / totalFrames;
-            FrameHeight = sheetHeight;
+            frameWidth = sheetWidth / totalFrames;
+            frameHeight = sheetHeight;
             UpdatesPerFrame = updates;
 
             CurrentFrame = 0;
@@ -26,7 +26,7 @@ namespace GP_Final
 
         public void UpdateSourceFrame()
         {
-            SourceFrame = new Rectangle(CurrentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
+            SourceFrame = new Rectangle(CurrentFrame * frameWidth, 0, frameWidth, frameHeight);
         }
     }
 }

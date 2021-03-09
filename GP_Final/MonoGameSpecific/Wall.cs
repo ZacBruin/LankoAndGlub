@@ -7,11 +7,15 @@ namespace GP_Final
     public class Wall : DrawableSprite
     {
         public enum WallType { Top, Bottom, Left, Right };
-        WallType currentWallType;
+        private WallType currentWallType;
+
+        private const string TOP_BORDER_SPRITE = "Sprites/BorderTop";
+        private const string BOTTOM_BORDER_SPRITE = "Sprites/BorderBottom";
+        private const string LEFT_BORDER_SPRITE = "Sprites/BorderLeft";
+        private const string RIGHT_BORDER_SPRITE = "Sprites/BorderRight";
 
         public Wall(Game game, WallType type) : base(game)
         {
-            Location = Location;
             currentWallType = type;
         }
 
@@ -20,19 +24,19 @@ namespace GP_Final
             switch(currentWallType)
             {
                 case WallType.Top:
-                    spriteTexture = content.Load<Texture2D>("Sprites/BorderTop");
+                    spriteTexture = content.Load<Texture2D>(TOP_BORDER_SPRITE);
                     break;
 
                 case WallType.Bottom: 
-                    spriteTexture = content.Load<Texture2D>("Sprites/BorderBottom");
+                    spriteTexture = content.Load<Texture2D>(BOTTOM_BORDER_SPRITE);
                     break;
 
                 case WallType.Left:
-                    spriteTexture = content.Load<Texture2D>("Sprites/BorderLeft");
+                    spriteTexture = content.Load<Texture2D>(LEFT_BORDER_SPRITE);
                     break;
 
                 case WallType.Right:
-                    spriteTexture = content.Load<Texture2D>("Sprites/BorderRight");
+                    spriteTexture = content.Load<Texture2D>(RIGHT_BORDER_SPRITE);
                     break;
 
             }

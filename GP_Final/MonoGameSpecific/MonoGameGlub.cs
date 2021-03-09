@@ -8,32 +8,54 @@ namespace GP_Final
     {
         internal GameConsoleGlub gcGlub { get; private set; }
 
-        public MonoGameLanko lanko;
-        public LevelBorder border;
+        public MonoGameLanko Lanko;
 
-        private Texture2D run_sheet, ball_sheet, catch_burst_sheet;
-
-        private SpriteSheetInfo run_info, ball_info, burst_info, current_info;
-
-        public float ground, groundSpeed, distanceFromLanko, 
-            airSpeed, seekSpeed, buffSpeed, maxTimeAllowedBuffed, timeOnBuffPickup, burst_scale;
-
-        public Vector2 center;
-        private Vector2 cached_Location;
-
-        private int updatesBetweenFlicker;
+        public Vector2 Center
+        {
+            get { return new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2); }
+        }
 
         public bool HasBounced;
+
+        private Vector2 cachedLocation;
+        private LevelBorder border;
+
+        private Texture2D 
+            runSheet, 
+            ballSheet, 
+            catchBurstSheet;
+
+        private SpriteSheetInfo 
+            runSheetInfo, 
+            ballSheetInfo,
+            burstSheetInfo, 
+            currentSheetInfo;
+
+        private float
+            ground,
+            distanceFromLanko,
+            airSpeed,
+            timeOnBuffPickup;
+
+        private int
+            currentWallBounces,
+            currentPostFallFloorBounces,
+            runSheetUpdateCount,
+            ballSheetUpdateCount,
+            burstSheetUpdateCount,
+            updatesPerFlickerFrame;
+
         private bool isAnimatingBurst;
 
-        public int numBounces, numBouncesAfterFalling, maxBounces, maxBouncesAfterFalling,
-            run_Anim_Count, updates_Between_Run, ball_Anim_Count, updates_Between_Ball, 
-            burst_Anim_Count, updates_Between_Burst;
+        private Vector2 GlubHeldLocation
+        {
+            get { return new Vector2(Lanko.Location.X + 15, Lanko.Location.Y - 15); }
+        }
 
-        protected GlubState state;
+        private GlubState state;
         public GlubState State
         {
-            get {return state;}
+            get { return state; }
 
             set
             {
@@ -43,18 +65,17 @@ namespace GP_Final
 
                     if(state == GlubState.Still || state == GlubState.Following)
                     {                        
-                        SwapSpriteSheet(run_sheet, run_info);
-                        ball_info.CurrentFrame = 0;
+                        SwapSpriteSheet(runSheet, runSheetInfo);
+                        ballSheetInfo.CurrentFrame = 0;
                     }
 
                     else
-                        SwapSpriteSheet(ball_sheet, ball_info);
+                        SwapSpriteSheet(ballSheet, ballSheetInfo);
                 }
             }
         }
 
-        private bool withLanko, hasStrongBuff;
-
+        private bool withLanko;
         public bool WithLanko
         {
             get { return withLanko; }
@@ -66,6 +87,7 @@ namespace GP_Final
             }
         }
 
+        private bool hasStrongBuff;
         public bool HasStrongBuff
         {
             get { return hasStrongBuff; }
@@ -76,18 +98,49 @@ namespace GP_Final
 
                 if (value == true)
                 {
-                    airSpeed = buffSpeed;
+                    airSpeed = BUFF_SPEED;
                     color = Color.Green;
                 }
 
                 else
                 { 
                     color = Color.White;
-                    updatesBetweenFlicker = 2;
-                    airSpeed = 750;
+                    updatesPerFlickerFrame = 2;
+                    airSpeed = BASE_THROWN_SPEED;
                 }
             }
         }
+
+        #region Consts
+        //Assets
+        private const string GLUB_RUN_SPRITE_SHEET = "SpriteSheets/GlubRun";
+        private const string GLUB_BALL_SPRITE_SHEET = "SpriteSheets/GlubBall";
+        private const string GLUB_CATCH_BURST_SPRITE_SHEET = "SpriteSheets/GlubBurst";
+
+        private const int RUN_SHEET_FRAMES = 4;
+        private const int BALL_SHEET_FRAMES = 5;
+        private const int BURST_SHEET_FRAMES = 5;
+
+        private const int UPDATES_PER_RUN_FRAME = 6;
+        private const int UPDATES_PER_BALL_FRAME = 4;
+        private const int UPDATES_PER_BURST_FRAME = 3;
+
+        //Limits
+        private const int MAX_WALL_BOUNCES = 3;
+        private const int MAX_POST_FALL_FLOOR_BOUNCES = 6;
+        private const float MAX_BUFF_TIME = 10;
+
+        //Speeds
+        private const float GROUND_SPEED = 200;
+        private const float BASE_THROWN_SPEED = 750;
+        private const float SEEK_LANKO_SPEED = 500;
+        private const float BUFF_SPEED = 900;
+        private const float FALLING_RATE = .03f;
+
+        //Scales
+        private const float SPRITE_SCALE = .13f;
+        private const float BURST_SHEET_SCALE = .18f;
+        #endregion
 
         public MonoGameGlub(Game game) : base (game)
         {
@@ -96,50 +149,32 @@ namespace GP_Final
 
         protected override void LoadContent()
         {
-            updates_Between_Run = 6;
-            updates_Between_Burst = 3;
-            updates_Between_Ball = 4;
-            updatesBetweenFlicker = 2;
+            updatesPerFlickerFrame = 3;
 
-            run_sheet = content.Load<Texture2D>("SpriteSheets/GlubRun");
-            run_info = new SpriteSheetInfo(4, run_sheet.Width, run_sheet.Height, updates_Between_Run);
+            runSheet = content.Load<Texture2D>(GLUB_RUN_SPRITE_SHEET);
+            runSheetInfo = new SpriteSheetInfo(RUN_SHEET_FRAMES, runSheet.Width, runSheet.Height, UPDATES_PER_RUN_FRAME);
 
-            ball_sheet = content.Load<Texture2D>("SpriteSheets/GlubBall");
-            ball_info = new SpriteSheetInfo(5, ball_sheet.Width, ball_sheet.Height, updates_Between_Ball);
+            ballSheet = content.Load<Texture2D>(GLUB_BALL_SPRITE_SHEET);
+            ballSheetInfo = new SpriteSheetInfo(BALL_SHEET_FRAMES, ballSheet.Width, ballSheet.Height, UPDATES_PER_BALL_FRAME);
 
-            catch_burst_sheet = content.Load<Texture2D>("SpriteSheets/GlubBurst");
-            burst_info = new SpriteSheetInfo(5, catch_burst_sheet.Width, catch_burst_sheet.Height, updates_Between_Burst);
+            catchBurstSheet = content.Load<Texture2D>(GLUB_CATCH_BURST_SPRITE_SHEET);
+            burstSheetInfo = new SpriteSheetInfo(BURST_SHEET_FRAMES, catchBurstSheet.Width, catchBurstSheet.Height, UPDATES_PER_BURST_FRAME);
 
-            spriteTexture = run_sheet;
-            spriteSheetFramesWide = run_info.TotalFrames;
+            spriteTexture = runSheet;
+            spriteSheetFramesWide = RUN_SHEET_FRAMES;
 
-            border = lanko.Border;
+            border = Lanko.Border;
 
-            maxBounces = 3;
-            maxBouncesAfterFalling = 6;
-
-            maxTimeAllowedBuffed = 10;         
-
-            Scale = .13f;
-            burst_scale = .18f;
-            groundSpeed = 200;
-            airSpeed = 750;
-            seekSpeed = 500;
-            buffSpeed = 900;
-
-            Speed = groundSpeed;
-
+            Scale = SPRITE_SCALE;
+            Speed = GROUND_SPEED;
             UpdateHitbox();
                 
             Direction = Vector2.Zero;
-
-            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
-
             WithLanko = true;
             HasStrongBuff = false;
 
             SetTranformAndRect();
-            SourceRectangle = run_info.SourceFrame;
+            SourceRectangle = runSheetInfo.SourceFrame;
 
             base.LoadContent();
         }
@@ -150,11 +185,12 @@ namespace GP_Final
 
             if(isAnimatingBurst)
             {
-                spriteBatch.Draw(catch_burst_sheet, cached_Location, burst_info.SourceFrame, Color.White, 0f,
-                    new Vector2(0,0), burst_scale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(catchBurstSheet, cachedLocation, burstSheetInfo.SourceFrame, Color.White, 0f, Vector2.Zero, BURST_SHEET_SCALE, SpriteEffects.None, 0f);
 
-                CycleBurstAnim();
-                CheckBurstAnimComplete();
+                CycleBurstAnimation();
+
+                if (burstSheetInfo.CurrentFrame == BURST_SHEET_FRAMES)
+                    ResetBurstAnimation();
             }
 
             spriteBatch.End();
@@ -186,49 +222,50 @@ namespace GP_Final
             switch (State)
             {
                 case GlubState.Following:
-                    if (center.X - lanko.Center.X > 0)
+                    float distanceFromLanko = Center.X - Lanko.Center.X;
+
+                    if (distanceFromLanko > 0 && (Direction != new Vector2(-1, 0) || SpriteEffects != SpriteEffects.FlipHorizontally))
                     {
                         Direction = new Vector2(-1, 0);
                         SpriteEffects = SpriteEffects.FlipHorizontally;
                     }
 
-                    else if (center.X - lanko.Center.X < 0)
+                    else if (distanceFromLanko < 0 && (Direction != new Vector2(1, 0) || SpriteEffects != SpriteEffects.None))
                     {
                         Direction = new Vector2(1, 0);
                         SpriteEffects = SpriteEffects.None;
                     }
 
                     CheckIfFollowingLanko();
-                    CycleRunAnim();
+                    CycleRunAnimation();
                     break;
 
                 case GlubState.Still:
-                    run_info.CurrentFrame = 0;
-                    run_info.UpdateSourceFrame();
-                    SourceRectangle = run_info.SourceFrame;
-                    
-                    Direction = Vector2.Zero;
+                    if (Direction != Vector2.Zero)
+                    {
+                        Direction = Vector2.Zero;
+                        runSheetInfo.CurrentFrame = 0;
+                        runSheetInfo.UpdateSourceFrame();
+                        SourceRectangle = runSheetInfo.SourceFrame;
+                    }
+
                     CheckIfFollowingLanko();
                     break;
 
                 case GlubState.Held:
-                    Location = new Vector2(lanko.Location.X + 15, lanko.Location.Y - 15);
-
-                    CycleBallAnim(true);
+                    Location = GlubHeldLocation;
+                    CycleBallAnimation(true);
 
                     //Puts Glub back on the ground after Lanko lands (post catch)
-                    if (lanko.IsAiming == false && lanko.HasJumped == false)
+                    if (Lanko.IsAiming == false && Lanko.HasJumped == false)
                     {
-                        Location =
-                            new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
-
+                        Location = new Vector2(Lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
                         State = GlubState.AnimCoolDown;
                     }
-
                     break;
 
                 case GlubState.Falling:
-                    Direction.Y += .03f;
+                    Direction.Y += FALLING_RATE;
 
                     if (Direction.X != 0)
                     {
@@ -244,47 +281,33 @@ namespace GP_Final
 
                     Location += ((Direction) * Speed * (float)timeElapsed);
 
-                    if (numBouncesAfterFalling >= maxBouncesAfterFalling)
-                    {
-                        State = GlubState.Stranded;
-                        Location.Y = ground - (spriteTexture.Height * scale);
-                        Direction = Vector2.Zero;
-                        numBouncesAfterFalling = 0;
-                    }
-
+                    if (currentPostFallFloorBounces >= MAX_POST_FALL_FLOOR_BOUNCES)
+                        SetUpGlubStrandedState();
                     break;
 
                 case GlubState.AnimCoolDown:
-                    CycleBallAnim(false);
+                    CycleBallAnimation(false);
 
-                    if (ball_info.CurrentFrame == 0)
+                    if (ballSheetInfo.CurrentFrame == 0)
                         State = GlubState.Still;
-
                     break;
 
                 case GlubState.SeekingLanko:
+                    CycleBallAnimation(true);
 
-                    CycleBallAnim(true);
-
-                    if(lanko.HasGlub == false)
+                    if(Lanko.HasGlub == false)
                         Direction = SeekLanko();
-
                     break;
 
                 case GlubState.Thrown:
-                        CycleBallAnim(true);
+                    CycleBallAnimation(true);
 
-                    if (numBounces >= maxBounces)
-                    {
-                        State = GlubState.Falling;
-                        Direction.Y = 0;
-                        Direction.X = Direction.X / 500;
-                        numBounces = 0;
-                    }
+                    if (currentWallBounces >= MAX_WALL_BOUNCES)
+                        SetUpGlubFallingState();
                     break;
 
                 case GlubState.Stranded:
-                    CycleBallAnim(false);
+                    CycleBallAnimation(false);
                     break;
             }
 
@@ -295,22 +318,30 @@ namespace GP_Final
             if(Math.Abs(Direction.Length()) > 0 && State != GlubState.Falling)
                 Location += (Vector2.Normalize(Direction) * Speed * (float)timeElapsed);
 
-            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
-
             UpdateHitbox();
         }
 
-        #region Misc. Methods
+        private void SetUpGlubFallingState()
+        {
+            State = GlubState.Falling;
+            Direction.Y = 0;
+            Direction.X = Direction.X / 500;
+            currentWallBounces = 0;
+        }
 
+        private void SetUpGlubStrandedState()
+        {
+            State = GlubState.Stranded;
+            Location.Y = ground - (spriteTexture.Height * scale);
+            Direction = Vector2.Zero;
+            currentPostFallFloorBounces = 0;
+        }
+
+        #region Misc. Methods
         private void CheckIfFollowingLanko()
         {
-            distanceFromLanko = Math.Abs(center.X - lanko.Center.X);
-
-            if (distanceFromLanko >= 50)
-                State = GlubState.Following;
-
-            else
-                State = GlubState.Still;
+            distanceFromLanko = Math.Abs(Center.X - Lanko.Center.X);
+            State = (distanceFromLanko >= 50) ? GlubState.Following : GlubState.Still;
         }
 
         private void SettleBorderCollision()
@@ -322,14 +353,15 @@ namespace GP_Final
                     if (State == GlubState.Thrown)
                     {
                         HasBounced = true;
-                        numBounces++;
+                        currentWallBounces++;
                     }
 
                     else if (State == GlubState.Falling)
-                        numBouncesAfterFalling++;
+                        currentPostFallFloorBounces++;
 
                     Rectangle rect = Intersection(Hitbox, w.LocationRect);
 
+                    //Top and Bottom borders
                     if (w == border.Walls[0] || w == border.Walls[2])
                     {
                         if (state != GlubState.Following && state != GlubState.Still)
@@ -339,26 +371,26 @@ namespace GP_Final
                             if (State == GlubState.Falling)
                                 Direction.Y = Direction.Y / 1.5f;
 
-                            if (rect.Top < center.Y)
-                                Location.Y += (float)rect.Height;
+                            if (rect.Top < Center.Y)
+                                Location.Y += rect.Height;
 
-                            else if (rect.Bottom > center.Y)
-                                Location.Y -= (float)rect.Height;
+                            else if (rect.Bottom > Center.Y)
+                                Location.Y -= rect.Height;
                         }
                     }
 
+                    //Left and Right borders
                     else if (w == border.Walls[1] || w == border.Walls[3])
                     {
                         Direction.X *= -1;
 
-                        if (rect.Right > center.X)
-                            Location.X -= (float)rect.Width;
+                        if (rect.Right > Center.X)
+                            Location.X -= rect.Width;
 
-                        else if (rect.Left < center.X)
-                            Location.X += (float)rect.Width;
+                        else if (rect.Left < Center.X)
+                            Location.X += rect.Width;
                     }
                     UpdateHitbox();
-                    return;
                 }
 
             }
@@ -366,8 +398,7 @@ namespace GP_Final
 
         private Vector2 SeekLanko()
         {
-            Vector2 desiredDirection = (Vector2.Normalize(lanko.Center - Location));
-            return (desiredDirection);
+            return (Vector2.Normalize(Lanko.Center - Location));
         }
 
         //Called when Glub hits an item that he can damage
@@ -376,7 +407,7 @@ namespace GP_Final
             if (State == GlubState.Thrown)
             {
                 State = GlubState.SeekingLanko;
-                Speed = seekSpeed;
+                Speed = SEEK_LANKO_SPEED;
             }
         }
 
@@ -387,36 +418,38 @@ namespace GP_Final
 
             locationRect.Location = Location.ToPoint();
 
-            float scaledHeight = run_info.SourceFrame.Height * scale;
-            float scaledWidth = run_info.SourceFrame.Width * scale;
+            float scaledHeight = runSheetInfo.SourceFrame.Height * scale;
+            float scaledWidth = runSheetInfo.SourceFrame.Width * scale;
 
-            Hitbox = new Rectangle(LocationRect.X + hitBoxWidthReduction, LocationRect.Y + hitBoxHeightReduction,
-                (int)scaledWidth - hitBoxWidthReduction*2, (int)scaledHeight - hitBoxHeightReduction*2);
+            Hitbox = new Rectangle(
+                LocationRect.X + hitBoxWidthReduction, 
+                LocationRect.Y + hitBoxHeightReduction,
+                (int)scaledWidth - hitBoxWidthReduction * 2, 
+                (int)scaledHeight - hitBoxHeightReduction * 2);
         }
 
         public void GetCaughtByLanko()
         {
-            numBounces = 0;
-            cached_Location = new Vector2(LocationRect.X, LocationRect.Y);
+            currentWallBounces = 0;
+            cachedLocation = new Vector2(LocationRect.X, LocationRect.Y);
             isAnimatingBurst = true;
-            Speed = groundSpeed;
+            Speed = GROUND_SPEED;
             Direction = Vector2.Zero;
             HasBounced = false;
 
-            if (lanko.HasJumped)
+            if (Lanko.HasJumped)
                 State = GlubState.Held;
 
             else
             {
                 State = GlubState.AnimCoolDown;
-                Location =
-                    new Vector2(lanko.Location.X - 40, ground - locationRect.Height);
+                Location = new Vector2(Lanko.Location.X - 40, ground - locationRect.Height);
             }
         }
 
         public void CheckBuffTime(GameTime gameTime)
         {
-            if ((gameTime.TotalGameTime.TotalMilliseconds / 1000) - timeOnBuffPickup > maxTimeAllowedBuffed)
+            if ((gameTime.TotalGameTime.TotalMilliseconds / 1000) - timeOnBuffPickup > MAX_BUFF_TIME)
                 HasStrongBuff = false;
         }
 
@@ -431,12 +464,12 @@ namespace GP_Final
 
         private void MakeShimmer()
         {
-            if(updatesBetweenFlicker > 0)
-                updatesBetweenFlicker--;
+            if(updatesPerFlickerFrame > 0)
+                updatesPerFlickerFrame--;
 
             else
             {
-                updatesBetweenFlicker = 2;
+                updatesPerFlickerFrame = 2;
                 color = (color == Color.White) ? Color.LightGreen : Color.White;
             }
         }
@@ -445,120 +478,98 @@ namespace GP_Final
         {
             spriteTexture = spriteSheet;
 
-            run_info.CurrentFrame = 0;
+            runSheetInfo.CurrentFrame = 0;
             spriteSheetFramesWide = info.TotalFrames;
 
             info.UpdateSourceFrame();
             SourceRectangle = info.SourceFrame;
 
-            if (info == ball_info)
-                run_Anim_Count = 0;
-            else if (info == run_info)
-                ball_Anim_Count = 0;
+            if (info == ballSheetInfo)
+                runSheetUpdateCount = 0;
+            else if (info == runSheetInfo)
+                ballSheetUpdateCount = 0;
 
-            current_info = info;
+            currentSheetInfo = info;
             UpdateHitbox();
         }
 
-        private void CycleRunAnim()
+        private void CycleRunAnimation()
         {
-            if (run_Anim_Count >= updates_Between_Run)
+            if (runSheetUpdateCount >= UPDATES_PER_RUN_FRAME)
             {
-                run_info.CurrentFrame++;
-                run_Anim_Count = 0;
+                runSheetInfo.CurrentFrame++;
+                runSheetUpdateCount = 0;
 
-                if (run_info.CurrentFrame > run_info.TotalFrames - 1)
-                    run_info.CurrentFrame = 0;
+                if (runSheetInfo.CurrentFrame > RUN_SHEET_FRAMES - 1)
+                    runSheetInfo.CurrentFrame = 0;
 
-                run_info.UpdateSourceFrame();
-                SourceRectangle = run_info.SourceFrame;
+                runSheetInfo.UpdateSourceFrame();
+                SourceRectangle = runSheetInfo.SourceFrame;
             }
 
             else
-            {
-                run_Anim_Count++;
-                return;
-            }
+                runSheetUpdateCount++;
         }
 
-        private void CycleBallAnim(bool IsCyclingForward)
+        private void CycleBallAnimation(bool IsCyclingForward)
         {
             if (IsCyclingForward)
             {
-                if (ball_info.CurrentFrame == ball_info.TotalFrames - 1)
+                if (ballSheetInfo.CurrentFrame == BALL_SHEET_FRAMES - 1)
                     return;
-
-                if (ball_Anim_Count >= updates_Between_Ball)
-                {
-                    ball_info.CurrentFrame++;
-                    ball_Anim_Count = 0;
-
-                    if (ball_info.CurrentFrame > ball_info.TotalFrames - 1)
-                        ball_info.CurrentFrame = 0;
-
-                    ball_info.UpdateSourceFrame();
-                    SourceRectangle = ball_info.SourceFrame;
-                }
-
-                else
-                {
-                    ball_Anim_Count++;
-                    return;
-                }
             }
 
             else
-            {
-                if (ball_info.CurrentFrame == 0)
+                if (ballSheetInfo.CurrentFrame == 0)
                 {
-                    SwapSpriteSheet(run_sheet, run_info);
-                    ball_info.CurrentFrame = 0;
+                    SwapSpriteSheet(runSheet, runSheetInfo);
+                    ballSheetInfo.CurrentFrame = 0;
                     return;
                 }
 
-                if (ball_Anim_Count >= updates_Between_Ball)
-                {
-                    ball_info.CurrentFrame--;
-                    ball_Anim_Count = 0;
-
-                    if (ball_info.CurrentFrame > ball_info.TotalFrames - 1)
-                        ball_info.CurrentFrame = 0;
-
-                    ball_info.UpdateSourceFrame();
-                    SourceRectangle = ball_info.SourceFrame;
-                }
-
+            if (ballSheetUpdateCount >= UPDATES_PER_BALL_FRAME)
+            {
+                if (IsCyclingForward)
+                    ballSheetInfo.CurrentFrame++;
                 else
-                    ball_Anim_Count++;
+                    ballSheetInfo.CurrentFrame--;
+
+                ballSheetUpdateCount = 0;
+
+                if (ballSheetInfo.CurrentFrame > BALL_SHEET_FRAMES - 1)
+                    ballSheetInfo.CurrentFrame = 0;
+
+                ballSheetInfo.UpdateSourceFrame();
+                SourceRectangle = ballSheetInfo.SourceFrame;
             }
+
+            else
+                ballSheetUpdateCount++;
         }
 
-        private void CycleBurstAnim()
+        private void CycleBurstAnimation()
         {
-            if (burst_info.CurrentFrame == burst_info.TotalFrames)
+            if (burstSheetInfo.CurrentFrame == BURST_SHEET_FRAMES)
                 return;
 
-            if (burst_Anim_Count >= updates_Between_Ball)
+            if (burstSheetUpdateCount >= UPDATES_PER_BURST_FRAME)
             {
-                burst_info.CurrentFrame++;
-                burst_Anim_Count = 0;
+                burstSheetInfo.CurrentFrame++;
+                burstSheetUpdateCount = 0;
 
-                burst_info.UpdateSourceFrame();           
+                burstSheetInfo.UpdateSourceFrame();           
             }
 
             else
-                burst_Anim_Count++;
+                burstSheetUpdateCount++;
         }
 
-        private void CheckBurstAnimComplete()
+        private void ResetBurstAnimation()
         {
-            if (burst_info.CurrentFrame == 5)
-            {
-                isAnimatingBurst = false;
-                burst_info.CurrentFrame = 0;
-                burst_Anim_Count = 0;
-                burst_info.UpdateSourceFrame();
-            }
+            isAnimatingBurst = false;
+            burstSheetInfo.CurrentFrame = 0;
+            burstSheetUpdateCount = 0;
+            burstSheetInfo.UpdateSourceFrame();
         }
 
         #endregion
@@ -567,23 +578,22 @@ namespace GP_Final
         //HACK: Didn't want to deal with the screwy call orders. Called in Lanko's LoadContent()
         public void SetStartLocationAndGround()
         {
-            ground = lanko.Ground;
-            Location = new Vector2(lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
+            ground = Lanko.Ground;
+            Location = new Vector2(Lanko.Location.X - 40, ground - (SpriteTexture.Height * Scale));
 
             SetTranformAndRect();
-            center = new Vector2(Location.X + Hitbox.Width / 2, Location.Y + Hitbox.Height / 2);
         }
 
         //HACK: Sometimes Glub gets out of the borders
         private void SaveGlubFromDeath()
         {
-            if (center.X < border.LeftRect.Left ||
-                center.X > border.RightRect.Right ||
-                center.Y < border.TopRect.Top ||
-                center.Y > border.BottomRect.Bottom)
+            if (Center.X < border.LeftRect.Left ||
+                Center.X > border.RightRect.Right ||
+                Center.Y < border.TopRect.Top ||
+                Center.Y > border.BottomRect.Bottom)
             {
                 GetCaughtByLanko();
-                lanko.HasGlub = true;
+                Lanko.HasGlub = true;
             }
         }
         #endregion
@@ -608,7 +618,7 @@ namespace GP_Final
                         State = GlubState.Thrown;
                         HasBounced = false;
                         Speed = airSpeed;
-                        Direction = lanko.AimDirection;
+                        Direction = Lanko.AimDirection;
                     }
 
                     break;

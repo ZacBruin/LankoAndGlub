@@ -14,7 +14,7 @@ namespace GP_Final
         private const float maxRoundLength = 50;
         public float MaxRoundLength
         {
-            get {return maxRoundLength;}
+            get { return maxRoundLength; }
         }
 
         public GameRound(Game game) : base(game)
